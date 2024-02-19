@@ -10,7 +10,8 @@ export const loadState = (): State => {
 
     if (serializedStore === null || serializedStore === undefined) {
       return {
-        userInfo: userInitialState
+        userInfo: userInitialState,
+        playerInfo: playerInitialState
       }
     }
 
@@ -19,7 +20,8 @@ export const loadState = (): State => {
     }
   } catch (e) {
     return {
-      userInfo: userInitialState
+      userInfo: userInitialState,
+      playerInfo: playerInitialState
 
     }
   }
@@ -43,6 +45,12 @@ export const userInitialState: UserStore = {
   isUserLogged: false,
   authStatus: 'idle',
   token: '',
+  errorMessage: ''
+}
+
+export const playerInitialState: PlayerStore = {
+  playerList: [],
+  playerListStatus: 'idle',
   errorMessage: ''
 }
 

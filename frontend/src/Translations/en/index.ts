@@ -7,7 +7,8 @@ const error = {
   logout: 'Back to LogIn Page'
 }
 const home = {
-  logout: 'Log Out'
+  logout: 'Log Out',
+  players: 'Players'
 }
 const login = {
   signin: 'Sign In',

@@ -58,7 +58,7 @@ playerRouter.get(
       const { status, error } = formatError(
         e as Error,
         "003-RESPONSE",
-        "internalRouter players get"
+        "playerRouter players get"
       )
 
       return res.status(status).json(error)
