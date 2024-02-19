@@ -1,0 +1,50 @@
+version: "3.8"
+volumes:
+  postgres_data:
+services:
+  db:
+    container_name: db-molo
+    image: postgres
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: devPassword
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+  frontend:
+    env_file:
+      - frontend/.env
+    container_name: frontend-molo
+    image: frontend-molo
+    build:
+      context: ./frontend
+      target: development
+    volumes:
+      - ./frontend/src:/frontend/src
+      - ./frontend/public:/frontend/public
+    ports:
+      - "3000:3000"
+  backend:
+    env_file:
+      - backend/.env  
+    container_name: backend-molo
+    image: backend-molo
+    build:
+      context: ./backend
+      target: development
+    volumes:
+      - ./backend:/backend
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+    ports:
+      - "3001:3001"
