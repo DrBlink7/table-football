@@ -1,0 +1,7 @@
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *
+ */
