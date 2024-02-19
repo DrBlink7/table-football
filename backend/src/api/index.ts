@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { ServerPort } from "../config";
 import { loginRouter } from "./routers/login";
+import { playerRouter } from "./routers/player";
 
 export const apiRouter = express.Router();
 
@@ -26,3 +27,4 @@ apiRouter.get("/healthcheck", (_req: Request, res: Response) =>
 );
 
 apiRouter.use("/login", loginRouter)
+apiRouter.use("/player", playerRouter)
