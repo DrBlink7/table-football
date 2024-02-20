@@ -14,21 +14,21 @@ const ErrorLayout: FC<WithChildren> = ({ children }) => (
       justifyContent: 'center'
     }} >
     <Box
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      textAlign='center'
+      width='35%'
+      padding='4%'
+      borderRadius='5%'
+      boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        width: '35%',
-        padding: '4%',
-        borderRadius: '5%'
+        backgroundColor: 'rgba(255, 255, 255, 0.8)'
       }}
     >
       {children}
     </Box>
-  </ImageLayout>
+  </ImageLayout >
 )
 
 export default ErrorLayout

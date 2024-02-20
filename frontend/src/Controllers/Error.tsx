@@ -53,13 +53,11 @@ const ErrorBoundary: FC<WithChildren> = ({ children }) => {
           <Typography variant="body2">{t('error.body')}</Typography>
         </Box>
         <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            marginTop: '4vh',
-            justifyContent: 'space-between'
-          }}
+          display='flex'
+          flexDirection='row'
+          width='100%'
+          marginTop='4vh'
+          justifyContent='space-between'
         >
           <Button variant="contained" onClick={clearError} sx={{ minWidth: '15vw' }}>
             {t('error.button')}

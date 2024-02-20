@@ -29,10 +29,11 @@ import PersonIcon from '@mui/icons-material/Person'
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer'
 import QueryStatsIcon from '@mui/icons-material/QueryStats'
 import LogoutIcon from '@mui/icons-material/Logout'
-import LanguageSelector from './LanguageSelector'
+import LanguageSelector from '../Components/LanguageSelector'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
-import CustomTable from './CustomTable'
+import CustomTable from '../Components/CustomTable'
+import BgImage from '../Components/BgImage'
 import * as ls from '../Utils/ls'
 
 const Home: FC = () => {
@@ -189,6 +190,11 @@ const Component: FC<ComponentProps> = ({ component }) => {
   const playerListStatus = useAppSelector(selectPlayerListStatus)
   const playerList = useAppSelector(selectPlayerList)
 
+  const [selectedRow, setSelectedRow] = useState<string | null>(null)
+  const handleRowSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedRow(event.target.value)
+  }, [])
+
   const clearError = useCallback(() => {
     dispatch(clearErrorMessage())
   }, [dispatch])
@@ -233,7 +239,9 @@ const Component: FC<ComponentProps> = ({ component }) => {
         justifyContent='center'
         color={theme.palette.primary.contrastText}
         bgcolor={theme.palette.primary.main}
-      />
+      >
+        <BgImage style={{ width: '100%', backgroundColor: theme.palette.primary.main }} />
+      </Stack>
     case 'info':
       return <Stack
         display='flex'
@@ -265,11 +273,11 @@ const Component: FC<ComponentProps> = ({ component }) => {
         bgcolor={theme.palette.primary.main}
       >
         <Box display='flex' width='98%' alignSelf='center' flexDirection='column' height='100%'>
-          <Box display='flex' width='100%' alignItems='center' justifyContent='center' height='9%'>
+          <Box display='flex' width='100%' alignItems='center' justifyContent='center' height='6%'>
             <Typography>{t('players.title')}</Typography>
           </Box>
-          <CustomTable rows={rows} columns={columns} />
-          <Box display='flex' width='100%' alignItems='center' justifyContent='center' flexDirection='column' height='9%'>
+          <CustomTable rows={rows} columns={columns} selectedRow={selectedRow} handleRowSelect={handleRowSelect} />
+          <Box display='flex' width='100%' alignItems='center' justifyContent='center' flexDirection='column' height='12%'>
             <Typography>{t('players.footer')}</Typography>
           </Box>
         </Box>

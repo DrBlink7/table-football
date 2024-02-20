@@ -17,10 +17,8 @@ const ErrorComponent: FC<ErrorComponentProps> = ({
   return (
     <ErrorLayout>
       <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column'
-        }}
+        display='flex'
+        flexDirection='column'
       >
         <Typography variant="h1" sx={{ mb: 2.5 }}>
           {t('error.title')}
