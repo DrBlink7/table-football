@@ -103,15 +103,15 @@ const Login: FC = () => {
     >
       <CssBaseline />
       <Box
+        display='flex'
+        flexDirection='column'
+        alignItems='center'
+        alignSelf='center'
+        width='35%'
+        padding='4%'
+        borderRadius='5%'
+        minHeight='50vh'
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          alignSelf: 'center',
-          width: '35%',
-          padding: '4%',
-          borderRadius: '5%',
-          minHeight: '50vh',
           backgroundColor: theme.palette.background.default,
           color: theme.palette.text.primary
         }}

@@ -1,15 +1,17 @@
 import { useCallback, type FC, useState } from 'react'
-import {
-  Box, Paper, TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  TablePagination,
-  TableCell
-} from '@mui/material'
+import { Box, Paper, TableContainer, Table, TableHead, TableRow, TableBody, TablePagination, TableCell, Radio } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
-const CustomTable: FC<{ columns: any[], rows: any[] }> = ({ columns, rows }) => {
+interface CustomTableProps {
+  columns: any[]
+  rows: any[]
+  selectedRow: string | null
+  handleRowSelect: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleRowSelect }) => {
+  const { t } = useTranslation()
+
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
@@ -25,9 +27,12 @@ const CustomTable: FC<{ columns: any[], rows: any[] }> = ({ columns, rows }) => 
   return <Box display='flex' width='100%' flexDirection='column' height='82%'>
     <Paper sx={{ width: '100%', overflow: 'hidden', height: '92%' }}>
       <TableContainer sx={{ maxHeight: '100%' }}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" size='small'>
           <TableHead>
             <TableRow>
+              <TableCell>
+                {t('table.select')}
+              </TableCell>
               {columns.map((column, index) => (
                 <TableCell key={index}>
                   {column.label}
@@ -40,6 +45,14 @@ const CustomTable: FC<{ columns: any[], rows: any[] }> = ({ columns, rows }) => 
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableCell>
+                    <Radio
+                      name={`col_${index}`}
+                      checked={selectedRow === row.id}
+                      onChange={handleRowSelect}
+                      value={row.id}
+                    />
+                  </TableCell>
                   {columns.map((column, index) => (
                     <TableCell key={index}>
                       {row[column.id]}
@@ -51,7 +64,7 @@ const CustomTable: FC<{ columns: any[], rows: any[] }> = ({ columns, rows }) => 
         </Table>
       </TableContainer>
     </Paper>
-    <Paper sx={{ width: '100%', overflow: 'hidden', height: '8%' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', height: '8%', margin: '0.5vh 0px' }}>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
@@ -59,7 +72,8 @@ const CustomTable: FC<{ columns: any[], rows: any[] }> = ({ columns, rows }) => 
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage} />
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Paper>
   </Box>
 }

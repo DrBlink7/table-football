@@ -21,10 +21,20 @@ const login = {
   passRequired: 'Password is required',
   passError: 'Password needs to have minimum length of 8, and have at least 1 number, 1 Uppercase, 1 Lowercase and 1 Special character'
 }
+const table = {
+  select: 'Select'
+}
+const players = {
+  title: 'Players',
+  id: 'Player ID',
+  name: 'Player Name'
+}
 const en = {
   error,
   login,
-  home
+  home,
+  table,
+  players
 }
 
 export default en

@@ -1,13 +1,9 @@
 import { type FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, MenuItem, type SxProps, type Theme } from '@mui/material'
+import { Box, MenuItem } from '@mui/material'
 import Select, { type SelectChangeEvent } from '@mui/material/Select'
 
-interface LanguageSelectorProps {
-  style?: SxProps<Theme>
-}
-
-const LanguageSelector: FC<LanguageSelectorProps> = ({ style }) => {
+const LanguageSelector: FC = () => {
   const { i18n } = useTranslation()
 
   const changeLanguage = async (lng: string | undefined): Promise<void> => {
@@ -20,21 +16,18 @@ const LanguageSelector: FC<LanguageSelectorProps> = ({ style }) => {
   }
 
   return (
-    <Box display="flex"
-      sx={{
-        justifyContent: 'center',
-        width: '100%',
-        ...style
-      }}>
+    <Box display="flex" height='100%' justifyContent="center" width="100%" >
       <Select
         value={i18n.language}
         onChange={handleLanguageChange}
         variant="outlined"
+        name='language'
         sx={{
           display: 'flex'
         }}
       >
-        <MenuItem value="en">English</MenuItem>
+        <MenuItem value="en" id='en'>🇬🇧🇨🇦 English 🇦🇺🇺🇸</MenuItem>
+        <MenuItem value="it" id='it'>🇮🇹🇸🇲 Italiano 🇻🇦🇮🇹</MenuItem>
       </Select>
     </Box>
   )

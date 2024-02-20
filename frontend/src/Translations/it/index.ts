@@ -7,7 +7,8 @@ const error = {
   logout: 'Back to LogIn Page'
 }
 const home = {
-  logout: 'Log Out'
+  logout: 'Log Out',
+  players: 'Players'
 }
 const login = {
   signin: 'Sign In',
@@ -20,10 +21,14 @@ const login = {
   passRequired: 'Password is required',
   passError: 'Password needs to have minimum length of 8, and have at least 1 number, 1 Uppercase, 1 Lowercase and 1 Special character'
 }
+const table = {
+  select: 'Select'
+}
 const it = {
   error,
   login,
-  home
+  home,
+  table
 }
 
 export default it

@@ -5,7 +5,10 @@ import { formatTagList } from "./utils"
 
 export const getPlayers = async () => {
   const client = await dbConfig.connect()
-  const query = `SELECT * FROM ${tablePlayers}`
+  const query = `
+  SELECT * FROM ${tablePlayers}
+  ORDER BY id
+  `
   const results = await client.query<DBPlayersTable>(query)
   client.release()
 
