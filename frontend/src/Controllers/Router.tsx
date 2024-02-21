@@ -6,7 +6,7 @@ import { useAppSelector } from '../Utils/store'
 import { mainColor, secondaryColor } from '../Utils/config'
 import ErrorBoundary from './Error'
 import Login from './Login'
-import Home from './Home'
+import Home from '../Components/Home'
 import Player from '../Components/Player'
 
 const theme = createTheme({
