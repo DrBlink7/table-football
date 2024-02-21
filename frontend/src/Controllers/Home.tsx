@@ -32,6 +32,7 @@ import { formatDataForTable, getHomeButtonStyle, getLeftMenuButtonStyle } from '
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { selectComponent, setComponent } from '../Store/util'
 import InfoIcon from '@mui/icons-material/Info'
 import PersonIcon from '@mui/icons-material/Person'
 import GroupIcon from '@mui/icons-material/Group'
@@ -48,50 +49,29 @@ import ConfirmationDialog from '../Components/ConfirmationDialog'
 import * as ls from '../Utils/ls'
 import * as Yup from 'yup'
 
-const Home: FC = () => {
-  const dispatch = useAppDispatch()
-
-  const [component, setComponent] = useState<HomeComponent>('home')
-
-  const logOut = useCallback(() => {
-    dispatch(clearUserState())
-    dispatch(clearPlayerState())
-    dispatch(logout())
-    ls.del('tableFootball')
-  }, [dispatch])
-
-  const changeComponent = useCallback((component: HomeComponent) => {
-    setComponent(component)
-  }, [])
-
-  return <Stack
-    data-testid="home-component"
+const Home: FC = () => <Stack
+  data-testid="home-component"
+  display='flex'
+  height='100vh'
+  width='100vw'
+  flexDirection='row'
+>
+  <CssBaseline />
+  <Box
     display='flex'
-    height='100vh'
-    width='100vw'
     flexDirection='row'
+    alignItems='center'
+    alignSelf='center'
+    justifyContent='center'
+    width='100%'
+    height='100%'
   >
-    <CssBaseline />
-    <Box
-      display='flex'
-      flexDirection='row'
-      alignItems='center'
-      alignSelf='center'
-      justifyContent='center'
-      width='100%'
-      height='100%'
-    >
-      <LeftMenu changeComponent={changeComponent} component={component} logOut={logOut} />
-      <Component component={component} />
-    </Box >
-  </Stack >
-}
+    <LeftMenu />
+    <Component />
+  </Box>
+</Stack>
 
-interface ComponentProps {
-  component: HomeComponent
-}
-
-const Component: FC<ComponentProps> = ({ component }) => {
+const Component: FC = () => {
   const { t } = useTranslation()
   const theme = useTheme()
   const dispatch = useAppDispatch()
@@ -101,6 +81,7 @@ const Component: FC<ComponentProps> = ({ component }) => {
   const errorMessage = useAppSelector(selectErrorMessage)
   const playerListStatus = useAppSelector(selectPlayerListStatus)
   const playerList = useAppSelector(selectPlayerList)
+  const component = useAppSelector(selectComponent)
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null)
   const [createPlayer, setCreatePlayer] = useState<boolean>(false)
@@ -348,15 +329,24 @@ const Component: FC<ComponentProps> = ({ component }) => {
       return <DefaultHomeLogo />
   }
 }
-interface LeftMenuProps {
-  changeComponent: (component: HomeComponent) => void
-  logOut: () => void
-  component: HomeComponent
-}
 
-const LeftMenu: FC<LeftMenuProps> = ({ component, changeComponent, logOut }) => {
+const LeftMenu: FC = () => {
+  const dispatch = useAppDispatch()
   const theme = useTheme()
   const { t } = useTranslation()
+
+  const component = useAppSelector(selectComponent)
+
+  const changeComponent = useCallback((c: HomeComponent) => {
+    dispatch(setComponent(c))
+  }, [dispatch])
+
+  const logOut = useCallback(() => {
+    dispatch(clearUserState())
+    dispatch(clearPlayerState())
+    dispatch(logout())
+    ls.del('tableFootball')
+  }, [dispatch])
 
   return <Stack display="flex" width="20%" height="100%" minWidth='180px' component={Paper}>
     <Box display='flex'>

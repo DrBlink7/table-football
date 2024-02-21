@@ -11,7 +11,8 @@ export const loadState = (): State => {
     if (serializedStore === null || serializedStore === undefined) {
       return {
         userInfo: userInitialState,
-        playerInfo: playerInitialState
+        playerInfo: playerInitialState,
+        utilInfo: utilsInitialState
       }
     }
 
@@ -21,8 +22,8 @@ export const loadState = (): State => {
   } catch (e) {
     return {
       userInfo: userInitialState,
-      playerInfo: playerInitialState
-
+      playerInfo: playerInitialState,
+      utilInfo: utilsInitialState
     }
   }
 }
@@ -52,6 +53,10 @@ export const playerInitialState: PlayerStore = {
   playerList: [],
   playerListStatus: 'idle',
   errorMessage: ''
+}
+
+export const utilsInitialState: UtilStore = {
+  component: 'home'
 }
 
 export const useAppSelector: TypedUseSelectorHook<State> = useSelector
