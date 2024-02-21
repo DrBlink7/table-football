@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../Utils/store'
 import { clearUserState, logout } from '../Store/users'
 import { clearPlayerState } from '../Store/player'
 import { getLeftMenuButtonStyle } from '../Utils/f'
-import { selectComponent, setComponent } from '../Store/util'
+import { clearUtilsState, selectComponent, setComponent } from '../Store/util'
 import InfoIcon from '@mui/icons-material/Info'
 import PersonIcon from '@mui/icons-material/Person'
 import GroupIcon from '@mui/icons-material/Group'
@@ -39,11 +39,12 @@ const LeftMenu: FC = () => {
   const logOut = useCallback(() => {
     dispatch(clearUserState())
     dispatch(clearPlayerState())
+    dispatch(clearUtilsState())
     dispatch(logout())
     ls.del('tableFootball')
   }, [dispatch])
 
-  return <Stack display="flex" width="20%" height="100%" minWidth='180px' component={Paper}>
+  return <Stack display="flex" width="20%" height="100%" minWidth='180px' component={Paper} data-testid="left-menu">
     <Box display='flex'>
       <LanguageSelector />
     </Box>
@@ -62,6 +63,7 @@ const LeftMenu: FC = () => {
           key='info'
           onClick={() => { changeComponent('info') }}
           sx={getLeftMenuButtonStyle(component, theme, 'info')}
+          data-testid="info-list-button"
         >
           <ListItemIcon>
             <InfoIcon />
@@ -72,6 +74,7 @@ const LeftMenu: FC = () => {
           key='players'
           onClick={() => { changeComponent('players') }}
           sx={getLeftMenuButtonStyle(component, theme, 'players')}
+          data-testid="players-list-button"
         >
           <ListItemIcon>
             <PersonIcon />
@@ -82,6 +85,7 @@ const LeftMenu: FC = () => {
           key='team'
           onClick={() => { changeComponent('team') }}
           sx={getLeftMenuButtonStyle(component, theme, 'team')}
+          data-testid="team-list-button"
         >
           <ListItemIcon>
             <GroupIcon />
@@ -92,6 +96,7 @@ const LeftMenu: FC = () => {
           key='matches'
           onClick={() => { changeComponent('matches') }}
           sx={getLeftMenuButtonStyle(component, theme, 'matches')}
+          data-testid="matches-list-button"
         >
           <ListItemIcon>
             <SportsSoccerIcon />
@@ -102,6 +107,7 @@ const LeftMenu: FC = () => {
           key='stats'
           onClick={() => { changeComponent('stats') }}
           sx={getLeftMenuButtonStyle(component, theme, 'stats')}
+          data-testid="stats-list-button"
         >
           <ListItemIcon>
             <QueryStatsIcon />
