@@ -33,9 +33,12 @@ const Player = {
   name: 'Player Name',
   type: 'Icon',
   create: 'Create New Player',
+  createButton: 'Create',
   edit: 'Edit Existing Player',
+  editButton: 'Edit',
   delete: 'Delete A Player',
-  browse: 'Browse A Player'
+  browse: 'Browse A Player',
+  validationError: 'Do not insert any unsafe value'
 }
 const confirmationDialog = {
   title: 'Confirm Action',

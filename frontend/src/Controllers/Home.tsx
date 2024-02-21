@@ -19,7 +19,9 @@ import { clearUserState, logout, selectToken } from '../Store/users'
 import {
   clearErrorMessage,
   clearPlayerState,
+  createAPlayer,
   deleteAPlayer,
+  editAPlayer,
   retrievePlayerList,
   selectErrorMessage,
   selectPlayerList,
@@ -28,6 +30,8 @@ import {
 } from '../Store/player'
 import { formatDataForTable, getHomeButtonStyle, getLeftMenuButtonStyle } from '../Utils/f'
 import { useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import InfoIcon from '@mui/icons-material/Info'
 import PersonIcon from '@mui/icons-material/Person'
 import GroupIcon from '@mui/icons-material/Group'
@@ -36,11 +40,13 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats'
 import LogoutIcon from '@mui/icons-material/Logout'
 import LanguageSelector from './LanguageSelector'
 import CustomTable from './CustomTable'
+import CustomModal from './CustomModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
 import DefaultHomeLogo from '../Components/DefaultHomeLogo'
-import * as ls from '../Utils/ls'
 import ConfirmationDialog from '../Components/ConfirmationDialog'
+import * as ls from '../Utils/ls'
+import * as Yup from 'yup'
 
 const Home: FC = () => {
   const dispatch = useAppDispatch()
@@ -97,15 +103,43 @@ const Component: FC<ComponentProps> = ({ component }) => {
   const playerList = useAppSelector(selectPlayerList)
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null)
-  const [, setCreatePlayer] = useState<boolean>(false)
-  const [, setEditPlayer] = useState<boolean>(false)
+  const [createPlayer, setCreatePlayer] = useState<boolean>(false)
+  const [editPlayer, setEditPlayer] = useState<boolean>(false)
   const [deletePlayer, setDeletePlayer] = useState<boolean>(false)
+
+  const schema = Yup.object().shape({
+    player: Yup.string()
+      .test('safe-string', t('Player.validationError'), (value) =>
+        !((value !== null && value !== undefined) && /[<>&'"]/.test(value)))
+  })
+
+  const {
+    control: controlCreate,
+    handleSubmit: handleSubmitCreate,
+    formState: { errors: errorsCreate },
+    reset: resetCreate
+  } = useForm<PlayerInputs>({
+    resolver: yupResolver(schema),
+    defaultValues: { player: '' }
+  })
+
+  const {
+    control: controlEdit,
+    handleSubmit: handleSubmitEdit,
+    formState: { errors: errorsEdit },
+    setValue,
+    reset: resetEdit
+  } = useForm<PlayerInputs>({
+    resolver: yupResolver(schema),
+    defaultValues: { player: '' }
+  })
 
   const handleRowSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
     if (!Boolean(value) || isNaN(Number(value))) return
     setSelectedRow(Number(value))
-  }, [])
+    setValue('player', playerList.find(player => player.id === Number(value))?.name ?? '')
+  }, [playerList, setValue])
 
   const clearError = useCallback(() => {
     dispatch(clearErrorMessage())
@@ -117,24 +151,22 @@ const Component: FC<ComponentProps> = ({ component }) => {
   }, [navigate, selectedRow])
 
   const openCreatePlayer = useCallback(() => {
-    if (!Boolean(selectedRow)) return
     setCreatePlayer(true)
-  }, [selectedRow])
+  }, [])
 
-  // const closeCreatePlayer = useCallback(() => {
-  //   if (!Boolean(selectedRow)) return
-  //   setCreatePlayer(false)
-  // }, [selectedRow])
+  const closeCreatePlayer = useCallback(() => {
+    setCreatePlayer(false)
+  }, [])
 
   const openEditPlayer = useCallback(() => {
     if (!Boolean(selectedRow)) return
     setEditPlayer(true)
   }, [selectedRow])
 
-  // const closeEditPlayer = useCallback(() => {
-  //   if (!Boolean(selectedRow)) return
-  //   setEditPlayer(false)
-  // }, [selectedRow])
+  const closeEditPlayer = useCallback(() => {
+    if (!Boolean(selectedRow)) return
+    setEditPlayer(false)
+  }, [selectedRow])
 
   const openDeletePlayer = useCallback(() => {
     if (!Boolean(selectedRow)) return
@@ -156,6 +188,34 @@ const Component: FC<ComponentProps> = ({ component }) => {
     }
   }, [dispatch, selectedRow, token])
 
+  const onSubmitCreate: SubmitHandler<PlayerInputs> = useCallback(async (data) => {
+    try {
+      const name = data.player
+      if (name === undefined) return
+
+      await dispatch(createAPlayer({ token, name }))
+      setCreatePlayer(false)
+      resetCreate()
+      setSelectedRow(null)
+    } catch (e) {
+      dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+    }
+  }, [dispatch, resetCreate, token])
+
+  const onSubmitEdit: SubmitHandler<PlayerInputs> = useCallback(async (data) => {
+    try {
+      const name = data.player
+      if (name === undefined || !Boolean(selectedRow)) return
+
+      await dispatch(editAPlayer({ token, name, id: String(selectedRow) }))
+      setEditPlayer(false)
+      resetEdit()
+      setSelectedRow(null)
+    } catch (e) {
+      dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+    }
+  }, [dispatch, resetEdit, selectedRow, token])
+
   useEffect(() => {
     (async () => {
       try {
@@ -172,7 +232,7 @@ const Component: FC<ComponentProps> = ({ component }) => {
   }
 
   if (playerListStatus === 'error') {
-    const msg = errorMessage === '' ? 'Investigation status error' : errorMessage
+    const msg = errorMessage === '' ? 'player list error' : errorMessage
 
     return <ErrorComponent msg={msg} clearError={clearError} />
   }
@@ -248,6 +308,28 @@ const Component: FC<ComponentProps> = ({ component }) => {
             open={deletePlayer}
             title={t('deletePlayer.title')}
             dialogText={`${t('deletePlayer.dialogText')}'${selectedRow}'`}
+          />
+          <CustomModal
+            onClose={closeCreatePlayer}
+            handleSubmit={handleSubmitCreate}
+            onSubmit={onSubmitCreate}
+            open={createPlayer}
+            control={controlCreate}
+            errors={errorsCreate?.player}
+            title={t('Player.create')}
+            editText={t('Player.createButton')}
+            name="player"
+          />
+          <CustomModal
+            onClose={closeEditPlayer}
+            handleSubmit={handleSubmitEdit}
+            onSubmit={onSubmitEdit}
+            open={editPlayer}
+            control={controlEdit}
+            errors={errorsEdit?.player}
+            title={t('Player.edit')}
+            editText={t('Player.editButton')}
+            name="player"
           />
         </Box>
       </Stack >

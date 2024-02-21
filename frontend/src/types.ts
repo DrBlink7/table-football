@@ -7,6 +7,9 @@ interface LoginInputs {
   email: string
   password: string
 }
+interface PlayerInputs {
+  player?: string
+}
 /**
  * API
 */
@@ -78,8 +81,12 @@ interface WithChildren {
   children?: React.ReactNode
 }
 interface FormatDataForTableProps {
-  columns: any[]
-  rows: any[]
+  columns: Column[]
+  rows: unknown[]
 }
-
+interface Column {
+  id: string
+  label: string
+  sortable: boolean
+}
 type TableType = 'Player'
