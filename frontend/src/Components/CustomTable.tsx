@@ -1,11 +1,23 @@
-import { useCallback, type FC, useState } from 'react'
-import { Box, Paper, TableContainer, Table, TableHead, TableRow, TableBody, TablePagination, TableCell, Radio } from '@mui/material'
+import { useCallback, type FC, useState, useEffect } from 'react'
+import {
+  Box,
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TablePagination,
+  TableCell,
+  Radio,
+  TableSortLabel
+} from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 interface CustomTableProps {
   columns: any[]
   rows: any[]
-  selectedRow: string | null
+  selectedRow: number | null
   handleRowSelect: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -14,6 +26,8 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [orderBy, setOrderBy] = useState('id')
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
 
   const handleChangePage = useCallback((_: unknown, newPage: number) => {
     setPage(newPage)
@@ -24,7 +38,30 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
     setPage(0)
   }, [])
 
-  return <Box display='flex' width='100%' flexDirection='column' height='82%'>
+  const handleRequestSort = useCallback((property: string) => {
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  }, [order, orderBy])
+
+  useEffect(() => {
+    setPage(0)
+  }, [rowsPerPage])
+
+  useEffect(() => {
+    setOrderBy('id')
+    setOrder('asc')
+  }, [rows])
+
+  const sortedRows = [...rows].sort((a, b) => {
+    if (order === 'asc') {
+      return a[orderBy] > b[orderBy] ? 1 : -1
+    } else {
+      return a[orderBy] < b[orderBy] ? 1 : -1
+    }
+  })
+
+  return <Box display='flex' width='100%' flexDirection='column' height='83%'>
     <Paper sx={{ width: '100%', overflow: 'hidden', height: '92%' }}>
       <TableContainer sx={{ maxHeight: '100%' }}>
         <Table stickyHeader aria-label="sticky table" size='small'>
@@ -35,13 +72,19 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
               </TableCell>
               {columns.map((column, index) => (
                 <TableCell key={index}>
-                  {column.label}
+                  <TableSortLabel
+                    active={orderBy === column.id}
+                    direction={orderBy === column.id ? order : 'asc'}
+                    onClick={() => { handleRequestSort(column.id) }}
+                  >
+                    {column.label}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {sortedRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
@@ -50,8 +93,7 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
                       name={`col_${index}`}
                       checked={selectedRow === row.id}
                       onChange={handleRowSelect}
-                      value={row.id}
-                    />
+                      value={row.id} />
                   </TableCell>
                   {columns.map((column, index) => (
                     <TableCell key={index}>

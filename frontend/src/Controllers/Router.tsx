@@ -7,6 +7,7 @@ import { mainColor, secondaryColor } from '../Utils/config'
 import ErrorBoundary from './Error'
 import Login from './Login'
 import Home from './Home'
+import Player from './Player'
 
 const theme = createTheme({
   palette: {
@@ -35,6 +36,10 @@ const Router: FC = () => {
           <Route
             path="/"
             element={isUserLoggedIn ? <Home /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/player/:id"
+            element={isUserLoggedIn ? <Player /> : <Navigate to="/login" />}
           />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
