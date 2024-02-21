@@ -7,7 +7,7 @@ import { mainColor, secondaryColor } from '../Utils/config'
 import ErrorBoundary from './Error'
 import Login from './Login'
 import Home from '../Components/Home'
-import Player from '../Components/Player'
+import Player from './Player'
 
 const theme = createTheme({
   palette: {

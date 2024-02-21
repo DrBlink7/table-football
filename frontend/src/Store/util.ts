@@ -5,7 +5,7 @@ export const util = createSlice({
   name: 'util',
   initialState: utilsInitialState,
   reducers: {
-    clearUserState: () => utilsInitialState,
+    clearUtilsState: () => utilsInitialState,
     setComponent: (state, action: { payload: HomeComponent }) => {
       state.component = action.payload
     }
@@ -13,7 +13,7 @@ export const util = createSlice({
 })
 
 export const {
-  clearUserState,
+  clearUtilsState,
   setComponent
 } = util.actions
 

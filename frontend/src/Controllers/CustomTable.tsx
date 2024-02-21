@@ -54,7 +54,7 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
 
   return <Box display='flex' width='100%' flexDirection='column' height='83%'>
     <Paper sx={{ width: '100%', overflow: 'hidden', height: '92%' }}>
-      <TableContainer sx={{ maxHeight: '100%' }}>
+      <TableContainer sx={{ maxHeight: '100%' }} data-testid="table-container">
         <Table stickyHeader aria-label="sticky table" size='small'>
           <TableHead>
             <TableRow>
