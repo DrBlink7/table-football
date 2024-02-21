@@ -51,7 +51,7 @@ playerRouter.get(
       const db = dbFactory(RepositoryType)
       const data = await db.getPlayers()
       const fetchTime = Math.round(performance.now() - getPlayersTimestamp)
-      Logger.writeEvent(`Players: fetch tag in ${fetchTime} ms`)
+      Logger.writeEvent(`Players: fetch players in ${fetchTime} ms`)
 
       return res.status(200).json(data)
     } catch (e) {
