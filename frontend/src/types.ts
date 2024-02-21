@@ -24,6 +24,23 @@ interface GetPlayerDTO {
   id: number
 }
 type GetPlayersDTO = GetPlayerDTO[]
+interface CreatePlayerBODY {
+  name: string
+}
+interface CreatePlayerDTO {
+  name: string
+  id: number
+}
+interface EditPlayerBODY {
+  name: string
+}
+interface EditPlayerDTO {
+  name: string
+  id: number
+}
+interface DeletePlayerDTO {
+  id: number
+}
 /**
  * Redux
  */

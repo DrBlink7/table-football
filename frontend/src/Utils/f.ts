@@ -1,4 +1,5 @@
 import { type TFunction } from 'i18next'
+import { lighten, type SxProps, type Theme } from '@mui/material'
 import { authorization } from './config'
 
 export const apply = <T>(x: T, f: (x: T) => T): T => f(x)
@@ -47,3 +48,43 @@ export const formatDataForTable = (data: any[], t: TFunction<'translation', unde
     rows
   }
 }
+
+export const getHomeButtonStyle = (theme: Theme): SxProps<Theme> => ({
+  width: '20%',
+  height: '7vh',
+  backgroundColor: theme.palette.secondary.main,
+  '&:hover': {
+    backgroundColor: theme.palette.secondary.light
+  },
+  '&:hover span': {
+    color: theme.palette.secondary.contrastText
+  },
+  '&:active': {
+    backgroundColor: theme.palette.secondary.dark
+  },
+  '&:active span': {
+    color: theme.palette.secondary.contrastText
+  },
+  '&:disabled': {
+    color: theme.palette.secondary.contrastText,
+    backgroundColor: theme.palette.secondary.dark
+  },
+  '&:disabled span': {
+    color: theme.palette.secondary.dark
+  }
+})
+
+export const getLeftMenuButtonStyle = (component: HomeComponent, theme: Theme, tag: HomeComponent): SxProps<Theme> => ({
+  display: 'flex',
+  maxHeight: '10vh',
+  color: component === tag
+    ? theme.palette.primary.contrastText
+    : theme.palette.text.primary,
+  backgroundColor: component === tag
+    ? lighten(theme.palette.primary.light, 0.4)
+    : 'transparent',
+  '&:hover': {
+    backgroundColor: lighten(theme.palette.primary.light, 0.6),
+    color: theme.palette.text.primary
+  }
+})

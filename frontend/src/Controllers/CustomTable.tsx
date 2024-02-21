@@ -47,11 +47,6 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
     setPage(0)
   }, [rowsPerPage])
 
-  useEffect(() => {
-    setOrderBy('id')
-    setOrder('asc')
-  }, [rows])
-
   const sortedRows = [...rows].sort((a, b) =>
     order === 'asc'
       ? a[orderBy] > b[orderBy] ? 1 : -1

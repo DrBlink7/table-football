@@ -16,6 +16,7 @@ const Loader: FC<LoaderProps> = ({ title, text }) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      width='100%'
       height="100vh"
     >
       <Typography data-testid="title">{(title ?? t('loader.title'))}</Typography>

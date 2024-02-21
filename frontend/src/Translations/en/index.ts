@@ -37,13 +37,30 @@ const Player = {
   delete: 'Delete A Player',
   browse: 'Browse A Player'
 }
+const confirmationDialog = {
+  title: 'Confirm Action',
+  dialogText: 'Are you sure you want to perform this action?',
+  cancelButtonText: 'Cancel',
+  confirmButtonText: 'Confirm'
+}
+const editModal = {
+  title: 'Edit Item',
+  edit: 'Edit'
+}
+const deletePlayer = {
+  title: 'Player Delete',
+  dialogText: 'Are you sure you want to delete this Player? Player id: '
+}
 const en = {
   loader,
   error,
   login,
   home,
   table,
-  Player
+  Player,
+  confirmationDialog,
+  editModal,
+  deletePlayer
 }
 
 export default en

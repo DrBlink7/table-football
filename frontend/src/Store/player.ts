@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { retrievePlayers } from '../Api/player'
+import { createPlayer, deletePlayer, editPlayer, retrievePlayers } from '../Api/player'
 import { formatThunkError, playerInitialState } from '../Utils/store'
 
-interface RetrievePlayerListProps {
+interface Token {
   token: string
 }
 
+type RetrievePlayerListProps = Token
+
 export const retrievePlayerList = createAsyncThunk(
-  'tagList',
+  'retrievePlayerList',
   async ({ token }: RetrievePlayerListProps, thunkApi) => {
     try {
       const response = await retrievePlayers(token)
@@ -22,11 +24,72 @@ export const retrievePlayerList = createAsyncThunk(
   }
 )
 
+type CreateAPlayerProps = Token & {
+  name: string
+}
+
+export const createAPlayer = createAsyncThunk(
+  'createAPlayer',
+  async ({ token, name }: CreateAPlayerProps, thunkApi) => {
+    try {
+      const response = await createPlayer(token, name)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'createAPlayer error'
+      )
+    }
+  }
+)
+
+type EditAPlayerProps = Token & {
+  name: string
+  id: string
+}
+
+export const editAPlayer = createAsyncThunk(
+  'editAPlayer',
+  async ({ token, id, name }: EditAPlayerProps, thunkApi) => {
+    try {
+      const response = await editPlayer(token, id, name)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'editAPlayer error'
+      )
+    }
+  }
+)
+
+type DeleteAPlayerProps = Token & {
+  id: string
+}
+
+export const deleteAPlayer = createAsyncThunk(
+  'deleteAPlayer',
+  async ({ token, id }: DeleteAPlayerProps, thunkApi) => {
+    try {
+      const response = await deletePlayer(token, id)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'deleteAPlayer error'
+      )
+    }
+  }
+)
+
 export const player = createSlice({
   name: 'player',
   initialState: playerInitialState,
   reducers: {
-    clearState: () => playerInitialState,
+    clearPlayerState: () => playerInitialState,
     clearErrorMessage: (state) => {
       state.errorMessage = ''
     },
@@ -48,11 +111,58 @@ export const player = createSlice({
       state.playerListStatus = 'success'
       state.playerList = data
     })
+    builder.addCase(createAPlayer.pending, (state) => {
+      state.playerListStatus = 'loading'
+    })
+    builder.addCase(createAPlayer.rejected, (state, action) => {
+      state.playerListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.playerList = playerInitialState.playerList
+    })
+    builder.addCase(createAPlayer.fulfilled, (state, action) => {
+      const { id, name } = action.payload
+      state.playerListStatus = 'success'
+      state.playerList = [...state.playerList, { id, name }]
+    })
+    builder.addCase(editAPlayer.pending, (state) => {
+      state.playerListStatus = 'loading'
+    })
+    builder.addCase(editAPlayer.rejected, (state, action) => {
+      state.playerListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.playerList = playerInitialState.playerList
+    })
+    builder.addCase(editAPlayer.fulfilled, (state, action) => {
+      const { id, name } = action.payload
+      state.playerListStatus = 'success'
+      const playerList = [...state.playerList]
+      const updatedPlayerList = playerList
+        .map(player =>
+          player.id === id
+            ? { ...player, name }
+            : { ...player }
+        )
+      updatedPlayerList.sort((a, b) => a.id - b.id)
+      state.playerList = [...updatedPlayerList]
+    })
+    builder.addCase(deleteAPlayer.pending, (state) => {
+      state.playerListStatus = 'loading'
+    })
+    builder.addCase(deleteAPlayer.rejected, (state, action) => {
+      state.playerListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.playerList = playerInitialState.playerList
+    })
+    builder.addCase(deleteAPlayer.fulfilled, (state, action) => {
+      const { id } = action.payload
+      state.playerListStatus = 'success'
+      state.playerList = [...state.playerList].filter(player => player.id !== id)
+    })
   }
 })
 
 export const {
-  clearState,
+  clearPlayerState,
   setErrorMessage,
   clearErrorMessage
 } = player.actions
