@@ -2,9 +2,9 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { mainColor, secondaryColor } from '../Utils/config'
+import { TestContainer } from '../Cypress/TestContainer'
 import store from '../Store'
-import Home from './Home'
-import { players } from '../Cypress/utils'
+import PlayerPage from './PlayerPage'
 import '../Translations'
 
 const theme = createTheme({
@@ -18,28 +18,32 @@ const theme = createTheme({
   }
 })
 
-describe('<Home />', () => {
+describe('<PlayerPage />', () => {
+  const blue = theme.palette.primary
+  const red = theme.palette.secondary
+
   beforeEach(() => {
     cy.viewport(1440, 900).wait(500)
     cy.mount(
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <Router>
-            <Home />
+            <TestContainer>
+              <PlayerPage
+                blue={blue}
+                red={red}
+                id={'1'}
+                changeTeam={() => { }}
+                goBackToPlayerPage={() => { }}
+                teamColor={'blue'}
+              />
+            </TestContainer>
           </Router>
         </ThemeProvider>
       </Provider>
     )
-    cy.intercept(
-      'GET',
-      '/api/player',
-      {
-        statusCode: 200,
-        body: players
-      }
-    )
   })
   it('renders', () => {
-    cy.get("[data-testid='home-component']").should('exist').and('be.visible')
+    cy.get("[data-testid='player-component']").should('exist').and('be.visible')
   })
 })

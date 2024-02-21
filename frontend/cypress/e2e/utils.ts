@@ -19,3 +19,13 @@ export const checkIfWeAreInLoginComponent = () => {
   cy.get('[data-testid="login-button"]').should("exist").and("be.visible");
   cy.get('[data-testid="home-component"]').should("not.exist", { timeout: 0 });
 };
+
+export const clickOnPlayersList = () => {
+  cy.get('[data-testid="left-menu"]').should("exist").and("be.visible");
+  cy.get('[data-testid="players-list-button"]').should("exist").and("be.visible").click().wait(200);
+};
+
+export const checkIfSeePlayersListIsDiplayed = () => {
+  cy.get('[data-testid="players-list"]').should("exist").and("be.visible");
+  cy.get('[data-testid="table-container"]').should("exist").and("be.visible");
+};
