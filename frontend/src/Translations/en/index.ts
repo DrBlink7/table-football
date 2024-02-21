@@ -24,17 +24,22 @@ const login = {
 const table = {
   select: 'Select'
 }
-const players = {
+const Player = {
   title: 'Players',
   id: 'Player ID',
-  name: 'Player Name'
+  name: 'Player Name',
+  type: 'Icon',
+  create: 'Create New Player',
+  edit: 'Edit Existing Player',
+  delete: 'Delete A Player',
+  browse: 'Browse A Player'
 }
 const en = {
   error,
   login,
   home,
   table,
-  players
+  Player
 }
 
 export default en

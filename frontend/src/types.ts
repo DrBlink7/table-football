@@ -22,7 +22,7 @@ interface AuthenticateDTO {
 
 interface Player {
   name: string
-  id: string
+  id: number
 }
 /**
  * Redux
@@ -48,7 +48,7 @@ interface PlayerStore {
 interface User {
   email: string
 }
-type HomeComponent = 'stats' | 'matches' | 'players' | 'info' | 'home'
+type HomeComponent = 'stats' | 'matches' | 'players' | 'info' | 'home' | 'team'
 /**
  * Utils
  */
