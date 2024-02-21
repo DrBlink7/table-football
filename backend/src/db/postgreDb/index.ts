@@ -1,7 +1,7 @@
 import { DbPort, DbHost, DbName, DbPass, DbUser } from "../../config";
 import { Connector } from "..";
 import { Pool } from "pg";
-import { getPlayers } from "./player";
+import { createPlayer, deletePlayer, editPlayer, getPlayers } from "./player";
 
 export const dbConfig = new Pool({
   host: DbHost,
@@ -12,5 +12,8 @@ export const dbConfig = new Pool({
 });
 
 export const dbConnectorPostgreDb: Connector = {
-  getPlayers: getPlayers
+  createPlayer: createPlayer,
+  getPlayers: getPlayers,
+  editPlayer: editPlayer,
+  deletePlayer: deletePlayer
 }
