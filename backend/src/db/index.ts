@@ -1,6 +1,6 @@
 import { DbType } from "../config";
 import { dbConnectorPostgreDb } from "./postgreDb";
-import { Player } from "./types";
+import { GetPlayersDTO, EditPlayerDTO, DeletePlayerDTO, CreatePlayerDTO } from "../api/routers/types";
 
 export const dbFactory = (dbType: DbType): Connector => {
   if (dbType === "postgres") return dbConnectorPostgreDb;
@@ -9,5 +9,8 @@ export const dbFactory = (dbType: DbType): Connector => {
 };
 
 export type Connector = {
-  getPlayers: () => Promise<Player[]>
+  getPlayers: () => Promise<GetPlayersDTO>
+  createPlayer: (name: string) => Promise<CreatePlayerDTO>
+  editPlayer: (id: string, name: string) => Promise<EditPlayerDTO>
+  deletePlayer: (id: string) => Promise<DeletePlayerDTO>
 };

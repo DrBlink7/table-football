@@ -21,6 +21,27 @@ import { load } from 'cheerio'
  *           type: string
  *         code:
  *           type: string
+ *     CreatePlayerError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     EditPlayerError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     DeletePlayerError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
  */
 
 export const formatError = (
