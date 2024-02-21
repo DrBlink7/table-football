@@ -54,6 +54,15 @@ const deletePlayer = {
   title: 'Player Delete',
   dialogText: 'Are you sure you want to delete this Player? Player id: '
 }
+const player = {
+  title: 'Player Page',
+  back: 'Go Back to Player Page',
+  id: 'Player Id',
+  name: 'Player Name',
+  cheerblue: 'Hey, but I usually play BLUE!',
+  cheerred: 'Hey, but I usually play RED!'
+}
+
 const en = {
   loader,
   error,
@@ -63,7 +72,8 @@ const en = {
   Player,
   confirmationDialog,
   editModal,
-  deletePlayer
+  deletePlayer,
+  player
 }
 
 export default en

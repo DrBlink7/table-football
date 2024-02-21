@@ -52,6 +52,7 @@ type Status = 'success' | 'idle' | 'error' | 'loading'
 interface State {
   userInfo: UserStore
   playerInfo: PlayerStore
+  utilInfo: UtilStore
 }
 interface UserStore {
   user: User
@@ -64,6 +65,9 @@ interface PlayerStore {
   playerList: Players
   playerListStatus: Status
   errorMessage: string
+}
+interface UtilStore {
+  component: HomeComponent
 }
 interface User {
   email: string
@@ -90,3 +94,4 @@ interface Column {
   sortable: boolean
 }
 type TableType = 'Player'
+type TeamColor = 'red' | 'blue'
