@@ -2,23 +2,15 @@ import { useCallback, type FC, useState, useEffect } from 'react'
 import {
   Stack,
   Box,
-  CssBaseline,
-  List,
-  ListItemButton,
-  ListItemText,
-  ListItemIcon,
-  lighten,
   useTheme,
-  Paper,
   Typography,
   Button
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../Utils/store'
-import { clearUserState, logout, selectToken } from '../Store/users'
+import { selectToken } from '../Store/users'
 import {
   clearErrorMessage,
-  clearPlayerState,
   createAPlayer,
   deleteAPlayer,
   editAPlayer,
@@ -28,50 +20,20 @@ import {
   selectPlayerListStatus,
   setErrorMessage
 } from '../Store/player'
-import { formatDataForTable, getHomeButtonStyle, getLeftMenuButtonStyle } from '../Utils/f'
+import { formatDataForTable, getHomeButtonStyle } from '../Utils/f'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import { selectComponent, setComponent } from '../Store/util'
-import InfoIcon from '@mui/icons-material/Info'
-import PersonIcon from '@mui/icons-material/Person'
-import GroupIcon from '@mui/icons-material/Group'
-import SportsSoccerIcon from '@mui/icons-material/SportsSoccer'
-import QueryStatsIcon from '@mui/icons-material/QueryStats'
-import LogoutIcon from '@mui/icons-material/Logout'
-import LanguageSelector from './LanguageSelector'
+import { selectComponent } from '../Store/util'
 import CustomTable from './CustomTable'
 import CustomModal from './CustomModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
 import DefaultHomeLogo from '../Components/DefaultHomeLogo'
 import ConfirmationDialog from '../Components/ConfirmationDialog'
-import * as ls from '../Utils/ls'
 import * as Yup from 'yup'
 
-const Home: FC = () => <Stack
-  data-testid="home-component"
-  display='flex'
-  height='100vh'
-  width='100vw'
-  flexDirection='row'
->
-  <CssBaseline />
-  <Box
-    display='flex'
-    flexDirection='row'
-    alignItems='center'
-    alignSelf='center'
-    justifyContent='center'
-    width='100%'
-    height='100%'
-  >
-    <LeftMenu />
-    <Component />
-  </Box>
-</Stack>
-
-const Component: FC = () => {
+const MainPage: FC = () => {
   const { t } = useTranslation()
   const theme = useTheme()
   const dispatch = useAppDispatch()
@@ -330,112 +292,4 @@ const Component: FC = () => {
   }
 }
 
-const LeftMenu: FC = () => {
-  const dispatch = useAppDispatch()
-  const theme = useTheme()
-  const { t } = useTranslation()
-
-  const component = useAppSelector(selectComponent)
-
-  const changeComponent = useCallback((c: HomeComponent) => {
-    dispatch(setComponent(c))
-  }, [dispatch])
-
-  const logOut = useCallback(() => {
-    dispatch(clearUserState())
-    dispatch(clearPlayerState())
-    dispatch(logout())
-    ls.del('tableFootball')
-  }, [dispatch])
-
-  return <Stack display="flex" width="20%" height="100%" minWidth='180px' component={Paper}>
-    <Box display='flex'>
-      <LanguageSelector />
-    </Box>
-    <List
-      sx={{
-        padding: 0,
-        display: 'flex',
-        height: '100%',
-        flexDirection: 'column',
-        marginTop: '1vh',
-        justifyContent: 'space-between'
-      }}
-    >
-      <Box display='flex' flexDirection='column' height='90%'>
-        <ListItemButton
-          key='info'
-          onClick={() => { changeComponent('info') }}
-          sx={getLeftMenuButtonStyle(component, theme, 'info')}
-        >
-          <ListItemIcon>
-            <InfoIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('home.info')} sx={{ display: 'flex' }} />
-        </ListItemButton>
-        <ListItemButton
-          key='players'
-          onClick={() => { changeComponent('players') }}
-          sx={getLeftMenuButtonStyle(component, theme, 'players')}
-        >
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('home.players')} sx={{ display: 'flex' }} />
-        </ListItemButton>
-        <ListItemButton
-          key='team'
-          onClick={() => { changeComponent('team') }}
-          sx={getLeftMenuButtonStyle(component, theme, 'team')}
-        >
-          <ListItemIcon>
-            <GroupIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('home.team')} sx={{ display: 'flex' }} />
-        </ListItemButton>
-        <ListItemButton
-          key='matches'
-          onClick={() => { changeComponent('matches') }}
-          sx={getLeftMenuButtonStyle(component, theme, 'matches')}
-        >
-          <ListItemIcon>
-            <SportsSoccerIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('home.matches')} sx={{ display: 'flex' }} />
-        </ListItemButton>
-        <ListItemButton
-          key='stats'
-          onClick={() => { changeComponent('stats') }}
-          sx={getLeftMenuButtonStyle(component, theme, 'stats')}
-        >
-          <ListItemIcon>
-            <QueryStatsIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('home.stats')} sx={{ display: 'flex' }} />
-        </ListItemButton>
-      </Box>
-      <Box display='flex' flexDirection='column' height='10%'>
-        <ListItemButton
-          key='logout'
-          data-testid="logout-button"
-          onClick={logOut}
-          sx={{
-            display: 'flex',
-            maxHeight: '10vh',
-            '&:hover': {
-              backgroundColor: lighten(theme.palette.primary.light, 0.6),
-              color: theme.palette.text.primary
-            }
-          }}
-        >
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('home.logout')} sx={{ display: 'flex' }} />
-        </ListItemButton>
-      </Box>
-    </List>
-  </Stack>
-}
-
-export default Home
+export default MainPage
