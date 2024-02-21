@@ -39,8 +39,7 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
   }, [])
 
   const handleRequestSort = useCallback((property: string) => {
-    const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
+    setOrder((orderBy === property && order === 'asc') ? 'desc' : 'asc')
     setOrderBy(property)
   }, [order, orderBy])
 
@@ -53,13 +52,10 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
     setOrder('asc')
   }, [rows])
 
-  const sortedRows = [...rows].sort((a, b) => {
-    if (order === 'asc') {
-      return a[orderBy] > b[orderBy] ? 1 : -1
-    } else {
-      return a[orderBy] < b[orderBy] ? 1 : -1
-    }
-  })
+  const sortedRows = [...rows].sort((a, b) =>
+    order === 'asc'
+      ? a[orderBy] > b[orderBy] ? 1 : -1
+      : a[orderBy] < b[orderBy] ? 1 : -1)
 
   return <Box display='flex' width='100%' flexDirection='column' height='83%'>
     <Paper sx={{ width: '100%', overflow: 'hidden', height: '92%' }}>

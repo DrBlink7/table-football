@@ -19,11 +19,11 @@ interface AuthenticateDTO {
   token: string
   email: string
 }
-
-interface Player {
+interface GetPlayerDTO {
   name: string
   id: number
 }
+type GetPlayersDTO = GetPlayerDTO[]
 /**
  * Redux
  */
@@ -41,7 +41,7 @@ interface UserStore {
   errorMessage: string
 }
 interface PlayerStore {
-  playerList: Player[]
+  playerList: Players
   playerListStatus: Status
   errorMessage: string
 }
@@ -49,6 +49,11 @@ interface User {
   email: string
 }
 type HomeComponent = 'stats' | 'matches' | 'players' | 'info' | 'home' | 'team'
+interface Player {
+  name: string
+  id: number
+}
+type Players = Player[]
 /**
  * Utils
  */

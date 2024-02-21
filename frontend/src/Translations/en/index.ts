@@ -1,5 +1,8 @@
 /* eslint-disable max-len */
-
+const loader = {
+  title: 'Table Football',
+  text: '...Loading'
+}
 const error = {
   title: 'Error :(',
   body: 'Oops, something went wrong!',
@@ -35,6 +38,7 @@ const Player = {
   browse: 'Browse A Player'
 }
 const en = {
+  loader,
   error,
   login,
   home,
