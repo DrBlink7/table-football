@@ -1,28 +1,28 @@
 import { type FC } from 'react'
-import { Controller } from 'react-hook-form'
-import { Modal, Box, Typography, TextField, Button } from '@mui/material'
+import { Controller, type Control, type FieldError, type UseFormHandleSubmit, type SubmitHandler } from 'react-hook-form'
+import { Modal, Box, Typography, TextField, Button, capitalize } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-interface EditModalProps {
-  open: any
-  defaultValue: any
-  onClose: any
-  handleSubmit: any
-  onSubmit: any
-  control: any
-  errors: any
-  editText: any
-  title: any
+interface CustomModalProps {
+  open: boolean
+  onClose: () => void
+  handleSubmit: UseFormHandleSubmit<any>
+  onSubmit: SubmitHandler<any>
+  control: Control<any>
+  errors: FieldError | undefined
+  name: string
+  editText?: string
+  title?: string
 }
 
-const EditModal: FC<EditModalProps> = ({
+const CustomModal: FC<CustomModalProps> = ({
   open,
-  defaultValue,
   onClose,
   handleSubmit,
   onSubmit,
   control,
   errors,
+  name,
   editText,
   title
 }) => {
@@ -50,21 +50,20 @@ const EditModal: FC<EditModalProps> = ({
           {title ?? t('editModal.title')}
         </Typography>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} id={name}>
           <Controller
-            name="message"
+            name={name}
             control={control}
-            defaultValue={defaultValue}
             render={({ field }) => (
               <>
                 <TextField
                   {...field}
-                  label="Message"
+                  label={capitalize(name)}
                   variant="outlined"
                   margin="normal"
                   fullWidth
                   error={Boolean(errors)}
-                  helperText={errors.message ?? ''}
+                  helperText={errors?.message ?? ''}
                 />
                 <Button
                   type="submit"
@@ -83,4 +82,4 @@ const EditModal: FC<EditModalProps> = ({
   )
 }
 
-export default EditModal
+export default CustomModal

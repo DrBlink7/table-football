@@ -15,7 +15,7 @@ import {
 import { useTranslation } from 'react-i18next'
 
 interface CustomTableProps {
-  columns: any[]
+  columns: Column[]
   rows: any[]
   selectedRow: number | null
   handleRowSelect: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -63,13 +63,19 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
               </TableCell>
               {columns.map((column, index) => (
                 <TableCell key={index}>
-                  <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={orderBy === column.id ? order : 'asc'}
-                    onClick={() => { handleRequestSort(column.id) }}
-                  >
-                    {column.label}
-                  </TableSortLabel>
+                  {column.sortable
+                    ? (
+                      <TableSortLabel
+                        active={orderBy === column.id}
+                        direction={orderBy === column.id ? order : 'asc'}
+                        onClick={() => { handleRequestSort(column.id) }}
+                      >
+                        {column.label}
+                      </TableSortLabel>
+                    )
+                    : (
+                      column.label
+                    )}
                 </TableCell>
               ))}
             </TableRow>

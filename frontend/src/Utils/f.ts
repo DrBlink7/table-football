@@ -34,9 +34,10 @@ export const formatDataForTable = (data: any[], t: TFunction<'translation', unde
       .keys(data[0] ?? [])
       .map(key => ({
         id: key,
-        label: t(`${table}.${key}`)
+        label: t(`${table}.${key}`),
+        sortable: true
       }))
-  columns.unshift({ id: 'type', label: t(`${table}.type`) })
+  columns.unshift({ id: 'type', label: t(`${table}.type`), sortable: false })
 
   const rows = data.map(row => ({
     ...row,
@@ -88,3 +89,11 @@ export const getLeftMenuButtonStyle = (component: HomeComponent, theme: Theme, t
     color: theme.palette.text.primary
   }
 })
+
+const capitalize = (s: string): string =>
+  (s[0].toUpperCase() + s.slice(1))
+
+export const capitalizeAll = (s: string): string => s
+  .split(' ')
+  .map((str) => capitalize(str))
+  .join(' ')
