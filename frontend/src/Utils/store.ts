@@ -12,6 +12,7 @@ export const loadState = (): State => {
       return {
         userInfo: userInitialState,
         playerInfo: playerInitialState,
+        teamInfo: teamInitialState,
         utilInfo: utilsInitialState
       }
     }
@@ -23,6 +24,7 @@ export const loadState = (): State => {
     return {
       userInfo: userInitialState,
       playerInfo: playerInitialState,
+      teamInfo: teamInitialState,
       utilInfo: utilsInitialState
     }
   }
@@ -52,6 +54,12 @@ export const userInitialState: UserStore = {
 export const playerInitialState: PlayerStore = {
   playerList: [],
   playerListStatus: 'idle',
+  errorMessage: ''
+}
+
+export const teamInitialState: TeamStore = {
+  teamList: [],
+  teamListStatus: 'idle',
   errorMessage: ''
 }
 

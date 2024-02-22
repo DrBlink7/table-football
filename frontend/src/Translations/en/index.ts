@@ -62,6 +62,26 @@ const player = {
   cheerblue: 'Hey, but I usually play BLUE!',
   cheerred: 'Hey, but I usually play RED!'
 }
+const Team = {
+  title: 'Teams',
+  id: 'Team ID',
+  name: 'Team Name',
+  defenderRequired: 'Defender is required to form a Team',
+  strikerRequired: 'Striker is required to form a Team',
+  sameOption: 'Striker and defender must be different',
+  type: 'Icon',
+  create: 'Create New Team',
+  createButton: 'Create',
+  edit: 'Edit Existing Team',
+  editButton: 'Edit',
+  delete: 'Delete A Team',
+  browse: 'Browse A Team',
+  validationError: 'Do not insert any unsafe value'
+}
+const deleteTeam = {
+  title: 'Team Delete',
+  dialogText: 'Are you sure you want to delete this Team? Team id: '
+}
 
 const en = {
   loader,
@@ -73,7 +93,9 @@ const en = {
   confirmationDialog,
   editModal,
   deletePlayer,
-  player
+  player,
+  Team,
+  deleteTeam
 }
 
 export default en

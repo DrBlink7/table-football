@@ -29,20 +29,38 @@ export const createApiHeaders = (token: string): Headers => ({
 })
 
 export const formatDataForTable = (data: any[], t: TFunction<'translation', undefined>, table: TableType): FormatDataForTableProps => {
-  const columns =
-    Object
-      .keys(data[0] ?? [])
-      .map(key => ({
-        id: key,
-        label: t(`${table}.${key}`),
-        sortable: true
-      }))
+  const columns = Object
+    .keys(data[0] ?? [])
+    .flatMap((key) => {
+      if (key === 'defender') {
+        return [
+          { id: 'defender_name', label: t(`${table}.defender_name`), sortable: true },
+          { id: 'defender_id', label: t(`${table}.defender_id`), sortable: true }
+        ]
+      } else if (key === 'striker') {
+        return [
+          { id: 'striker_name', label: t(`${table}.striker_name`), sortable: true },
+          { id: 'striker_id', label: t(`${table}.striker_id`), sortable: true }
+        ]
+      } else {
+        return { id: key.toString(), label: t(`${table}.${key}`), sortable: true }
+      }
+    })
   columns.unshift({ id: 'type', label: t(`${table}.type`), sortable: false })
 
-  const rows = data.map(row => ({
-    ...row,
-    type: table
-  }))
+  const rows = data.map(row => {
+    const newRow = { ...row, type: table }
+    if (Boolean(row.defender)) {
+      newRow.defender_id = row.defender.id
+      newRow.defender_name = row.defender.name
+    }
+    if (Boolean(row.striker)) {
+      newRow.striker_id = row.striker.id
+      newRow.striker_name = row.striker.name
+    }
+
+    return newRow
+  })
 
   return {
     columns,

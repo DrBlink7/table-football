@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppSelector } from '../Utils/store'
 import { selectComponent } from '../Store/util'
 import Players from './Players'
+import Teams from './Teams'
 import DefaultHomeLogo from '../Components/DefaultHomeLogo'
 
 const MainPage: FC = () => {
@@ -13,16 +14,7 @@ const MainPage: FC = () => {
 
   switch (component) {
     case 'team':
-      return <Stack
-        display='flex'
-        width='80%'
-        height='100%'
-        alignItems='center'
-        alignSelf='center'
-        justifyContent='center'
-        color={theme.palette.primary.contrastText}
-        bgcolor={theme.palette.primary.main}
-      >{t('home.team')}</Stack>
+      return <Teams />
     case 'info':
       return <Stack
         display='flex'

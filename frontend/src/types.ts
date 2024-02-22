@@ -10,6 +10,11 @@ interface LoginInputs {
 interface PlayerInputs {
   player?: string
 }
+interface TeamInputs {
+  striker: string
+  defender: string
+}
+
 /**
  * API
 */
@@ -44,6 +49,33 @@ interface EditPlayerDTO {
 interface DeletePlayerDTO {
   id: number
 }
+interface GetTeamDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  id: number
+}
+type GetTeamsDTO = GetTeamDTO[]
+interface CreateTeamBODY {
+  striker: number
+  defender: number
+}
+interface CreateTeamDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  id: number
+}
+interface EditTeamBODY {
+  striker?: number
+  defender?: number
+}
+interface EditTeamDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  id: number
+}
+interface DeleteTeamDTO {
+  id: number
+}
 /**
  * Redux
  */
@@ -53,6 +85,7 @@ interface State {
   userInfo: UserStore
   playerInfo: PlayerStore
   utilInfo: UtilStore
+  teamInfo: TeamStore
 }
 interface UserStore {
   user: User
@@ -69,6 +102,11 @@ interface PlayerStore {
 interface UtilStore {
   component: HomeComponent
 }
+interface TeamStore {
+  teamList: Teams
+  teamListStatus: Status
+  errorMessage: string
+}
 interface User {
   email: string
 }
@@ -78,6 +116,12 @@ interface Player {
   id: number
 }
 type Players = Player[]
+interface Team {
+  striker: Player
+  defender: Player
+  id: number
+}
+type Teams = Team[]
 /**
  * Utils
  */
@@ -93,5 +137,8 @@ interface Column {
   label: string
   sortable: boolean
 }
-type TableType = 'Player'
+type TableType = 'Player' | 'Team'
 type TeamColor = 'red' | 'blue'
+interface Token {
+  token: string
+}

@@ -6,8 +6,9 @@ import { useAppSelector } from '../Utils/store'
 import { mainColor, secondaryColor } from '../Utils/config'
 import ErrorBoundary from './Error'
 import Login from './Login'
-import Home from '../Components/Home'
 import Player from './Player'
+import Team from './Team'
+import Home from '../Components/Home'
 
 const theme = createTheme({
   palette: {
@@ -40,6 +41,10 @@ const Router: FC = () => {
           <Route
             path="/player/:id"
             element={isUserLoggedIn ? <Player /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/team/:id"
+            element={isUserLoggedIn ? <Team /> : <Navigate to="/login" />}
           />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
