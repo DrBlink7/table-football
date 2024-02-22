@@ -18,6 +18,7 @@ import { formatDataForTable, getHomeButtonStyle } from '../Utils/f'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import { setComponent } from '../Store/util'
 import CustomTable from './CustomTable'
 import CustomTextModal from './CustomTextModal'
 import Loader from '../Components/Loader'
@@ -68,6 +69,7 @@ const Players: FC = () => {
   }, [playerList, setValue])
 
   const clearError = useCallback(() => {
+    dispatch(setComponent('home'))
     dispatch(clearErrorMessage())
   }, [dispatch])
 
