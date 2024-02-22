@@ -18,6 +18,7 @@ import {
 } from '../Store/team'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { setComponent } from '../Store/util'
 import CustomTable from './CustomTable'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
@@ -89,6 +90,7 @@ const Teams: FC = () => {
   }, [setValue, teamList])
 
   const clearError = useCallback(() => {
+    dispatch(setComponent('home'))
     dispatch(clearTeamState())
   }, [dispatch])
 
