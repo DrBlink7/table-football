@@ -1,9 +1,8 @@
 import { tablePlayers } from "../../config"
 import { dbConfig } from "."
+import { formatCreatedPlayerRow, formatDeletedPlayerRow, formatEditedPlayerRow, formatTagList } from "./utils"
 import { DBPlayersTable } from "./types"
-import { formatCreatedRow, formatTagList } from "./utils"
-import { formatEditedRow } from "./utils"
-import { formatDeletedRow } from "./utils"
+
 
 export const getPlayers = async () => {
   const client = await dbConfig.connect()
@@ -33,7 +32,7 @@ export const createPlayer = async (name: string) => {
 
   if (!results.rowCount || results.rowCount === 0) throw new Error('Insert failed, no rows created.')
 
-  return formatCreatedRow(results.rows, name)
+  return formatCreatedPlayerRow(results.rows, name)
 }
 
 export const editPlayer = async (id: string, name: string) => {
@@ -53,7 +52,7 @@ export const editPlayer = async (id: string, name: string) => {
 
   if (!results.rowCount || results.rowCount === 0) throw new Error('Edit failed, no rows edited.')
 
-  return formatEditedRow(results.rows, name)
+  return formatEditedPlayerRow(results.rows, name)
 }
 
 export const deletePlayer = async (id: string) => {
@@ -74,5 +73,21 @@ export const deletePlayer = async (id: string) => {
 
   if (!results.rowCount || results.rowCount === 0) throw new Error('Delete failed, no rows deleted.')
 
-  return formatDeletedRow(results.rows)
+  return formatDeletedPlayerRow(results.rows)
+}
+
+export const getPlayerInfo = async (id: number) => {
+  const client = await dbConfig.connect()
+  const query = `
+    SELECT name FROM ${tablePlayers}
+    WHERE id = $1;
+  `
+  const values = [id]
+
+  const result = await client.query<{ name: string }>(query, values)
+  client.release()
+
+  if (!result.rows || result.rows.length === 0) throw new Error(`Player with ID ${id} not found.`)
+
+  return result.rows[0]
 }
