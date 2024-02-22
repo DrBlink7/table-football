@@ -3,11 +3,11 @@ import { Controller, type Control, type FieldError, type UseFormHandleSubmit, ty
 import { Modal, Box, Typography, TextField, Button, capitalize } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-interface CustomModalProps {
-  open: boolean
+interface CustomTextModalProps {
   onClose: () => void
   handleSubmit: UseFormHandleSubmit<any>
   onSubmit: SubmitHandler<any>
+  open: boolean
   control: Control<any>
   errors: FieldError | undefined
   name: string
@@ -15,7 +15,7 @@ interface CustomModalProps {
   title?: string
 }
 
-const CustomModal: FC<CustomModalProps> = ({
+const CustomTextModal: FC<CustomTextModalProps> = ({
   open,
   onClose,
   handleSubmit,
@@ -82,4 +82,4 @@ const CustomModal: FC<CustomModalProps> = ({
   )
 }
 
-export default CustomModal
+export default CustomTextModal

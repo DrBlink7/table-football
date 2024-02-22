@@ -1,4 +1,4 @@
-import { useCallback, type FC, useState, useEffect } from 'react'
+import { useCallback, type FC, useState, useEffect, type ChangeEvent } from 'react'
 import { Stack, Box, useTheme, Typography, Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from '../Utils/store'
@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import CustomTable from './CustomTable'
-import CustomModal from './CustomModal'
+import CustomTextModal from './CustomTextModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
 import ConfirmationDialog from '../Components/ConfirmationDialog'
@@ -60,7 +60,7 @@ const Players: FC = () => {
     defaultValues: { player: '' }
   })
 
-  const handleRowSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRowSelect = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
     if (!Boolean(value) || isNaN(Number(value))) return
     setSelectedRow(Number(value))
@@ -109,6 +109,7 @@ const Players: FC = () => {
     try {
       await dispatch(deleteAPlayer({ token, id: String(selectedRow) }))
       setDeletePlayer(false)
+      setSelectedRow(null)
     } catch (e) {
       dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
     }
@@ -117,7 +118,7 @@ const Players: FC = () => {
   const onSubmitCreate: SubmitHandler<PlayerInputs> = useCallback(async (data) => {
     try {
       const name = data.player
-      if (name === undefined) return
+      if (name === undefined) throw new Error('validation error')
 
       await dispatch(createAPlayer({ token, name }))
       setCreatePlayer(false)
@@ -131,7 +132,7 @@ const Players: FC = () => {
   const onSubmitEdit: SubmitHandler<PlayerInputs> = useCallback(async (data) => {
     try {
       const name = data.player
-      if (name === undefined || !Boolean(selectedRow)) return
+      if (name === undefined || !Boolean(selectedRow)) throw new Error('Validation Error')
 
       await dispatch(editAPlayer({ token, name, id: String(selectedRow) }))
       setEditPlayer(false)
@@ -199,8 +200,9 @@ const Players: FC = () => {
         undo={closeDeletePlayer}
         open={deletePlayer}
         title={t('deletePlayer.title')}
-        dialogText={`${t('deletePlayer.dialogText')}'${selectedRow}'`} />
-      <CustomModal
+        dialogText={`${t('deletePlayer.dialogText')}'${selectedRow}'`}
+      />
+      <CustomTextModal
         onClose={closeCreatePlayer}
         handleSubmit={handleSubmitCreate}
         onSubmit={onSubmitCreate}
@@ -209,8 +211,9 @@ const Players: FC = () => {
         errors={errorsCreate?.player}
         title={t('Player.create')}
         editText={t('Player.createButton')}
-        name="player" />
-      <CustomModal
+        name="player"
+      />
+      <CustomTextModal
         onClose={closeEditPlayer}
         handleSubmit={handleSubmitEdit}
         onSubmit={onSubmitEdit}
@@ -219,7 +222,8 @@ const Players: FC = () => {
         errors={errorsEdit?.player}
         title={t('Player.edit')}
         editText={t('Player.editButton')}
-        name="player" />
+        name="player"
+      />
     </Box>
   </Stack>
 }
