@@ -42,6 +42,34 @@ import { load } from 'cheerio'
  *           type: string
  *         code:
  *           type: string
+ *     GetTeamsError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     CreateTeamError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     EditTeamError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     DeleteTeamError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
  */
 
 export const formatError = (

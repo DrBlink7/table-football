@@ -23,3 +23,4 @@ export const EnvironmentName = (process.env.ENVIRONMENT_NAME as EnvType)
 export const Version = require("../package.json").version;
 export const RepositoryType = (process.env.REPOSITORY_TYPE as DbType)
 export const tablePlayers = "players"
+export const tableTeams = "teams"
