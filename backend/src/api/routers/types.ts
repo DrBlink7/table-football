@@ -125,8 +125,8 @@ export type CreateTeamDTO = {
   id: number
 }
 export type EditTeamBODY = {
-  striker?: number
-  defender?: number
+  striker: number
+  defender: number
 }
 export interface EditTeamDTO {
   striker: { id: number, name: string }

@@ -50,31 +50,25 @@ export const createTeam = async (striker: number, defender: number) => {
   } satisfies CreateTeamDTO
 }
 
-export const editTeam = async (id: string, striker?: number, defender?: number) => {
+export const editTeam = async (id: string, striker: number, defender: number) => {
   const numeric_id = Number(id)
   if (isNaN(numeric_id)) throw new Error('Edit failed, id not valid.')
 
   const client = await dbConfig.connect()
-  let query = `
+  const query = `
     UPDATE ${tableTeams}
-    SET `
-  const values: any[] = [numeric_id]
+    SET striker = $2, defender = $3
+    WHERE id = $1
+    RETURNING id, striker, defender
+  `
 
-  if (striker !== undefined) {
-    query += `striker = $2`
-    values.push(striker)
-  }
-  if (defender !== undefined) {
-    query += `${striker !== undefined ? ',' : ''} defender = ${striker !== undefined ? '$3' : '$2'}`
-    values.push(defender)
-  }
-
-  query += ` WHERE id = $1 RETURNING id, striker, defender`
+  const values = [numeric_id, striker, defender]
 
   const results = await client.query<DBTeamsPlayerTable>(query, values)
   client.release()
 
   if (!results.rowCount || results.rowCount === 0) throw new Error('Edit failed, no rows edited.')
+
   const updatedStriker = results.rows[0].striker
   const updatedDefender = results.rows[0].defender
   const strikerInfo = await getPlayerInfo(updatedStriker)
@@ -84,9 +78,8 @@ export const editTeam = async (id: string, striker?: number, defender?: number) 
     striker: { id: updatedStriker, name: strikerInfo.name },
     defender: { id: updatedDefender, name: defenderInfo.name },
     id: results.rows[0].id
-  } satisfies EditTeamDTO
+  } as EditTeamDTO
 }
-
 
 export const deleteTeam = async (id: string) => {
   const numeric_id = Number(id)

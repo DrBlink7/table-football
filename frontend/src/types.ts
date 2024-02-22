@@ -65,8 +65,8 @@ interface CreateTeamDTO {
   id: number
 }
 interface EditTeamBODY {
-  striker?: number
-  defender?: number
+  striker: number
+  defender: number
 }
 interface EditTeamDTO {
   striker: { id: number, name: string }

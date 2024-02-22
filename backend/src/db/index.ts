@@ -15,6 +15,6 @@ export type Connector = {
   deletePlayer: (id: string) => Promise<DeletePlayerDTO>
   getTeams: () => Promise<GetTeamsDTO>
   createTeam: (striker: number, defender: number) => Promise<CreateTeamDTO>
-  editTeam: (id: string, striker?: number, defender?: number) => Promise<EditTeamDTO>
+  editTeam: (id: string, striker: number, defender: number) => Promise<EditTeamDTO>
   deleteTeam: (id: string) => Promise<DeleteTeamDTO>
 };

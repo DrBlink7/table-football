@@ -169,11 +169,12 @@ teamRouter.put(
       const body: EditTeamBODY = req.body
       const { striker, defender } = body
 
-      if (missingInBody(striker) && missingInBody(defender)) throw new Error("striker and defender are missing in body")
+      if (missingInBody(striker)) throw new Error("striker is missing in body")
+      if (missingInBody(defender)) throw new Error("defender is missing in body")
 
       const editTeamTimestamp = performance.now()
       const db = dbFactory(RepositoryType)
-      const data = await db.editTeam(id, striker, defender)
+      const data = await db.editTeam(id, striker!, defender!)
       const editTime = Math.round(performance.now() - editTeamTimestamp)
       Logger.writeEvent(`Teams: edited team in ${editTime} ms`)
 
