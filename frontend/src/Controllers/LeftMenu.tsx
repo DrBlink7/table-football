@@ -16,6 +16,7 @@ import { clearUserState, logout } from '../Store/users'
 import { clearPlayerState } from '../Store/player'
 import { getLeftMenuButtonStyle } from '../Utils/f'
 import { clearUtilsState, selectComponent, setComponent } from '../Store/util'
+import { clearTeamState } from '../Store/team'
 import InfoIcon from '@mui/icons-material/Info'
 import PersonIcon from '@mui/icons-material/Person'
 import GroupIcon from '@mui/icons-material/Group'
@@ -40,6 +41,7 @@ const LeftMenu: FC = () => {
     dispatch(clearUserState())
     dispatch(clearPlayerState())
     dispatch(clearUtilsState())
+    dispatch(clearTeamState())
     dispatch(logout())
     ls.del('tableFootball')
   }, [dispatch])
