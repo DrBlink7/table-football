@@ -2,10 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { createPlayer, deletePlayer, editPlayer, retrievePlayers } from '../Api/player'
 import { formatThunkError, playerInitialState } from '../Utils/store'
 
-interface Token {
-  token: string
-}
-
 type RetrievePlayerListProps = Token
 
 export const retrievePlayerList = createAsyncThunk(
