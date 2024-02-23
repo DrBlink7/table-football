@@ -1,4 +1,4 @@
-import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO } from "../../api/routers/types";
+import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO, TeamInfo } from "../../api/routers/types";
 import { DBMatchesTeamsPlayerTable, DBPlayersTable, DBTeamsPlayerTable, DBTeamsTable } from "./types";
 
 export const formatTagList = (rows: DBPlayersTable[]): GetPlayersDTO =>
@@ -42,4 +42,8 @@ export const formatMatchList = (rows: DBMatchesTeamsPlayerTable[]): GetMatchesDT
     },
     id: row.match_id,
     status: row.status
-  }));
+  }))
+
+export const isAnInvalidMatch = (blueInfo: TeamInfo, redInfo: TeamInfo) =>
+  blueInfo.playerIds.some(blueId => redInfo.playerIds.some(redId => redId === blueId))
+
