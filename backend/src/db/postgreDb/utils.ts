@@ -1,5 +1,5 @@
-import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO } from "../../api/routers/types";
-import { DBPlayersTable, DBTeamsPlayerTable, DBTeamsTable } from "./types";
+import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO } from "../../api/routers/types";
+import { DBMatchesTeamsPlayerTable, DBPlayersTable, DBTeamsPlayerTable, DBTeamsTable } from "./types";
 
 export const formatTagList = (rows: DBPlayersTable[]): GetPlayersDTO =>
   rows.map(row => ({
@@ -24,4 +24,22 @@ export const formatTeamList = (rows: DBTeamsPlayerTable[]): GetTeamsDTO =>
   }))
 
 export const formatDeletedTeamRow = (rows: DBTeamsTable[]): DeleteTeamDTO =>
-  ({ id: rows[0].id })
+  ({ id: rows[0].id });
+
+export const formatMatchList = (rows: DBMatchesTeamsPlayerTable[]): GetMatchesDTO =>
+  rows.map(row => ({
+    blue: {
+      id: row.blue_team_id,
+      striker: row.blue_striker_name,
+      defender: row.blue_defender_name,
+      score: row.blue_score
+    },
+    red: {
+      id: row.red_team_id,
+      striker: row.red_striker_name,
+      defender: row.red_defender_name,
+      score: row.red_score
+    },
+    id: row.match_id,
+    status: row.status
+  }));

@@ -2,6 +2,7 @@ import { tablePlayers } from "../../config"
 import { dbConfig } from "."
 import { formatCreatedPlayerRow, formatDeletedPlayerRow, formatEditedPlayerRow, formatTagList } from "./utils"
 import { DBPlayersTable } from "./types"
+import { PlayerInfo } from "../../api/routers/types"
 
 
 export const getPlayers = async () => {
@@ -89,5 +90,5 @@ export const getPlayerInfo = async (id: number) => {
 
   if (!result.rows || result.rows.length === 0) throw new Error(`Player with ID ${id} not found.`)
 
-  return result.rows[0]
+  return result.rows[0] satisfies PlayerInfo
 }

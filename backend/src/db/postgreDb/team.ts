@@ -3,7 +3,7 @@ import { dbConfig } from "."
 import { formatDeletedTeamRow, formatTeamList } from "./utils"
 import { getPlayerInfo } from "./player"
 import { DBTeamsPlayerTable, DBTeamsTable } from "./types"
-import { CreateTeamDTO, EditTeamDTO } from "../../api/routers/types"
+import { CreateTeamDTO, EditTeamDTO, TeamInfo } from "../../api/routers/types"
 
 export const getTeams = async () => {
   const client = await dbConfig.connect()
@@ -100,4 +100,30 @@ export const deleteTeam = async (id: string) => {
   if (!results.rowCount || results.rowCount === 0) throw new Error('Delete failed, no rows deleted.')
 
   return formatDeletedTeamRow(results.rows)
+}
+
+export const getTeamInfo = async (id: number) => {
+  const client = await dbConfig.connect()
+  const query = `
+    SELECT teams.id, 
+           teams.striker, 
+           striker_players.name AS striker_name,
+           teams.defender,
+           defender_players.name AS defender_name
+    FROM ${tableTeams} AS teams
+    INNER JOIN ${tablePlayers} AS striker_players ON teams.striker = striker_players.id
+    INNER JOIN ${tablePlayers} AS defender_players ON teams.defender = defender_players.id
+    WHERE id = $1
+  `
+  const values = [id]
+  const results = await client.query<DBTeamsPlayerTable>(query, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) return []
+  const row = results.rows[0]
+
+  return ({
+    striker: row.striker_name,
+    defender: row.defender_name
+  }) satisfies TeamInfo
 }

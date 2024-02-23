@@ -70,6 +70,34 @@ import { load } from 'cheerio'
  *           type: string
  *         code:
  *           type: string
+ *     GetMatchesError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     CreateMatchesError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     EditMatchesError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     DeleteMatchesError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
  */
 
 export const formatError = (
