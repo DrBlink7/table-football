@@ -199,7 +199,7 @@ const Teams: FC = () => {
     height='100%'
     color={theme.palette.primary.contrastText}
     bgcolor={theme.palette.primary.main}
-    data-testid="team-list"
+    data-testid="teams-list"
   >
     <Box display='flex' width='98%' alignSelf='center' flexDirection='column' height='100%'>
       <Box display='flex' width='100%' alignItems='center' justifyContent='center' height='5%'>

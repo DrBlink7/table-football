@@ -83,6 +83,12 @@ const deleteTeam = {
   title: 'Team Delete',
   dialogText: 'Are you sure you want to delete this Team? Team id: '
 }
+const team = {
+  title: 'Team Page',
+  back: 'Go Back to Team Page',
+  id: 'Team Id',
+  name: 'Team Name'
+}
 
 const en = {
   loader,
@@ -96,7 +102,8 @@ const en = {
   deletePlayer,
   player,
   Team,
-  deleteTeam
+  deleteTeam,
+  team
 }
 
 export default en
