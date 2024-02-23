@@ -125,7 +125,7 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
                   </Select>
                 </FormControl>
                 {Boolean(firstError) && (
-                  <FormHelperText error>{(firstError?.message as unknown as string) ?? ''}</FormHelperText>
+                  <FormHelperText error>{firstError?.message ?? ''}</FormHelperText>
                 )}
               </>
             )}
@@ -148,7 +148,7 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
                     ))}
                   </Select>
                   {Boolean(secondError) && (
-                    <FormHelperText error>{(secondError?.message as unknown as string) ?? ''}</FormHelperText>
+                    <FormHelperText error>{secondError?.message ?? ''}</FormHelperText>
                   )}
                 </FormControl>
                 <Button
