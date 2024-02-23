@@ -1,9 +1,10 @@
 import { tablePlayers, tableTeams, tableMatches } from "../../config"
 import { dbConfig } from "."
 import { DBMatchesTable, DBMatchesTeamsPlayerTable } from "./types"
-import { CreateMatchDTO, EditMatchDTO } from "../../api/routers/types";
+import { CreateMatchDTO, DeleteMatchDTO, EditMatchDTO } from "../../api/routers/types";
 import { formatMatchList, isAnInvalidMatch } from "./utils";
 import { getTeamInfo } from "./team";
+import { formatDeletedMatch } from "./utils";
 
 export const getMatches = async () => {
   const client = await dbConfig.connect()
@@ -119,4 +120,25 @@ export const editMatch = async (id: string, blue: number, red: number): Promise<
     id: row.id,
     status: 'preparing'
   } satisfies EditMatchDTO
+}
+
+export const deleteMatch = async (id: string): Promise<DeleteMatchDTO> => {
+  const numeric_id = Number(id)
+
+  if (isNaN(numeric_id)) throw new Error('Delete failed, id not valid.')
+
+  const client = await dbConfig.connect()
+  const query = `
+    DELETE FROM ${tableMatches}
+    WHERE id = $1 AND status != 'ongoing'
+    RETURNING id
+  `
+  const values = [numeric_id]
+
+  const results = await client.query<DBMatchesTable>(query, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error('Delete failed, no rows deleted.')
+
+  return formatDeletedMatch(results.rows[0])
 }
