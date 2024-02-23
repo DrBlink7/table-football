@@ -162,6 +162,11 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *                - preparing
  *                - ongoing
  *                - ended
+ *      DeleteMatchDTO:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: number
  */
 export type GetPlayersDTO = {
   name: string
@@ -243,4 +248,7 @@ export type EditMatchDTO = {
   red: { id: number, striker: string, defender: string, score: number }
   id: number
   status: MatchStatus
+}
+export interface DeleteMatchDTO {
+  id: number
 }

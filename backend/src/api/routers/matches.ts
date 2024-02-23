@@ -190,3 +190,63 @@ matchesRouter.put(
     }
   })
 )
+
+/**
+ * @swagger
+ * /api/match/{id}:
+ *   delete:
+ *     summary: Elimina il Match.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: L'id del Match da cancellare.
+ *     responses:
+ *       200:
+ *         description: Restituisce l'id del match appena cancellato.
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/DeleteMatchDTO'
+ *       500:
+ *         description: Errore del server.
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/DeleteMatchError'
+ *     tags:
+ *       - Matches
+ *     security:
+ *       - Authorization: []
+ */
+matchesRouter.delete(
+  "/:id",
+  asyncErrWrapper(async (req, res) => {
+    try {
+      const token = req.headers["authorization"]
+      const { id } = req.params
+
+      if (!token) throw new Error("token is missing in headers")
+
+      decodeToken(token)
+
+      const deleteMatchTimestamp = performance.now()
+      const db = dbFactory(RepositoryType)
+      const data = await db.deleteMatch(id)
+      const deleteTime = Math.round(performance.now() - deleteMatchTimestamp)
+      Logger.writeEvent(`Matches: delete match in ${deleteTime} ms`)
+
+      return res.status(200).json(data)
+    } catch (e) {
+      const { status, error } = formatError(
+        e as Error,
+        "014-RESPONSE",
+        "matchesRouter match delete id"
+      )
+
+      return res.status(status).json(error)
+    }
+  })
+)

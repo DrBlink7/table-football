@@ -1,5 +1,5 @@
-import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO, TeamInfo } from "../../api/routers/types";
-import { DBMatchesTeamsPlayerTable, DBPlayersTable, DBTeamsPlayerTable, DBTeamsTable } from "./types";
+import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO, TeamInfo, DeleteMatchDTO } from "../../api/routers/types";
+import { DBMatchesTable, DBMatchesTeamsPlayerTable, DBPlayersTable, DBTeamsPlayerTable, DBTeamsTable } from "./types";
 
 export const formatTagList = (rows: DBPlayersTable[]): GetPlayersDTO =>
   rows.map(row => ({
@@ -47,3 +47,4 @@ export const formatMatchList = (rows: DBMatchesTeamsPlayerTable[]): GetMatchesDT
 export const isAnInvalidMatch = (blueInfo: TeamInfo, redInfo: TeamInfo) =>
   blueInfo.playerIds.some(blueId => redInfo.playerIds.some(redId => redId === blueId))
 
+export const formatDeletedMatch = (row: DBMatchesTable): DeleteMatchDTO => ({ id: row.id })
