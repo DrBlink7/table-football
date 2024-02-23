@@ -3,6 +3,7 @@ import { ServerPort } from "../config";
 import { loginRouter } from "./routers/login";
 import { playerRouter } from "./routers/player";
 import { teamRouter } from "./routers/team";
+import { matchesRouter } from "./routers/matches";
 
 export const apiRouter = express.Router();
 
@@ -30,3 +31,4 @@ apiRouter.get("/healthcheck", (_req: Request, res: Response) =>
 apiRouter.use("/login", loginRouter)
 apiRouter.use("/player", playerRouter)
 apiRouter.use("/team", teamRouter)
+apiRouter.use("/match", matchesRouter)

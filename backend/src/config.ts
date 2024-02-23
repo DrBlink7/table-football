@@ -24,3 +24,4 @@ export const Version = require("../package.json").version;
 export const RepositoryType = (process.env.REPOSITORY_TYPE as DbType)
 export const tablePlayers = "players"
 export const tableTeams = "teams"
+export const tableMatches = "matches"
