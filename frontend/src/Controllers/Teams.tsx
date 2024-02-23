@@ -82,7 +82,7 @@ const Teams: FC = () => {
     const value = event.target.value
     if (!Boolean(value) || isNaN(Number(value))) return
     setSelectedRow(Number(value))
-    const team = teamList.find(player => player.id === Number(value))
+    const team = teamList.find(t => t.id === Number(value))
     if (team === undefined) return
 
     setValue('defender', String(team.defender.id) ?? '')
