@@ -1,7 +1,7 @@
 import { tablePlayers, tableTeams, tableMatches } from "../../config"
 import { dbConfig } from "."
-import { DBMatchesTeamsPlayerTable } from "./types"
-import { CreateMatchDTO } from "../../api/routers/types";
+import { DBMatchesTable, DBMatchesTeamsPlayerTable } from "./types"
+import { CreateMatchDTO, EditMatchDTO } from "../../api/routers/types";
 import { formatMatchList, isAnInvalidMatch } from "./utils";
 import { getTeamInfo } from "./team";
 
@@ -53,7 +53,7 @@ export const createMatch = async (blue: number, red: number): Promise<CreateMatc
     RETURNING id;
   `
   const values = [blue, red]
-  const results = await client.query<{ id: number }>(query, values)
+  const results = await client.query<{ id: DBMatchesTable['id'] }>(query, values)
 
   client.release()
 
@@ -75,4 +75,48 @@ export const createMatch = async (blue: number, red: number): Promise<CreateMatc
     id: results.rows[0].id,
     status: 'preparing'
   } satisfies CreateMatchDTO
+}
+
+export const editMatch = async (id: string, blue: number, red: number): Promise<EditMatchDTO> => {
+  const numeric_id = Number(id)
+  if (isNaN(numeric_id)) throw new Error('Edit failed, id not valid.')
+
+  const client = await dbConfig.connect()
+  const blueInfo = await getTeamInfo(blue)
+  const redInfo = await getTeamInfo(red)
+
+  if (isAnInvalidMatch(blueInfo, redInfo)) throw new Error('blue, red teams provided are invalid')
+
+  const query = `
+    UPDATE ${tableMatches}
+    SET red = $2, blue = $3
+    WHERE id = $1 AND status = 'preparing'
+    RETURNING id, red, blue
+  `
+
+  const values = [numeric_id, red, blue]
+
+  const results = await client.query<DBMatchesTable>(query, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error('Edit failed, no rows edited (ex. cannot edit already started matches).')
+
+  const row = results.rows[0]
+
+  return {
+    blue: {
+      id: row.blue,
+      striker: blueInfo.striker,
+      defender: blueInfo.defender,
+      score: 0
+    },
+    red: {
+      id: row.red,
+      striker: redInfo.striker,
+      defender: redInfo.defender,
+      score: 0
+    },
+    id: row.id,
+    status: 'preparing'
+  } satisfies EditMatchDTO
 }
