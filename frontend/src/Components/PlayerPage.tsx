@@ -49,7 +49,8 @@ const PlayerPage: FC<PlayerPageProps> = ({ blue, red, id, teamColor, changeTeam,
           <Box display='flex' width='35%' flexDirection='column' justifyContent='space-between'>
             <ImageLayout
               style={{ height: '70%', bgcolor: 'transparent', backgroundPosition: 'top' }}
-              url={teamColor === 'blue' ? blueShirt : redShirt} />
+              url={teamColor === 'blue' ? blueShirt : redShirt}
+            />
             <Button
               variant="contained"
               sx={{
