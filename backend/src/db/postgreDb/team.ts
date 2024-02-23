@@ -78,7 +78,7 @@ export const editTeam = async (id: string, striker: number, defender: number) =>
     striker: { id: updatedStriker, name: strikerInfo.name },
     defender: { id: updatedDefender, name: defenderInfo.name },
     id: results.rows[0].id
-  } as EditTeamDTO
+  } satisfies EditTeamDTO
 }
 
 export const deleteTeam = async (id: string) => {

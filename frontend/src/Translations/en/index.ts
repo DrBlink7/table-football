@@ -11,7 +11,8 @@ const error = {
 }
 const home = {
   logout: 'Log Out',
-  players: 'Players'
+  players: 'Players',
+  team: 'Teams'
 }
 const login = {
   signin: 'Sign In',
@@ -68,7 +69,7 @@ const Team = {
   name: 'Team Name',
   defenderRequired: 'Defender is required to form a Team',
   strikerRequired: 'Striker is required to form a Team',
-  sameOption: 'Striker and defender must be different',
+  sameOption: 'Striker and defender must be different and selected',
   type: 'Icon',
   create: 'Create New Team',
   createButton: 'Create',

@@ -130,7 +130,7 @@ interface WithChildren {
 }
 interface FormatDataForTableProps {
   columns: Column[]
-  rows: unknown[]
+  rows: any[]
 }
 interface Column {
   id: string
