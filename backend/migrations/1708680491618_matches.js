@@ -18,14 +18,6 @@ exports.up = pgm => {
     check: 'blue <> red'
   })
 
-  pgm.addConstraint('matches', 'unique_team_combination', {
-    unique: ['blue', 'red'],
-    exclusion: {
-      using: 'gist',
-      with: 'int4range(blue, blue, \'[]\') && int4range(red, red, \'[]\')',
-      where: '(blue <> red)'
-    }
-  })
 }
 
 exports.down = pgm => {
