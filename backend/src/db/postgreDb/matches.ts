@@ -1,10 +1,12 @@
 import { tablePlayers, tableTeams, tableMatches } from "../../config"
 import { dbConfig } from "."
 import { DBMatchesTeamsPlayerTable } from "./types"
-import { formatMatchList } from "./utils";
+import { CreateMatchDTO } from "../../api/routers/types";
+import { formatMatchList, isAnInvalidMatch } from "./utils";
+import { getTeamInfo } from "./team";
 
 export const getMatches = async () => {
-  const client = await dbConfig.connect();
+  const client = await dbConfig.connect()
   const query = `
     SELECT 
       m.id AS match_id,
@@ -28,12 +30,49 @@ export const getMatches = async () => {
     LEFT JOIN ${tablePlayers} AS ptd ON bt.defender = ptd.id
     LEFT JOIN ${tablePlayers} AS ptr ON rt.striker = ptr.id
     LEFT JOIN ${tablePlayers} AS prd ON rt.defender = prd.id
-  `;
+  `
 
-  const results = await client.query<DBMatchesTeamsPlayerTable>(query);
-  client.release();
+  const results = await client.query<DBMatchesTeamsPlayerTable>(query)
+  client.release()
 
-  if (!results.rowCount || results.rowCount === 0) return [];
+  if (!results.rowCount || results.rowCount === 0) return []
 
-  return formatMatchList(results.rows);
+  return formatMatchList(results.rows)
+}
+
+export const createMatch = async (blue: number, red: number): Promise<CreateMatchDTO> => {
+  const client = await dbConfig.connect()
+  const blueInfo = await getTeamInfo(blue)
+  const redInfo = await getTeamInfo(red)
+
+  if (isAnInvalidMatch(blueInfo, redInfo)) throw new Error('blue, red teams provided are invalid')
+
+  const query = `
+    INSERT INTO ${tableMatches} (blue, red, blue_score, red_score, status)
+    VALUES ($1, $2, 0, 0, 'preparing')
+    RETURNING id;
+  `
+  const values = [blue, red]
+  const results = await client.query<{ id: number }>(query, values)
+
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error('Insert failed, no rows created.')
+
+  return {
+    blue: {
+      id: blue,
+      striker: blueInfo.striker,
+      defender: blueInfo.defender,
+      score: 0
+    },
+    red: {
+      id: red,
+      striker: redInfo.striker,
+      defender: redInfo.defender,
+      score: 0
+    },
+    id: results.rows[0].id,
+    status: 'preparing'
+  } satisfies CreateMatchDTO
 }

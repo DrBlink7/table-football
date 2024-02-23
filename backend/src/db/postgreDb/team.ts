@@ -102,27 +102,28 @@ export const deleteTeam = async (id: string) => {
   return formatDeletedTeamRow(results.rows)
 }
 
-export const getTeamInfo = async (id: number) => {
+export const getTeamInfo = async (id: number): Promise<TeamInfo> => {
   const client = await dbConfig.connect()
   const query = `
-    SELECT teams.id, 
-           teams.striker, 
-           striker_players.name AS striker_name,
-           teams.defender,
-           defender_players.name AS defender_name
-    FROM ${tableTeams} AS teams
-    INNER JOIN ${tablePlayers} AS striker_players ON teams.striker = striker_players.id
-    INNER JOIN ${tablePlayers} AS defender_players ON teams.defender = defender_players.id
-    WHERE id = $1
+  SELECT teams.id, 
+         teams.striker, 
+         striker_players.name AS striker_name,
+         teams.defender,
+         defender_players.name AS defender_name
+  FROM ${tableTeams} AS teams
+  INNER JOIN ${tablePlayers} AS striker_players ON teams.striker = striker_players.id
+  INNER JOIN ${tablePlayers} AS defender_players ON teams.defender = defender_players.id
+  WHERE teams.id = $1
   `
   const values = [id]
   const results = await client.query<DBTeamsPlayerTable>(query, values)
   client.release()
 
-  if (!results.rowCount || results.rowCount === 0) return []
+  if (!results.rowCount || results.rowCount === 0) throw new Error(`Team with ID ${id} not found.`)
   const row = results.rows[0]
 
   return ({
+    playerIds: [row.striker, row.defender],
     striker: row.striker_name,
     defender: row.defender_name
   }) satisfies TeamInfo

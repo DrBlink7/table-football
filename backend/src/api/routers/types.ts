@@ -118,6 +118,28 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *            type: string
  *          defender:
  *            type: string
+ *      CreateMatchBODY:
+ *        type: object
+ *        properties:
+ *          red:
+ *            type: number
+ *          blue:
+ *            type: number
+ *      CreateMatchDTO:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *            blue:
+ *              $ref: '#/components/schemas/Team'
+ *            red:
+ *              $ref: '#/components/schemas/Team'
+ *            status:
+ *              type: string
+ *              enum:
+ *                - preparing
+ *                - ongoing
+ *                - ended
  */
 export type GetPlayersDTO = {
   name: string
@@ -170,6 +192,7 @@ export interface DeleteTeamDTO {
   id: number
 }
 export type TeamInfo = {
+  playerIds: number[]
   striker: string
   defender: string
 }
@@ -179,3 +202,13 @@ export type GetMatchesDTO = {
   id: number
   status: MatchStatus
 }[]
+export type CreateMatchBODY = {
+  blue: number
+  red: number
+}
+export type CreateMatchDTO = {
+  blue: { id: number, striker: string, defender: string, score: number }
+  red: { id: number, striker: string, defender: string, score: number }
+  id: number
+  status: MatchStatus
+}
