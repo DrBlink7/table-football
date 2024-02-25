@@ -1,6 +1,6 @@
 import { DbType } from "../config";
 import { dbConnectorPostgreDb } from "./postgreDb";
-import { GetPlayersDTO, EditPlayerDTO, DeletePlayerDTO, CreatePlayerDTO, DeleteTeamDTO, EditTeamDTO, CreateTeamDTO, GetTeamsDTO, GetMatchesDTO, CreateMatchDTO, EditMatchDTO, DeleteMatchDTO, GetRankingsDTO } from "../api/routers/types";
+import { GetPlayersDTO, EditPlayerDTO, DeletePlayerDTO, CreatePlayerDTO, DeleteTeamDTO, EditTeamDTO, CreateTeamDTO, GetTeamsDTO, GetMatchesDTO, CreateMatchDTO, EditMatchDTO, DeleteMatchDTO, GetRankingsDTO, GetDefenderStatsDTO, GetStrikerStatsDTO } from "../api/routers/types";
 
 export const dbFactory = (dbType: DbType): Connector => {
   if (dbType === "postgres") return dbConnectorPostgreDb
@@ -22,4 +22,6 @@ export type Connector = {
   editMatch: (id: string, blue: number, red: number) => Promise<EditMatchDTO>
   deleteMatch: (id: string) => Promise<DeleteMatchDTO>
   getRankings: () => Promise<GetRankingsDTO[]>
+  getDefenderStats: () => Promise<GetDefenderStatsDTO[]>
+  getStrikerStats: () => Promise<GetStrikerStatsDTO[]>
 }

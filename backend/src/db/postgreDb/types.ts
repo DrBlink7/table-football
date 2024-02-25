@@ -47,3 +47,19 @@ export type DBRankingsCols = {
   red_defender_id: number,
   red_defender_name: string
 }
+export interface DBDefendersCols {
+  defender_red_id: number
+  score_red: number
+  defender_blue_id: number
+  score_blue: number
+  defender_red_name: string
+  defender_blue_name: string
+}
+export interface DBDStrikersCols {
+  striker_red_id: number
+  score_red: number
+  striker_blue_id: number
+  score_blue: number
+  striker_red_name: string
+  striker_blue_name: string
+}

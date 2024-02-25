@@ -1,4 +1,4 @@
-import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO, TeamInfo, DeleteMatchDTO, GetRankingsDTO } from "../../api/routers/types";
+import { CreatePlayerDTO, DeletePlayerDTO, DeleteTeamDTO, EditPlayerDTO, GetPlayersDTO, GetTeamsDTO, GetMatchesDTO, TeamInfo, DeleteMatchDTO, GetRankingsDTO, GetDefenderStatsDTO, GetStrikerStatsDTO } from "../../api/routers/types";
 import { DBMatchesTable, DBMatchesTeamsPlayerTable, DBPlayersTable, DBRankingsCols, DBTeamsPlayerTable, DBTeamsTable } from "./types";
 
 export const formatTagList = (rows: DBPlayersTable[]): GetPlayersDTO =>
@@ -58,11 +58,11 @@ export const formatRankings = (rows: DBRankingsCols[]) => {
       points: 0,
       goalsScored: 0,
       goalsConceded: 0,
-      gamePlayed: 0
+      gamesPlayed: 0
     }
     acc[row.blue_team_id].goalsScored += row.blue_score
     acc[row.blue_team_id].goalsConceded += row.red_score
-    acc[row.blue_team_id].gamePlayed += 1
+    acc[row.blue_team_id].gamesPlayed += 1
     if (row.blue_score > row.red_score) {
       acc[row.blue_team_id].points += 3
     } else if (row.blue_score === row.red_score) {
@@ -76,11 +76,11 @@ export const formatRankings = (rows: DBRankingsCols[]) => {
       points: 0,
       goalsScored: 0,
       goalsConceded: 0,
-      gamePlayed: 0
+      gamesPlayed: 0
     };
     acc[row.red_team_id].goalsScored += row.red_score
     acc[row.red_team_id].goalsConceded += row.blue_score
-    acc[row.red_team_id].gamePlayed += 1
+    acc[row.red_team_id].gamesPlayed += 1
     if (row.red_score > row.blue_score) {
       acc[row.red_team_id].points += 3
     } else if (row.red_score === row.blue_score) {
@@ -89,10 +89,10 @@ export const formatRankings = (rows: DBRankingsCols[]) => {
     return acc
   }, {} satisfies Record<number, GetRankingsDTO>)
 
-  return sortResult(Object.values(teamMap))
+  return sortRankingResult(Object.values(teamMap))
 }
 
-export const sortResult = (result: GetRankingsDTO[]) => {
+export const sortRankingResult = (result: GetRankingsDTO[]) => {
   const res = [...result]
   res.sort((a, b) => {
     if (a.points !== b.points) {
@@ -105,5 +105,33 @@ export const sortResult = (result: GetRankingsDTO[]) => {
       return a.goalsConceded - b.goalsConceded
     }
   })
+  return res
+}
+
+export const sortDefenderResult = (result: GetDefenderStatsDTO[]) => {
+  const res = [...result];
+  res.sort((a, b) => {
+    if (a.goalsConcededPerMatch !== b.goalsConcededPerMatch) {
+      return a.goalsConcededPerMatch - b.goalsConcededPerMatch;
+    } else if (a.goalsConceded !== b.goalsConceded) {
+      return a.goalsConceded - b.goalsConceded;
+    } else {
+      return a.gamesPlayed - b.gamesPlayed;
+    }
+  });
+  return res
+}
+
+export const sortStrikerResult = (result: GetStrikerStatsDTO[]) => {
+  const res = [...result];
+  res.sort((a, b) => {
+    if (a.goalsScoredPerMatch !== b.goalsScoredPerMatch) {
+      return b.goalsScoredPerMatch - a.goalsScoredPerMatch;
+    } else if (a.goalsScored !== b.goalsScored) {
+      return b.goalsScored - a.goalsScored;
+    } else {
+      return a.gamesPlayed - b.gamesPlayed;
+    }
+  });
   return res
 }

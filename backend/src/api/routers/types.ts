@@ -188,7 +188,7 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *              type: number
  *            goalsScored:
  *              type: number
- *            gamePlayed:
+ *            gamesPlayed:
  *              type: number
  *            goalsConceded:
  *              type: number
@@ -208,6 +208,34 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *                  type: number
  *                name:
  *                  type: string
+ *      GetDefenderStatsDTO:
+ *        type: array
+ *        items:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *            name:
+ *              type: string
+ *            gamesPlayed:
+ *              type: number
+ *            goalsConceded:
+ *              type: number
+ *            goalsConcededPerMatch:
+ *              type: number
+ *      GetStrikerStatsDTO:
+ *        type: array
+ *        items:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *            name:
+ *              type: string
+ *            gamesPlayed:
+ *              type: number
+ *            goalsScoredPerMatch:
+ *              type: number
  */
 export type GetPlayersDTO = {
   name: string
@@ -301,5 +329,20 @@ export interface GetRankingsDTO {
   points: number
   goalsScored: number
   goalsConceded: number
-  gamePlayed: number
+  gamesPlayed: number
+}
+
+export interface GetDefenderStatsDTO {
+  id: number
+  name: string
+  goalsConceded: number
+  goalsConcededPerMatch: number
+  gamesPlayed: number
+}
+export interface GetStrikerStatsDTO {
+  id: number
+  name: string
+  goalsScored: number
+  goalsScoredPerMatch: number
+  gamesPlayed: number
 }
