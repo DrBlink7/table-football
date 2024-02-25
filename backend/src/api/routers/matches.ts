@@ -3,8 +3,8 @@ import { asyncErrWrapper, formatError } from "../errorHandling";
 import { decodeToken, missingInBody } from "./utils";
 import { dbFactory } from "../../db";
 import { RepositoryType } from "../../config";
-import express from "express";
 import { CreateMatchBODY, EditMatchBODY } from "./types";
+import express from "express";
 
 export const matchesRouter = express.Router();
 

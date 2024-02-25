@@ -91,7 +91,28 @@ import { load } from 'cheerio'
  *           type: string
  *         code:
  *           type: string
- *     DeleteMatchesError:
+ *     DeleteMatchError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     GetRankingsError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     GetStrikersError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
+ *     GetDefendersError:
  *       type: object
  *       properties:
  *         message:

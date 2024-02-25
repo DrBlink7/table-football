@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { createPlayer, deletePlayer, editPlayer, getPlayers } from "./player";
 import { createTeam, deleteTeam, editTeam, getTeams } from "./team";
 import { getMatches, createMatch, editMatch, deleteMatch } from "./matches";
+import { getRankings } from "./stats";
 
 export const dbConfig = new Pool({
   host: DbHost,
@@ -26,4 +27,5 @@ export const dbConnectorPostgreDb: Connector = {
   createMatch: createMatch,
   editMatch: editMatch,
   deleteMatch: deleteMatch,
+  getRankings: getRankings
 }

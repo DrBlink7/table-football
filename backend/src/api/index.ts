@@ -4,6 +4,7 @@ import { loginRouter } from "./routers/login";
 import { playerRouter } from "./routers/player";
 import { teamRouter } from "./routers/team";
 import { matchesRouter } from "./routers/matches";
+import { statsRouter } from "./routers/stats";
 
 export const apiRouter = express.Router();
 
@@ -32,3 +33,4 @@ apiRouter.use("/login", loginRouter)
 apiRouter.use("/player", playerRouter)
 apiRouter.use("/team", teamRouter)
 apiRouter.use("/match", matchesRouter)
+apiRouter.use("/stats", statsRouter)

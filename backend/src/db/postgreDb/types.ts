@@ -31,3 +31,19 @@ export type DBMatchesTeamsPlayerTable = DBTeamsTable & DBMatchesTable & {
   red_defender_name: string
   match_id: number
 }
+export type DBRankingsCols = {
+  match_id: number,
+  blue_team_id: number,
+  red_team_id: number,
+  blue_score: number,
+  red_score: number,
+  status: 'ended',
+  blue_striker_id: number,
+  blue_striker_name: string,
+  blue_defender_id: number,
+  blue_defender_name: string,
+  red_striker_id: number,
+  red_striker_name: string,
+  red_defender_id: number,
+  red_defender_name: string
+}

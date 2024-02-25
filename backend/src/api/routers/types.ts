@@ -49,8 +49,20 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *          properties:
  *            id:
  *              type: number
- *            name:
- *              type: string
+ *            striker:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: number
+ *                name:
+ *                  type: string
+ *            defender:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: number
+ *                name:
+ *                  type: string
  *      CreateTeamBODY:
  *        type: object
  *        properties:
@@ -167,6 +179,35 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *        properties:
  *          id:
  *            type: number
+ *      GetRankingsDTO:
+ *        type: array
+ *        items:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: number
+ *            goalsScored:
+ *              type: number
+ *            gamePlayed:
+ *              type: number
+ *            goalsConceded:
+ *              type: number
+ *            points:
+ *              type: number
+ *            striker:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: number
+ *                name:
+ *                  type: string
+ *            defender:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: number
+ *                name:
+ *                  type: string
  */
 export type GetPlayersDTO = {
   name: string
@@ -251,4 +292,14 @@ export type EditMatchDTO = {
 }
 export interface DeleteMatchDTO {
   id: number
+}
+
+export interface GetRankingsDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  id: number
+  points: number
+  goalsScored: number
+  goalsConceded: number
+  gamePlayed: number
 }

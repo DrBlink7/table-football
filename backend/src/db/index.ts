@@ -1,12 +1,12 @@
 import { DbType } from "../config";
 import { dbConnectorPostgreDb } from "./postgreDb";
-import { GetPlayersDTO, EditPlayerDTO, DeletePlayerDTO, CreatePlayerDTO, DeleteTeamDTO, EditTeamDTO, CreateTeamDTO, GetTeamsDTO, GetMatchesDTO, CreateMatchDTO, EditMatchDTO, DeleteMatchDTO } from "../api/routers/types";
+import { GetPlayersDTO, EditPlayerDTO, DeletePlayerDTO, CreatePlayerDTO, DeleteTeamDTO, EditTeamDTO, CreateTeamDTO, GetTeamsDTO, GetMatchesDTO, CreateMatchDTO, EditMatchDTO, DeleteMatchDTO, GetRankingsDTO } from "../api/routers/types";
 
 export const dbFactory = (dbType: DbType): Connector => {
-  if (dbType === "postgres") return dbConnectorPostgreDb;
+  if (dbType === "postgres") return dbConnectorPostgreDb
 
-  throw new Error("DB type not supported: " + dbType);
-};
+  throw new Error("DB type not supported: " + dbType)
+}
 
 export type Connector = {
   getPlayers: () => Promise<GetPlayersDTO>
@@ -21,4 +21,5 @@ export type Connector = {
   createMatch: (blue: number, red: number) => Promise<CreateMatchDTO>
   editMatch: (id: string, blue: number, red: number) => Promise<EditMatchDTO>
   deleteMatch: (id: string) => Promise<DeleteMatchDTO>
-};
+  getRankings: () => Promise<GetRankingsDTO[]>
+}
