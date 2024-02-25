@@ -280,6 +280,7 @@ const Matches: FC = () => {
             toggle={toggleOnGoingFoldable}
             goToLiveMatch={goToLiveMatch}
             goToTeamPage={goToTeamPage}
+            testIdLabel="matches-ongoing"
           />
           <MatchList
             matches={preparing}
@@ -291,6 +292,7 @@ const Matches: FC = () => {
             goToTeamPage={goToTeamPage}
             matchToEdit={matchToEdit}
             matchToDelete={matchToDelete}
+            testIdLabel="matches-preparing"
           />
           <MatchList
             matches={ended}
@@ -301,6 +303,7 @@ const Matches: FC = () => {
             goToLiveMatch={goToLiveMatch}
             goToTeamPage={goToTeamPage}
             matchToDelete={matchToDelete}
+            testIdLabel="matches-ended"
           />
         </Scrollbar>
       </Stack>
@@ -314,6 +317,7 @@ interface MatchListProps {
   isOpen: boolean
   matches: Match[]
   title: string
+  testIdLabel: string
   goToStats: () => void
   toggle: () => void
   goToLiveMatch: (id: number) => void
@@ -326,6 +330,7 @@ const MatchList: FC<MatchListProps> = ({
   isOpen,
   matches,
   title,
+  testIdLabel,
   goToLiveMatch,
   goToStats,
   goToTeamPage,
@@ -342,7 +347,7 @@ const MatchList: FC<MatchListProps> = ({
   100% { color: ${theme.palette.primary.main}; }
   `
 
-  return <Paper elevation={1} sx={{ p: 1, margin: title === t('matches.onGoing') ? 0 : '2vh 0' }}>
+  return <Paper elevation={1} sx={{ p: 1, margin: title === t('matches.onGoing') ? 0 : '2vh 0' }} data-testid={testIdLabel}>
     <Box display='flex' alignItems='center' justifyContent='space-between'>
       <Typography variant='subtitle1'>{title} ({matches.length})</Typography>
       <Box display='flex' flexDirection='row' alignItems='center'>

@@ -39,3 +39,14 @@ export const checkIfSeeTeamsListIsDiplayed = () => {
   cy.get('[data-testid="teams-list"]').should("exist").and("be.visible");
   cy.get('[data-testid="table-container"]').should("exist").and("be.visible");
 };
+
+export const clickOnMatchesList = () => {
+  cy.get('[data-testid="left-menu"]').should("exist").and("be.visible");
+  cy.get('[data-testid="matches-list-button"]').should("exist").and("be.visible").click().wait(200);
+};
+
+export const checkIfSeeMatchListsIsDiplayed = () => {
+  cy.get('[data-testid="matches-ongoing"]').should("exist").and("be.visible");
+  cy.get('[data-testid="matches-preparing"]').should("exist").and("be.visible");
+  cy.get('[data-testid="matches-ended"]').should("exist").and("be.visible");
+};

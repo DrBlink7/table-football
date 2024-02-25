@@ -15,4 +15,16 @@ describe("direct-access-to-other-pages", () => {
     checkIfWeAreInLoginComponent()
   });
 
+  it("access to team page", () => {
+    cy.visit("http://localhost:3000/team/1");
+    cy.viewport(1440, 900).wait(500);
+    checkIfWeAreInLoginComponent()
+  });
+
+  it("access to match page", () => {
+    cy.visit("http://localhost:3000/match/1");
+    cy.viewport(1440, 900).wait(500);
+    checkIfWeAreInLoginComponent()
+  });
+
 });
