@@ -87,7 +87,7 @@ const LeftMenu: FC = () => {
           key='team'
           onClick={() => { changeComponent('team') }}
           sx={getLeftMenuButtonStyle(component, theme, 'team')}
-          data-testid="team-list-button"
+          data-testid="teams-list-button"
         >
           <ListItemIcon>
             <GroupIcon />

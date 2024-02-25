@@ -1,0 +1,82 @@
+[
+  {
+    "blue": {
+      "id": 1,
+      "striker": "Valerio Lundini",
+      "defender": "Daniele Fabbri",
+      "score": 0
+    },
+    "red": {
+      "id": 4,
+      "striker": "Giorgia Fumo",
+      "defender": "Michela Giraud",
+      "score": 0
+    },
+    "id": 2,
+    "status": "ongoing"
+  },
+  {
+    "blue": {
+      "id": 1,
+      "striker": "Valerio Lundini",
+      "defender": "Daniele Fabbri",
+      "score": 0
+    },
+    "red": {
+      "id": 3,
+      "striker": "Daniele Tinti",
+      "defender": "Stefano Rapone",
+      "score": 0
+    },
+    "id": 1,
+    "status": "preparing"
+  },
+  {
+    "blue": {
+      "id": 1,
+      "striker": "Valerio Lundini",
+      "defender": "Daniele Fabbri",
+      "score": 4
+    },
+    "red": {
+      "id": 4,
+      "striker": "Giorgia Fumo",
+      "defender": "Michela Giraud",
+      "score": 4
+    },
+    "id": 5,
+    "status": "ended"
+  },
+  {
+    "blue": {
+      "id": 4,
+      "striker": "Giorgia Fumo",
+      "defender": "Michela Giraud",
+      "score": 0
+    },
+    "red": {
+      "id": 1,
+      "striker": "Valerio Lundini",
+      "defender": "Daniele Fabbri",
+      "score": 0
+    },
+    "id": 6,
+    "status": "preparing"
+  },
+  {
+    "blue": {
+      "id": 3,
+      "striker": "Daniele Tinti",
+      "defender": "Stefano Rapone",
+      "score": 0
+    },
+    "red": {
+      "id": 4,
+      "striker": "Giorgia Fumo",
+      "defender": "Michela Giraud",
+      "score": 0
+    },
+    "id": 7,
+    "status": "preparing"
+  }
+]
