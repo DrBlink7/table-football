@@ -115,3 +115,22 @@ export const capitalizeAll = (s: string): string => s
   .split(' ')
   .map((str) => capitalize(str))
   .join(' ')
+
+export const filterMatches = (matchList: Matches): {
+  onGoing: Match[]
+  ended: Match[]
+  preparing: Match[]
+} => matchList.reduce((acc: MatchesTypes, match) => {
+  switch (match.status) {
+    case 'ended':
+      acc.ended = [...acc.ended, match]
+      break
+    case 'ongoing':
+      acc.onGoing = [...acc.onGoing, match]
+      break
+    case 'preparing':
+      acc.preparing = [...acc.preparing, match]
+      break
+  }
+  return acc
+}, { onGoing: [], ended: [], preparing: [] })

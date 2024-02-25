@@ -11,17 +11,20 @@ import { user } from './users'
 import { player } from './player'
 import { util } from './util'
 import { team } from './team'
+import { match } from './match'
 
 const setupStore = (state: State): EnhancedStore<{
   userInfo: UserStore
   playerInfo: PlayerStore
   teamInfo: TeamStore
+  matchInfo: MatchStore
   utilInfo: UtilStore
 }, UnknownAction, Tuple<[StoreEnhancer<{
   dispatch: ThunkDispatch<{
     userInfo: UserStore
     playerInfo: PlayerStore
     teamInfo: TeamStore
+    matchInfo: MatchStore
     utilInfo: UtilStore
   }, undefined, UnknownAction>
 }>, StoreEnhancer]>> =>
@@ -30,6 +33,7 @@ const setupStore = (state: State): EnhancedStore<{
       userInfo: user.reducer,
       playerInfo: player.reducer,
       teamInfo: team.reducer,
+      matchInfo: match.reducer,
       utilInfo: util.reducer
     },
     preloadedState: state

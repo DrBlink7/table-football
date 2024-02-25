@@ -8,6 +8,7 @@ import ErrorBoundary from './Error'
 import Login from './Login'
 import Player from './Player'
 import Team from './Team'
+import Match from './Match'
 import Home from '../Components/Home'
 
 const theme = createTheme({
@@ -45,6 +46,10 @@ const Router: FC = () => {
           <Route
             path="/team/:id"
             element={isUserLoggedIn ? <Team /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/match/:id"
+            element={isUserLoggedIn ? <Match /> : <Navigate to="/login" />}
           />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
