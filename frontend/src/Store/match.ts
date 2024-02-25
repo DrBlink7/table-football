@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { formatThunkError, matchInitialState } from '../Utils/store'
-import { retrieveMatches } from '../Api/match'
+import { createMatch, retrieveMatches } from '../Api/match'
 
 type RetrieveMatchListProps = Token
 
@@ -15,6 +15,27 @@ export const retrieveMatchList = createAsyncThunk(
 
       return thunkApi.rejectWithValue(
         Boolean(error.message) ? error.message : 'retrieveMatchList error'
+      )
+    }
+  }
+)
+
+type CreateAMatchProps = Token & {
+  blue: number
+  red: number
+}
+
+export const createAMatch = createAsyncThunk(
+  'createAMatch',
+  async ({ token, blue, red }: CreateAMatchProps, thunkApi) => {
+    try {
+      const response = await createMatch(token, blue, red)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'createAMatch error'
       )
     }
   }
@@ -45,6 +66,19 @@ export const match = createSlice({
       const data = action.payload
       state.matchListStatus = 'success'
       state.matchList = data
+    })
+    builder.addCase(createAMatch.pending, (state) => {
+      state.matchListStatus = 'loading'
+    })
+    builder.addCase(createAMatch.rejected, (state, action) => {
+      state.matchListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.matchList = matchInitialState.matchList
+    })
+    builder.addCase(createAMatch.fulfilled, (state, action) => {
+      const { id, blue, red, status } = action.payload
+      state.matchListStatus = 'success'
+      state.matchList = [...state.matchList, { id, blue, red, status }]
     })
   }
 })

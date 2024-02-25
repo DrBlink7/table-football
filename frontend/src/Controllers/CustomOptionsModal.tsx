@@ -2,8 +2,6 @@ import { type FC } from 'react'
 import { Controller, type Control, type UseFormHandleSubmit, type SubmitHandler, type FieldError } from 'react-hook-form'
 import { Modal, Box, Typography, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useAppSelector } from '../Utils/store'
-import { selectPlayerList } from '../Store/player'
 
 interface CustomTextModalProps {
   onClose: () => void
@@ -16,6 +14,7 @@ interface CustomTextModalProps {
   name: string
   firstLabel: string
   secondLabel: string
+  options: Option[]
   editText?: string
   title?: string
 }
@@ -32,11 +31,10 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
   firstLabel,
   secondLabel,
   editText,
+  options,
   title
 }) => {
   const { t } = useTranslation()
-
-  const playerList = useAppSelector(selectPlayerList)
 
   return (
     <Modal
@@ -74,8 +72,8 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
                     label={firstLabel}
                     error={Boolean(firstError)}
                   >
-                    {playerList.map((player, index) => (
-                      <MenuItem key={index} value={String(player.id)}>{player.name}</MenuItem>
+                    {options.map((option, index) => (
+                      <MenuItem key={index} value={String(option.id)}>{option.name}</MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -98,8 +96,8 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
                     label={secondLabel}
                     error={Boolean(secondError)}
                   >
-                    {playerList.map((player, index) => (
-                      <MenuItem key={index} value={String(player.id)}>{player.name}</MenuItem>
+                    {options.map((option, index) => (
+                      <MenuItem key={index} value={String(option.id)}>{option.name}</MenuItem>
                     ))}
                   </Select>
                   {Boolean(secondError) && (

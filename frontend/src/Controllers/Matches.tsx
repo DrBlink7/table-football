@@ -7,6 +7,7 @@ import { selectToken } from '../Store/users'
 import { setComponent } from '../Store/util'
 import {
   clearMatchState,
+  createAMatch,
   retrieveMatchList,
   selectErrorMessage,
   selectMatchList,
@@ -16,10 +17,15 @@ import {
 import { getHomeButtonStyle, filterMatches } from '../Utils/f'
 import { useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { selectTeamList } from '../Store/team'
 import Scrollbar from 'react-perfect-scrollbar'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
+import CustomOptionsModal from './CustomOptionsModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
+import * as Yup from 'yup'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 const Matches: FC = () => {
@@ -32,10 +38,34 @@ const Matches: FC = () => {
   const errorMessage = useAppSelector(selectErrorMessage)
   const matchListStatus = useAppSelector(selectMatchListStatus)
   const matchList = useAppSelector(selectMatchList)
+  const teamList = useAppSelector(selectTeamList)
 
   const [isOnGoingFoldableOpen, setOnGoingIsFoldableOpen] = useState<boolean>(true)
   const [isEndedFoldableOpen, setEndedIsFoldableOpen] = useState<boolean>(false)
   const [isPreparingFoldableOpen, setPreparingIsFoldableOpen] = useState<boolean>(false)
+  const [createMatch, setCreateMatch] = useState<boolean>(false)
+
+  const matchSchema = Yup.object().shape({
+    blue: Yup.string()
+      .required(t('matches.blueRequired'))
+      .notOneOf([Yup.ref('red')], t('matches.sameOption')),
+    red: Yup.string()
+      .required(t('matches.redRequired'))
+      .notOneOf([Yup.ref('blue')], t('matches.sameOption'))
+  })
+
+  const {
+    control: controlCreate,
+    handleSubmit: handleSubmitCreate,
+    reset: resetCreate,
+    formState: { errors: errorsCreate }
+  } = useForm<MatchInputs>({
+    resolver: yupResolver(matchSchema),
+    defaultValues: {
+      blue: '',
+      red: ''
+    }
+  })
 
   const clearError = useCallback(() => {
     dispatch(setComponent('home'))
@@ -66,6 +96,29 @@ const Matches: FC = () => {
     setPreparingIsFoldableOpen(!isPreparingFoldableOpen)
   }, [isPreparingFoldableOpen])
 
+  const openCreateMatch = useCallback(() => {
+    setCreateMatch(true)
+  }, [])
+
+  const closeCreateMatch = useCallback(() => {
+    resetCreate()
+    setCreateMatch(false)
+  }, [resetCreate])
+
+  const onSubmitCreate: SubmitHandler<MatchInputs> = useCallback(async (data) => {
+    try {
+      const red = Number(data.red)
+      const blue = Number(data.blue)
+      if (isNaN(blue) || isNaN(red)) throw new Error('validation error')
+
+      await dispatch(createAMatch({ blue, red, token }))
+      setCreateMatch(false)
+      resetCreate()
+    } catch (e) {
+      dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+    }
+  }, [dispatch, resetCreate, token])
+
   useEffect(() => {
     (async () => {
       try {
@@ -91,6 +144,11 @@ const Matches: FC = () => {
 
   const { onGoing, ended, preparing } = filterMatches(matchList)
 
+  const options = teamList.map(team => ({
+    id: team.id,
+    name: String(team.id)
+  }))
+
   return (
     <Stack
       display='flex'
@@ -104,11 +162,26 @@ const Matches: FC = () => {
     >
       <Box display='flex' width='90%' flexDirection='row' height='12%' justifyContent='space-between' alignItems='center'>
         <Typography variant='h6'>{t('matches.title')}</Typography>
-        <Button variant="contained" sx={{ ...buttonStyle, width: '30%' }} fullWidth >
+        <Button variant="contained" sx={{ ...buttonStyle, width: '30%' }} fullWidth onClick={openCreateMatch}>
           {t('matches.create')}
         </Button>
       </Box>
       <Stack width='90%' height='88%' spacing={2}>
+        <CustomOptionsModal
+          onClose={closeCreateMatch}
+          handleSubmit={handleSubmitCreate}
+          onSubmit={onSubmitCreate}
+          open={createMatch}
+          control={controlCreate}
+          firstError={errorsCreate?.blue}
+          secondError={errorsCreate?.red}
+          options={options}
+          name="match"
+          firstLabel="blue"
+          secondLabel="red"
+          title={t('matches.createTitle')}
+          editText={t('matches.create')}
+        />
         <MatchList
           matches={onGoing}
           isOpen={isOnGoingFoldableOpen}
@@ -152,6 +225,7 @@ interface MatchListProps {
   goToLiveMatch: (id: number) => void
   goToTeamPage: (id: number) => void
 }
+
 const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, goToStats, goToTeamPage, toggle }) => {
   const { t } = useTranslation()
   const theme = useTheme()
