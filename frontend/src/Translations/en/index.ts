@@ -103,7 +103,11 @@ const matches = {
   create: 'Create New Match',
   defender: 'Defender: ',
   striker: 'Striker: ',
-  edit: 'Edit this match'
+  edit: 'Edit this match',
+  delete: 'Delete this match',
+  editTitle: 'You can edit only preparing matches.',
+  deletedTitle: 'You can delete only preparing/ended matches.',
+  dialogText: 'Are you sure you want to delete this Match? Match id: '
 }
 const Match = {
   id: 'Match Id: '
