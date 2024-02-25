@@ -1,25 +1,9 @@
-import { useEffect, type FC, useCallback } from 'react'
-import {
-  Controller,
-  type Control,
-  type UseFormHandleSubmit,
-  type SubmitHandler,
-  type FieldError
-} from 'react-hook-form'
+import { type FC } from 'react'
+import { Controller, type Control, type UseFormHandleSubmit, type SubmitHandler, type FieldError } from 'react-hook-form'
 import { Modal, Box, Typography, Button, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch, useAppSelector } from '../Utils/store'
-import {
-  clearErrorMessage,
-  retrievePlayerList,
-  selectErrorMessage,
-  selectPlayerList,
-  selectPlayerListStatus,
-  setErrorMessage
-} from '../Store/player'
-import { selectToken } from '../Store/users'
-import Loader from '../Components/Loader'
-import ErrorComponent from '../Components/Error'
+import { useAppSelector } from '../Utils/store'
+import { selectPlayerList } from '../Store/player'
 
 interface CustomTextModalProps {
   onClose: () => void
@@ -50,38 +34,9 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
   editText,
   title
 }) => {
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
-  const token = useAppSelector(selectToken)
   const playerList = useAppSelector(selectPlayerList)
-  const playerListStatus = useAppSelector(selectPlayerListStatus)
-  const errorMessagePlayer = useAppSelector(selectErrorMessage)
-
-  const clearError = useCallback(() => {
-    dispatch(clearErrorMessage())
-  }, [dispatch])
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(retrievePlayerList({ token }))
-      } catch (e) {
-        dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
-      }
-    })()
-      .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
-  }, [token, dispatch])
-
-  if (playerListStatus === 'loading') {
-    return <Loader />
-  }
-
-  if (playerListStatus === 'error') {
-    const msg = errorMessagePlayer === '' ? 'player list error' : errorMessagePlayer
-
-    return <ErrorComponent msg={msg} clearError={clearError} />
-  }
 
   return (
     <Modal

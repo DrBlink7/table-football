@@ -19,6 +19,7 @@ import {
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { setComponent } from '../Store/util'
+import { clearErrorMessage, retrievePlayerList, selectPlayerListStatus } from '../Store/player'
 import CustomTable from './CustomTable'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
@@ -36,6 +37,8 @@ const Teams: FC = () => {
   const errorMessage = useAppSelector(selectErrorMessage)
   const teamListStatus = useAppSelector(selectTeamListStatus)
   const teamList = useAppSelector(selectTeamList)
+  const playerListStatus = useAppSelector(selectPlayerListStatus)
+  const errorMessagePlayer = useAppSelector(selectErrorMessage)
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null)
   const [createTeam, setCreateTeam] = useState<boolean>(false)
@@ -92,6 +95,7 @@ const Teams: FC = () => {
   const clearError = useCallback(() => {
     dispatch(setComponent('home'))
     dispatch(clearTeamState())
+    dispatch(clearErrorMessage())
   }, [dispatch])
 
   const goToTeamPage = useCallback(() => {
@@ -180,12 +184,29 @@ const Teams: FC = () => {
       .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
   }, [token, dispatch])
 
-  if (teamListStatus === 'loading') {
+  useEffect(() => {
+    (async () => {
+      try {
+        await dispatch(retrievePlayerList({ token }))
+      } catch (e) {
+        dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+      }
+    })()
+      .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
+  }, [token, dispatch])
+
+  if (teamListStatus === 'loading' || playerListStatus === 'loading') {
     return <Loader />
   }
 
   if (teamListStatus === 'error') {
     const msg = errorMessage === '' ? 'team list error' : errorMessage
+
+    return <ErrorComponent msg={msg} clearError={clearError} />
+  }
+
+  if (playerListStatus === 'error') {
+    const msg = errorMessagePlayer === '' ? 'player list error' : errorMessagePlayer
 
     return <ErrorComponent msg={msg} clearError={clearError} />
   }
