@@ -12,7 +12,8 @@ const error = {
 const home = {
   logout: 'Log Out',
   players: 'Players',
-  team: 'Teams'
+  team: 'Teams',
+  matches: 'Matches'
 }
 const login = {
   signin: 'Sign In',
@@ -89,6 +90,23 @@ const team = {
   id: 'Team Id',
   name: 'Team Name'
 }
+const matches = {
+  title: 'Match List',
+  onGoing: 'On Going Matches',
+  preparing: 'Preparing Matches',
+  ended: 'Ended Matches',
+  stats: 'See Stats',
+  teamBlue: 'Blue',
+  teamRed: 'Red',
+  teamPage: 'Go to team page',
+  live: 'See Live Match',
+  create: 'Create New Match',
+  defender: 'Defender: ',
+  striker: 'Striker: '
+}
+const Match = {
+  id: 'Match Id: '
+}
 
 const en = {
   loader,
@@ -103,7 +121,9 @@ const en = {
   player,
   Team,
   deleteTeam,
-  team
+  team,
+  matches,
+  Match
 }
 
 export default en

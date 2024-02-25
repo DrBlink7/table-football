@@ -76,6 +76,36 @@ interface EditTeamDTO {
 interface DeleteTeamDTO {
   id: number
 }
+interface GetMatchDTO {
+  blue: { id: number, striker: string, defender: string, score: number }
+  red: { id: number, striker: string, defender: string, score: number }
+  id: number
+  status: MatchStatus
+}
+type GetMatchesDTO = GetMatchDTO[]
+interface CreateMatchBODY {
+  blue: number
+  red: number
+}
+interface CreateMatchDTO {
+  blue: { id: number, striker: string, defender: string, score: number }
+  red: { id: number, striker: string, defender: string, score: number }
+  id: number
+  status: MatchStatus
+}
+interface EditMatchBODY {
+  blue: number
+  red: number
+}
+interface EditMatchDTO {
+  blue: { id: number, striker: string, defender: string, score: number }
+  red: { id: number, striker: string, defender: string, score: number }
+  id: number
+  status: MatchStatus
+}
+interface DeleteMatchDTO {
+  id: number
+}
 /**
  * Redux
  */
@@ -86,6 +116,7 @@ interface State {
   playerInfo: PlayerStore
   utilInfo: UtilStore
   teamInfo: TeamStore
+  matchInfo: MatchStore
 }
 interface UserStore {
   user: User
@@ -122,6 +153,19 @@ interface Team {
   id: number
 }
 type Teams = Team[]
+interface MatchStore {
+  matchList: Matches
+  matchListStatus: Status
+  errorMessage: string
+}
+type Matches = Match[]
+interface Match {
+  blue: { id: number, striker: string, defender: string, score: number }
+  red: { id: number, striker: string, defender: string, score: number }
+  id: number
+  status: MatchStatus
+}
+type MatchStatus = 'preparing' | 'ongoing' | 'ended'
 /**
  * Utils
  */
@@ -137,8 +181,13 @@ interface Column {
   label: string
   sortable: boolean
 }
-type TableType = 'Player' | 'Team'
+type TableType = 'Player' | 'Team' | 'Match'
 type TeamColor = 'red' | 'blue'
 interface Token {
   token: string
+}
+interface MatchesTypes {
+  onGoing: Match[]
+  ended: Match[]
+  preparing: Match[]
 }

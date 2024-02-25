@@ -5,6 +5,7 @@ import { useAppSelector } from '../Utils/store'
 import { selectComponent } from '../Store/util'
 import Players from './Players'
 import Teams from './Teams'
+import Matches from './Matches'
 import DefaultHomeLogo from '../Components/DefaultHomeLogo'
 
 const MainPage: FC = () => {
@@ -27,16 +28,7 @@ const MainPage: FC = () => {
         bgcolor={theme.palette.primary.main}
       >{t('home.info')}</Stack>
     case 'matches':
-      return <Stack
-        display='flex'
-        width='80%'
-        height='100%'
-        alignItems='center'
-        alignSelf='center'
-        justifyContent='center'
-        color={theme.palette.primary.contrastText}
-        bgcolor={theme.palette.primary.main}
-      >{t('home.matches')}</Stack>
+      return <Matches />
     case 'players':
       return <Players />
     case 'stats':
