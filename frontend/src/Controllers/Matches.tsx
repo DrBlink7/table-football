@@ -8,6 +8,7 @@ import { setComponent } from '../Store/util'
 import {
   clearMatchState,
   createAMatch,
+  editAMatch,
   retrieveMatchList,
   selectErrorMessage,
   selectMatchList,
@@ -22,6 +23,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { selectTeamList } from '../Store/team'
 import Scrollbar from 'react-perfect-scrollbar'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
+import EditIcon from '@mui/icons-material/Edit'
 import CustomOptionsModal from './CustomOptionsModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
@@ -44,6 +46,7 @@ const Matches: FC = () => {
   const [isEndedFoldableOpen, setEndedIsFoldableOpen] = useState<boolean>(false)
   const [isPreparingFoldableOpen, setPreparingIsFoldableOpen] = useState<boolean>(false)
   const [createMatch, setCreateMatch] = useState<boolean>(false)
+  const [editMatch, setEditMatch] = useState<number>(0)
 
   const matchSchema = Yup.object().shape({
     blue: Yup.string()
@@ -66,6 +69,29 @@ const Matches: FC = () => {
       red: ''
     }
   })
+
+  const {
+    control: controlEdit,
+    handleSubmit: handleSubmitEdit,
+    setValue,
+    reset: resetEdit,
+    formState: { errors: errorsEdit }
+  } = useForm<MatchInputs>({
+    resolver: yupResolver(matchSchema),
+    defaultValues: {
+      blue: '',
+      red: ''
+    }
+  })
+
+  const matchToEdit = useCallback((id: number) => {
+    const match = matchList.find(m => m.id === id)
+    if (match === undefined) return
+
+    setValue('blue', String(match.blue.id) ?? '')
+    setValue('red', String(match.red.id) ?? '')
+    setEditMatch(id)
+  }, [setValue, matchList])
 
   const clearError = useCallback(() => {
     dispatch(setComponent('home'))
@@ -105,6 +131,10 @@ const Matches: FC = () => {
     setCreateMatch(false)
   }, [resetCreate])
 
+  const closeEditMatch = useCallback(() => {
+    setEditMatch(0)
+  }, [])
+
   const onSubmitCreate: SubmitHandler<MatchInputs> = useCallback(async (data) => {
     try {
       const red = Number(data.red)
@@ -118,6 +148,20 @@ const Matches: FC = () => {
       dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
     }
   }, [dispatch, resetCreate, token])
+
+  const onSubmitEdit: SubmitHandler<MatchInputs> = useCallback(async (data) => {
+    try {
+      const blue = Number(data.blue)
+      const red = Number(data.red)
+      if (isNaN(red) || isNaN(blue)) throw new Error('validation error')
+
+      await dispatch(editAMatch({ token, blue, red, id: String(editMatch) }))
+      setEditMatch(0)
+      resetEdit()
+    } catch (e) {
+      dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+    }
+  }, [dispatch, editMatch, resetEdit, token])
 
   useEffect(() => {
     (async () => {
@@ -182,35 +226,53 @@ const Matches: FC = () => {
           title={t('matches.createTitle')}
           editText={t('matches.create')}
         />
-        <MatchList
-          matches={onGoing}
-          isOpen={isOnGoingFoldableOpen}
-          title={t('matches.onGoing')}
-          goToStats={goToStats}
-          toggle={toggleOnGoingFoldable}
-          goToLiveMatch={goToLiveMatch}
-          goToTeamPage={goToTeamPage}
+        <CustomOptionsModal
+          onClose={closeEditMatch}
+          handleSubmit={handleSubmitEdit}
+          onSubmit={onSubmitEdit}
+          open={Boolean(editMatch)}
+          control={controlEdit}
+          firstError={errorsEdit?.blue}
+          secondError={errorsEdit?.red}
+          options={options}
+          name="match"
+          firstLabel="blue"
+          secondLabel="red"
+          title={t('matches.editTitle')}
+          editText={t('matches.edit')}
         />
-        <MatchList
-          matches={preparing}
-          isOpen={isPreparingFoldableOpen}
-          title={t('matches.preparing')}
-          goToStats={goToStats}
-          toggle={togglePreparingFoldable}
-          goToLiveMatch={goToLiveMatch}
-          goToTeamPage={goToTeamPage}
-        />
-        <MatchList
-          matches={ended}
-          isOpen={isEndedFoldableOpen}
-          title={t('matches.ended')}
-          goToStats={goToStats}
-          toggle={toggleEndedFoldable}
-          goToLiveMatch={goToLiveMatch}
-          goToTeamPage={goToTeamPage}
-        />
+        <Scrollbar style={{ maxHeight: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}>
+          <MatchList
+            matches={onGoing}
+            isOpen={isOnGoingFoldableOpen}
+            title={t('matches.onGoing')}
+            goToStats={goToStats}
+            toggle={toggleOnGoingFoldable}
+            goToLiveMatch={goToLiveMatch}
+            goToTeamPage={goToTeamPage}
+          />
+          <MatchList
+            matches={preparing}
+            isOpen={isPreparingFoldableOpen}
+            title={t('matches.preparing')}
+            goToStats={goToStats}
+            toggle={togglePreparingFoldable}
+            goToLiveMatch={goToLiveMatch}
+            goToTeamPage={goToTeamPage}
+            matchToEdit={matchToEdit}
+          />
+          <MatchList
+            matches={ended}
+            isOpen={isEndedFoldableOpen}
+            title={t('matches.ended')}
+            goToStats={goToStats}
+            toggle={toggleEndedFoldable}
+            goToLiveMatch={goToLiveMatch}
+            goToTeamPage={goToTeamPage}
+          />
+        </Scrollbar>
       </Stack>
-    </Stack>
+    </Stack >
   )
 }
 
@@ -224,9 +286,10 @@ interface MatchListProps {
   toggle: () => void
   goToLiveMatch: (id: number) => void
   goToTeamPage: (id: number) => void
+  matchToEdit?: (id: number) => void
 }
 
-const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, goToStats, goToTeamPage, toggle }) => {
+const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, goToStats, goToTeamPage, toggle, matchToEdit }) => {
   const { t } = useTranslation()
   const theme = useTheme()
 
@@ -236,7 +299,7 @@ const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, 
   100% { color: ${theme.palette.primary.main}; }
   `
 
-  return <Paper elevation={1} sx={{ p: 1 }}>
+  return <Paper elevation={1} sx={{ p: 1, margin: title === t('matches.onGoing') ? 0 : '2vh 0' }}>
     <Box display='flex' alignItems='center' justifyContent='space-between'>
       <Typography variant='subtitle1'>{title} ({matches.length})</Typography>
       <Box display='flex' flexDirection='row' alignItems='center'>
@@ -252,73 +315,77 @@ const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, 
         </IconButton>
       </Box>
     </Box>
-    {isOpen && (
-      <Scrollbar style={{ height: '88%', width: '100%', display: 'flex', flexDirection: 'column' }}>
-        {matches.map(match => (
-          <Paper key={match.id} elevation={2} sx={{ my: 1, p: 2 }}>
-            <Stack spacing={2} display='flex' flexDirection='column' key={match.id}>
-              {match.status === 'ongoing'
-                ? <Box
+    {
+      isOpen && matches.map(match => (
+        <Paper key={match.id} elevation={2} sx={{ my: 1, p: 2 }}>
+          <Stack spacing={2} display='flex' flexDirection='column' key={match.id}>
+            {match.status === 'ongoing'
+              ? <Box
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+              >
+                <Box
+                  onClick={() => { goToLiveMatch(match.id) }}
                   display='flex'
-                  alignItems='center'
-                  justifyContent='center'
+                  sx={{
+                    cursor: 'pointer',
+                    color: theme.palette.primary.main,
+                    transition: 'color 1.5s ease-in-out',
+                    animation: `${blinkAnimation} 1s linear infinite alternate`
+                  }}
                 >
-                  <Box
-                    onClick={() => { goToLiveMatch(match.id) }}
-                    display='flex'
-                    sx={{
-                      cursor: 'pointer',
-                      color: theme.palette.primary.main,
-                      transition: 'color 1.5s ease-in-out',
-                      animation: `${blinkAnimation} 1s linear infinite alternate`
-                    }}
-                  >
-                    <Typography mr='1vw'>{t('matches.live')}</Typography>
-                    <LiveTvIcon fontSize='small' sx={{ marginBottom: 'auto' }} />
-                  </Box>
+                  <Typography mr='1vw'>{t('matches.live')}</Typography>
+                  <LiveTvIcon fontSize='small' sx={{ marginBottom: 'auto' }} />
                 </Box>
-                : <Box
-                  display='flex'
-                  alignItems='center'
-                  justifyContent='center'
-                  alignContent='flex-end'
-                >
-                </Box>
-              }
-              <Box display='flex' flexDirection='row' justifyContent='space-between'>
-                <Tooltip title={`${t('matches.defender')} ${match.blue.defender} ${t('matches.striker')} ${match.blue.striker}`}>
-                  <Typography variant="subtitle1" color="primary" sx={{ cursor: 'help' }}>
-                    {t('matches.teamBlue')}
-                  </Typography>
-                </Tooltip>
-                <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.blue.score}</Typography>
-                <Typography
-                  variant='body1'
-                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={() => { goToTeamPage(match.blue.id) }}
-                >
-                  {t('matches.teamPage')}
-                </Typography>
               </Box>
-              <Box display='flex' flexDirection='row' justifyContent='space-between'>
-                <Tooltip title={`${t('matches.defender')} ${match.red.defender} ${t('matches.striker')} ${match.red.striker}`}>
-                  <Typography variant="subtitle1" color="secondary" sx={{ cursor: 'help' }}>
-                    {t('matches.teamRed')}
-                  </Typography>
-                </Tooltip>
-                <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.red.score}</Typography>
-                <Typography
-                  variant='body1'
-                  sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={() => { goToTeamPage(match.red.id) }}
-                >
-                  {t('matches.teamPage')}
-                </Typography>
+              : <Box
+                display='flex'
+                alignItems='center'
+                justifyContent='flex-end'
+                alignContent='center'
+              >
+                {
+                  (matchToEdit !== undefined) && <>
+                    <Typography>{t('matches.edit')}</Typography>
+                    <EditIcon onClick={() => { matchToEdit(match.id) }} sx={{ cursor: 'pointer' }} />
+                  </>
+                }
               </Box>
-            </Stack>
-          </Paper>
-        ))}
-      </Scrollbar>
-    )}
-  </Paper>
+            }
+            <Box display='flex' flexDirection='row' justifyContent='space-between'>
+              <Tooltip title={`${t('matches.defender')} ${match.blue.defender} ${t('matches.striker')} ${match.blue.striker}`}>
+                <Typography variant="subtitle1" color="primary" sx={{ cursor: 'help' }}>
+                  {t('matches.teamBlue')}
+                </Typography>
+              </Tooltip>
+              <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.blue.score}</Typography>
+              <Typography
+                variant='body1'
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => { goToTeamPage(match.blue.id) }}
+              >
+                {t('matches.teamPage')}
+              </Typography>
+            </Box>
+            <Box display='flex' flexDirection='row' justifyContent='space-between'>
+              <Tooltip title={`${t('matches.defender')} ${match.red.defender} ${t('matches.striker')} ${match.red.striker}`}>
+                <Typography variant="subtitle1" color="secondary" sx={{ cursor: 'help' }}>
+                  {t('matches.teamRed')}
+                </Typography>
+              </Tooltip>
+              <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.red.score}</Typography>
+              <Typography
+                variant='body1'
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => { goToTeamPage(match.red.id) }}
+              >
+                {t('matches.teamPage')}
+              </Typography>
+            </Box>
+          </Stack>
+        </Paper>
+      ))
+    }
+  </Paper >
 }

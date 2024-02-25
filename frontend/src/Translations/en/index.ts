@@ -102,7 +102,8 @@ const matches = {
   live: 'See Live Match',
   create: 'Create New Match',
   defender: 'Defender: ',
-  striker: 'Striker: '
+  striker: 'Striker: ',
+  edit: 'Edit this match'
 }
 const Match = {
   id: 'Match Id: '

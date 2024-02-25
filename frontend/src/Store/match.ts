@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { formatThunkError, matchInitialState } from '../Utils/store'
-import { createMatch, retrieveMatches } from '../Api/match'
+import { createMatch, editMatch, retrieveMatches } from '../Api/match'
 
 type RetrieveMatchListProps = Token
 
@@ -36,6 +36,28 @@ export const createAMatch = createAsyncThunk(
 
       return thunkApi.rejectWithValue(
         Boolean(error.message) ? error.message : 'createAMatch error'
+      )
+    }
+  }
+)
+
+type EditAMatchProps = Token & {
+  blue: number
+  red: number
+  id: string
+}
+
+export const editAMatch = createAsyncThunk(
+  'editAMatch',
+  async ({ token, id, blue, red }: EditAMatchProps, thunkApi) => {
+    try {
+      const response = await editMatch(token, id, blue, red)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'editAMatch error'
       )
     }
   }
@@ -79,6 +101,27 @@ export const match = createSlice({
       const { id, blue, red, status } = action.payload
       state.matchListStatus = 'success'
       state.matchList = [...state.matchList, { id, blue, red, status }]
+    })
+    builder.addCase(editAMatch.pending, (state) => {
+      state.matchListStatus = 'loading'
+    })
+    builder.addCase(editAMatch.rejected, (state, action) => {
+      state.matchListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.matchList = matchInitialState.matchList
+    })
+    builder.addCase(editAMatch.fulfilled, (state, action) => {
+      const { id, blue, red, status } = action.payload
+      state.matchListStatus = 'success'
+      const matchList = [...state.matchList]
+      const updatedMatchList = matchList
+        .map(match =>
+          match.id === id
+            ? { ...match, blue, red, status }
+            : { ...match }
+        )
+      updatedMatchList.sort((a, b) => a.id - b.id)
+      state.matchList = [...updatedMatchList]
     })
   }
 })
