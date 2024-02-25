@@ -19,7 +19,7 @@ import {
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { setComponent } from '../Store/util'
-import { clearErrorMessage, retrievePlayerList, selectPlayerListStatus } from '../Store/player'
+import { clearErrorMessage, retrievePlayerList, selectPlayerList, selectPlayerListStatus } from '../Store/player'
 import CustomTable from './CustomTable'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
@@ -39,6 +39,7 @@ const Teams: FC = () => {
   const teamList = useAppSelector(selectTeamList)
   const playerListStatus = useAppSelector(selectPlayerListStatus)
   const errorMessagePlayer = useAppSelector(selectErrorMessage)
+  const playerList = useAppSelector(selectPlayerList)
 
   const [selectedRow, setSelectedRow] = useState<number | null>(null)
   const [createTeam, setCreateTeam] = useState<boolean>(false)
@@ -257,6 +258,7 @@ const Teams: FC = () => {
         control={controlCreate}
         firstError={errorsCreate?.defender}
         secondError={errorsCreate?.striker}
+        options={playerList}
         name="team"
         firstLabel="defender"
         secondLabel="striker"
@@ -271,6 +273,7 @@ const Teams: FC = () => {
         control={controlEdit}
         firstError={errorsEdit?.defender}
         secondError={errorsEdit?.striker}
+        options={playerList}
         name="team"
         firstLabel="defender"
         secondLabel="striker"

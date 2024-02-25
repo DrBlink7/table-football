@@ -14,7 +14,10 @@ interface TeamInputs {
   striker: string
   defender: string
 }
-
+interface MatchInputs {
+  blue: string
+  red: string
+}
 /**
  * API
 */
@@ -190,4 +193,8 @@ interface MatchesTypes {
   onGoing: Match[]
   ended: Match[]
   preparing: Match[]
+}
+interface Option {
+  name: string
+  id: number
 }
