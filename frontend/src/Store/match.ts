@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { formatThunkError, matchInitialState } from '../Utils/store'
-import { createMatch, editMatch, retrieveMatches } from '../Api/match'
+import { createMatch, deleteMatch, editMatch, retrieveMatches } from '../Api/match'
 
 type RetrieveMatchListProps = Token
 
@@ -58,6 +58,26 @@ export const editAMatch = createAsyncThunk(
 
       return thunkApi.rejectWithValue(
         Boolean(error.message) ? error.message : 'editAMatch error'
+      )
+    }
+  }
+)
+
+type DeleteAMatchProps = Token & {
+  id: string
+}
+
+export const deleteAMatch = createAsyncThunk(
+  'deleteAMatch',
+  async ({ token, id }: DeleteAMatchProps, thunkApi) => {
+    try {
+      const response = await deleteMatch(token, id)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'deleteAMatch error'
       )
     }
   }
@@ -122,6 +142,19 @@ export const match = createSlice({
         )
       updatedMatchList.sort((a, b) => a.id - b.id)
       state.matchList = [...updatedMatchList]
+    })
+    builder.addCase(deleteAMatch.pending, (state) => {
+      state.matchListStatus = 'loading'
+    })
+    builder.addCase(deleteAMatch.rejected, (state, action) => {
+      state.matchListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.matchList = matchInitialState.matchList
+    })
+    builder.addCase(deleteAMatch.fulfilled, (state, action) => {
+      const { id } = action.payload
+      state.matchListStatus = 'success'
+      state.matchList = [...state.matchList].filter(match => match.id !== id)
     })
   }
 })

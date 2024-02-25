@@ -8,6 +8,7 @@ import { setComponent } from '../Store/util'
 import {
   clearMatchState,
   createAMatch,
+  deleteAMatch,
   editAMatch,
   retrieveMatchList,
   selectErrorMessage,
@@ -23,10 +24,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { selectTeamList } from '../Store/team'
 import Scrollbar from 'react-perfect-scrollbar'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined'
 import EditIcon from '@mui/icons-material/Edit'
 import CustomOptionsModal from './CustomOptionsModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
+import ConfirmationDialog from '../Components/ConfirmationDialog'
 import * as Yup from 'yup'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
@@ -47,6 +50,7 @@ const Matches: FC = () => {
   const [isPreparingFoldableOpen, setPreparingIsFoldableOpen] = useState<boolean>(false)
   const [createMatch, setCreateMatch] = useState<boolean>(false)
   const [editMatch, setEditMatch] = useState<number>(0)
+  const [deleteMatch, setDeleteMatch] = useState<number>(0)
 
   const matchSchema = Yup.object().shape({
     blue: Yup.string()
@@ -134,6 +138,24 @@ const Matches: FC = () => {
   const closeEditMatch = useCallback(() => {
     setEditMatch(0)
   }, [])
+
+  const matchToDelete = useCallback((id: number) => {
+    setDeleteMatch(id)
+  }, [])
+
+  const closeDeleteMatch = useCallback(() => {
+    setDeleteMatch(0)
+  }, [])
+
+  const handleDelete = useCallback(async () => {
+    if (deleteMatch === 0) return
+    try {
+      await dispatch(deleteAMatch({ token, id: String(deleteMatch) }))
+      setDeleteMatch(0)
+    } catch (e) {
+      dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+    }
+  }, [deleteMatch, dispatch, token])
 
   const onSubmitCreate: SubmitHandler<MatchInputs> = useCallback(async (data) => {
     try {
@@ -241,6 +263,14 @@ const Matches: FC = () => {
           title={t('matches.editTitle')}
           editText={t('matches.edit')}
         />
+        <ConfirmationDialog
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          confirm={handleDelete}
+          undo={closeDeleteMatch}
+          open={Boolean(deleteMatch)}
+          title={t('matches.deletedTitle')}
+          dialogText={`${t('matches.dialogText')}'${deleteMatch}'`}
+        />
         <Scrollbar style={{ maxHeight: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}>
           <MatchList
             matches={onGoing}
@@ -260,6 +290,7 @@ const Matches: FC = () => {
             goToLiveMatch={goToLiveMatch}
             goToTeamPage={goToTeamPage}
             matchToEdit={matchToEdit}
+            matchToDelete={matchToDelete}
           />
           <MatchList
             matches={ended}
@@ -269,6 +300,7 @@ const Matches: FC = () => {
             toggle={toggleEndedFoldable}
             goToLiveMatch={goToLiveMatch}
             goToTeamPage={goToTeamPage}
+            matchToDelete={matchToDelete}
           />
         </Scrollbar>
       </Stack>
@@ -287,9 +319,20 @@ interface MatchListProps {
   goToLiveMatch: (id: number) => void
   goToTeamPage: (id: number) => void
   matchToEdit?: (id: number) => void
+  matchToDelete?: (id: number) => void
 }
 
-const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, goToStats, goToTeamPage, toggle, matchToEdit }) => {
+const MatchList: FC<MatchListProps> = ({
+  isOpen,
+  matches,
+  title,
+  goToLiveMatch,
+  goToStats,
+  goToTeamPage,
+  toggle,
+  matchToEdit,
+  matchToDelete
+}) => {
   const { t } = useTranslation()
   const theme = useTheme()
 
@@ -349,6 +392,12 @@ const MatchList: FC<MatchListProps> = ({ isOpen, matches, title, goToLiveMatch, 
                   (matchToEdit !== undefined) && <>
                     <Typography>{t('matches.edit')}</Typography>
                     <EditIcon onClick={() => { matchToEdit(match.id) }} sx={{ cursor: 'pointer' }} />
+                  </>
+                }
+                {
+                  (matchToDelete !== undefined) && <>
+                    <Typography>{t('matches.delete')}</Typography>
+                    <DeleteForeverOutlinedIcon onClick={() => { matchToDelete(match.id) }} sx={{ cursor: 'pointer' }} />
                   </>
                 }
               </Box>
