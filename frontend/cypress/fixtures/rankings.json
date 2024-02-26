@@ -1,0 +1,167 @@
+[
+  {
+    "striker": {
+      "id": 3,
+      "name": "Daniele Tinti"
+    },
+    "defender": {
+      "id": 4,
+      "name": "Stefano Rapone"
+    },
+    "id": 3,
+    "points": 6,
+    "goalsScored": 6,
+    "goalsConceded": 4,
+    "gamesPlayed": 2
+  },
+  {
+    "striker": {
+      "id": 12,
+      "name": "Alessandro Gori"
+    },
+    "defender": {
+      "id": 9,
+      "name": "Giorgia Fumo"
+    },
+    "id": 11,
+    "points": 3,
+    "goalsScored": 7,
+    "goalsConceded": 4,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 9,
+      "name": "Giorgia Fumo"
+    },
+    "defender": {
+      "id": 2,
+      "name": "Daniele Fabbri"
+    },
+    "id": 9,
+    "points": 3,
+    "goalsScored": 6,
+    "goalsConceded": 5,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 5,
+      "name": "Davide Calgaro"
+    },
+    "defender": {
+      "id": 6,
+      "name": "Carmine Del Grosso"
+    },
+    "id": 6,
+    "points": 3,
+    "goalsScored": 4,
+    "goalsConceded": 3,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 1,
+      "name": "Valerio Lundini"
+    },
+    "defender": {
+      "id": 10,
+      "name": "Eleazaro Rossi"
+    },
+    "id": 5,
+    "points": 3,
+    "goalsScored": 3,
+    "goalsConceded": 2,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 1,
+      "name": "Valerio Lundini"
+    },
+    "defender": {
+      "id": 2,
+      "name": "Daniele Fabbri"
+    },
+    "id": 1,
+    "points": 1,
+    "goalsScored": 4,
+    "goalsConceded": 4,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 9,
+      "name": "Giorgia Fumo"
+    },
+    "defender": {
+      "id": 11,
+      "name": "Michela Giraud"
+    },
+    "id": 4,
+    "points": 1,
+    "goalsScored": 6,
+    "goalsConceded": 7,
+    "gamesPlayed": 2
+  },
+  {
+    "striker": {
+      "id": 12,
+      "name": "Alessandro Gori"
+    },
+    "defender": {
+      "id": 11,
+      "name": "Michela Giraud"
+    },
+    "id": 8,
+    "points": 0,
+    "goalsScored": 5,
+    "goalsConceded": 6,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 2,
+      "name": "Daniele Fabbri"
+    },
+    "defender": {
+      "id": 1,
+      "name": "Valerio Lundini"
+    },
+    "id": 2,
+    "points": 0,
+    "goalsScored": 1,
+    "goalsConceded": 2,
+    "gamesPlayed": 1
+  },
+  {
+    "striker": {
+      "id": 7,
+      "name": "Tommaso Faoro"
+    },
+    "defender": {
+      "id": 8,
+      "name": "Francesco Mileto"
+    },
+    "id": 7,
+    "points": 0,
+    "goalsScored": 6,
+    "goalsConceded": 8,
+    "gamesPlayed": 2
+  },
+  {
+    "striker": {
+      "id": 3,
+      "name": "Daniele Tinti"
+    },
+    "defender": {
+      "id": 7,
+      "name": "Tommaso Faoro"
+    },
+    "id": 10,
+    "points": 0,
+    "goalsScored": 4,
+    "goalsConceded": 7,
+    "gamesPlayed": 1
+  }
+]
