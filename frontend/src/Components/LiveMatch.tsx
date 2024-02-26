@@ -42,7 +42,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
     bgcolor={theme.palette.primary.main}
     data-testid="match-component"
   >
-    <ToastContainer position="top-center" autoClose={15000} />
+    <ToastContainer position="top-center" autoClose={5000} />
     <Box display='flex' onClick={goBackToMatchPage} sx={{ cursor: 'pointer' }} height='10%' alignItems='center' padding='0 2vw'>
       <ArrowBackIosIcon color='secondary' />
       <Typography color={'secondary'}>{t('Match.back')}</Typography>

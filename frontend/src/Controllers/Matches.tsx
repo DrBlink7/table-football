@@ -20,6 +20,8 @@ import { useNavigate } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { selectTeamList } from '../Store/team'
+import { ToastContainer, toast } from 'react-toastify'
+import { dismissMatchNotification, selectSseNotificationMatch } from '../Store/sse'
 import Scrollbar from 'react-perfect-scrollbar'
 import useMatchConnection from '../Hooks/useMatchConnection'
 import CustomOptionsModal from './CustomOptionsModal'
@@ -41,6 +43,8 @@ const Matches: FC = () => {
   const matchListStatus = useAppSelector(selectMatchListStatus)
   const matchList = useAppSelector(selectMatchList)
   const teamList = useAppSelector(selectTeamList)
+  const onGoingMatchId = matchList.find(match => match.status === 'ongoing')?.id ?? 0
+  const notification = useAppSelector(selectSseNotificationMatch(onGoingMatchId))
 
   const [isOnGoingFoldableOpen, setOnGoingIsFoldableOpen] = useState<boolean>(true)
   const [isEndedFoldableOpen, setEndedIsFoldableOpen] = useState<boolean>(false)
@@ -193,6 +197,16 @@ const Matches: FC = () => {
       .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
   }, [token, dispatch])
 
+  useEffect(() => {
+    if (notification.message !== '') {
+      toast.success(notification.message, {
+        position: 'top-center',
+        autoClose: 5000
+      })
+      dispatch(dismissMatchNotification({ matchid: onGoingMatchId }))
+    }
+  }, [dispatch, onGoingMatchId, notification.message, t])
+
   useMatchConnection(token)
 
   if (matchListStatus === 'loading') {
@@ -225,6 +239,7 @@ const Matches: FC = () => {
       color={theme.palette.primary.contrastText}
       bgcolor={theme.palette.primary.main}
     >
+      <ToastContainer position="top-center" autoClose={5000} />
       <Box display='flex' width='90%' flexDirection='row' height='12%' justifyContent='space-between' alignItems='center'>
         <Typography variant='h6'>{t('matches.title')}</Typography>
         <Button variant="contained" sx={{ ...buttonStyle, width: '30%' }} fullWidth onClick={openCreateMatch}>
