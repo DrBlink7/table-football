@@ -1,0 +1,51 @@
+[
+  {
+    "id": 12,
+    "name": "Alessandro Gori",
+    "goalsScored": 12,
+    "goalsScoredPerMatch": 6,
+    "gamesPlayed": 2
+  },
+  {
+    "id": 9,
+    "name": "Giorgia Fumo",
+    "goalsScored": 12,
+    "goalsScoredPerMatch": 4,
+    "gamesPlayed": 3
+  },
+  {
+    "id": 5,
+    "name": "Davide Calgaro",
+    "goalsScored": 4,
+    "goalsScoredPerMatch": 4,
+    "gamesPlayed": 1
+  },
+  {
+    "id": 1,
+    "name": "Valerio Lundini",
+    "goalsScored": 7,
+    "goalsScoredPerMatch": 3.5,
+    "gamesPlayed": 2
+  },
+  {
+    "id": 3,
+    "name": "Daniele Tinti",
+    "goalsScored": 10,
+    "goalsScoredPerMatch": 3.33,
+    "gamesPlayed": 3
+  },
+  {
+    "id": 7,
+    "name": "Tommaso Faoro",
+    "goalsScored": 6,
+    "goalsScoredPerMatch": 3,
+    "gamesPlayed": 2
+  },
+  {
+    "id": 2,
+    "name": "Daniele Fabbri",
+    "goalsScored": 1,
+    "goalsScoredPerMatch": 1,
+    "gamesPlayed": 1
+  }
+]

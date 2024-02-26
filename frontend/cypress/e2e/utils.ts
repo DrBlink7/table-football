@@ -50,3 +50,13 @@ export const checkIfSeeMatchListsIsDiplayed = () => {
   cy.get('[data-testid="matches-preparing"]').should("exist").and("be.visible");
   cy.get('[data-testid="matches-ended"]').should("exist").and("be.visible");
 };
+
+export const clickOnStatsList = () => {
+  cy.get('[data-testid="left-menu"]').should("exist").and("be.visible");
+  cy.get('[data-testid="stats-list-button"]').should("exist").and("be.visible").click().wait(200);
+};
+
+export const checkIfSeeStatsListsIsDiplayed = () => {
+  cy.get('[data-testid="stats-list"]').should("exist").and("be.visible");
+  cy.get('[data-testid="table-container"]').should("exist").and("be.visible");
+};

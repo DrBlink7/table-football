@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "name": "Valerio Lundini",
+    "goalsConceded": 2,
+    "goalsConcededPerMatch": 2,
+    "gamesPlayed": 1
+  },
+  {
+    "id": 10,
+    "name": "Eleazaro Rossi",
+    "goalsConceded": 2,
+    "goalsConcededPerMatch": 2,
+    "gamesPlayed": 1
+  },
+  {
+    "id": 4,
+    "name": "Stefano Rapone",
+    "goalsConceded": 4,
+    "goalsConcededPerMatch": 2,
+    "gamesPlayed": 2
+  },
+  {
+    "id": 6,
+    "name": "Carmine Del Grosso",
+    "goalsConceded": 3,
+    "goalsConcededPerMatch": 3,
+    "gamesPlayed": 1
+  },
+  {
+    "id": 9,
+    "name": "Giorgia Fumo",
+    "goalsConceded": 4,
+    "goalsConcededPerMatch": 4,
+    "gamesPlayed": 1
+  },
+  {
+    "id": 8,
+    "name": "Francesco Mileto",
+    "goalsConceded": 8,
+    "goalsConcededPerMatch": 4,
+    "gamesPlayed": 2
+  },
+  {
+    "id": 11,
+    "name": "Michela Giraud",
+    "goalsConceded": 13,
+    "goalsConcededPerMatch": 4.33,
+    "gamesPlayed": 3
+  },
+  {
+    "id": 2,
+    "name": "Daniele Fabbri",
+    "goalsConceded": 9,
+    "goalsConcededPerMatch": 4.5,
+    "gamesPlayed": 2
+  },
+  {
+    "id": 7,
+    "name": "Tommaso Faoro",
+    "goalsConceded": 7,
+    "goalsConcededPerMatch": 7,
+    "gamesPlayed": 1
+  }
+]
