@@ -178,11 +178,7 @@ interface SSEStore {
   notifications: Record<number, SSENotifications>
 }
 
-type SSENotifications = Record<number, SSENotification>
-interface SSENotification {
-  goals: number
-  message: string[]
-}
+interface SSENotifications { message: string }
 interface User {
   email: string
 }

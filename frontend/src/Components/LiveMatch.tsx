@@ -1,9 +1,12 @@
-import { type FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { Box, Paper, Stack, Tooltip, Typography, keyframes, useTheme } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { ToastContainer, toast } from 'react-toastify'
+import { useAppDispatch, useAppSelector } from '../Utils/store'
+import { dismissMatchNotification, selectSseNotificationMatch } from '../Store/sse'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
-
+import 'react-toastify/dist/ReactToastify.css'
 interface LiveMatchProps {
   goBackToMatchPage: () => void
   match: Match
@@ -12,12 +15,25 @@ interface LiveMatchProps {
 const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
   const { t } = useTranslation()
   const theme = useTheme()
+  const dispatch = useAppDispatch()
+
+  const notification = useAppSelector(selectSseNotificationMatch(match.id))
 
   const blinkAnimation = keyframes`
   0% { color: ${theme.palette.primary.main}; }
   50% { color: ${theme.palette.secondary.main}; }
   100% { color: ${theme.palette.primary.main}; }
   `
+
+  useEffect(() => {
+    if (notification.message !== '') {
+      toast.success(notification.message, {
+        position: 'top-center',
+        autoClose: 5000
+      })
+      dispatch(dismissMatchNotification({ matchid: match.id }))
+    }
+  }, [dispatch, match.id, notification.message, t])
 
   return <Stack
     display='flex'
@@ -26,6 +42,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
     bgcolor={theme.palette.primary.main}
     data-testid="match-component"
   >
+    <ToastContainer position="top-center" autoClose={15000} />
     <Box display='flex' onClick={goBackToMatchPage} sx={{ cursor: 'pointer' }} height='10%' alignItems='center' padding='0 2vw'>
       <ArrowBackIosIcon color='secondary' />
       <Typography color={'secondary'}>{t('Match.back')}</Typography>
