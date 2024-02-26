@@ -346,3 +346,47 @@ export interface GetStrikerStatsDTO {
   goalsScoredPerMatch: number
   gamesPlayed: number
 }
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     NotifyBroadcast:
+ *       properties:
+ *         teamId:
+ *           type: string
+ *           example: 1
+ *         matchId:
+ *           type: string
+ *           example: 2
+ *         type:
+ *           type: string
+ *           enum:
+ *             - goalScored
+ *         text:
+ *           type: string
+ *           example: What a Great Goal
+ *       required:
+ *         - teamId
+ *         - matchId
+ *         - type
+ *         - text
+ */
+enum MessageType {
+  "goalScored" = "goalScored"
+}
+type MessageTypeMap = {
+  notify: NotifyBroadcast
+}
+export type BroadcastType = MessageTypeMap[keyof MessageTypeMap]
+type Broadcast = {
+  matchId: string;
+  type: keyof typeof MessageType;
+}
+type NotifyBroadcast = Broadcast & NotifyMessage
+type NotifyMessage = {
+  type: "goalScored"
+  text: string
+  teamId: string
+}
+export type SSEMessage = NotifyMessage

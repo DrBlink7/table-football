@@ -1,3 +1,4 @@
+import { BroadcastType, SSEMessage } from "./types";
 
 /**
  * With decodeToken we will check and validate token evenutally extracting the user_id
@@ -11,3 +12,19 @@ export const decodeToken = (token: string): string => token.split(" ")[1]
  * @returns true if el is null or undefined, false otherwise
  */
 export const missingInBody = (el: unknown): boolean => el === undefined || el === null
+
+export const formatSSEMessage = (body: BroadcastType): SSEMessage | null => {
+  switch (body.type) {
+    case "goalScored":
+      if (body.text)
+        return {
+          type: body.type,
+          text: body.text,
+          teamId: body.teamId
+        }
+      return null
+  }
+}
+
+export const isEmpty = (data: object | null) =>
+  !data || Object.keys(data).length === 0
