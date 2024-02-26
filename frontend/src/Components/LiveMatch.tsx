@@ -1,5 +1,5 @@
 import { useEffect, type FC } from 'react'
-import { Box, Paper, Stack, Tooltip, Typography, keyframes, useTheme } from '@mui/material'
+import { Box, Paper, Stack, Typography, keyframes, useTheme } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import { useAppDispatch, useAppSelector } from '../Utils/store'
@@ -71,21 +71,29 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
           </Box>
           <Paper key={match.id} elevation={2} sx={{ my: 1, p: 2, display: 'flex', width: '90%', alignSelf: 'center' }}>
             <Stack spacing={2} display='flex' flexDirection='column' key={match.id} width='100%'>
-              <Box display='flex' flexDirection='row' justifyContent='space-between'>
-                <Tooltip title={`${t('matches.defender')} ${match.blue.defender} ${t('matches.striker')} ${match.blue.striker}`}>
-                  <Typography variant="subtitle1" color="primary" sx={{ cursor: 'help' }}>
-                    {t('matches.teamBlue')}
-                  </Typography>
-                </Tooltip>
-                <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.blue.score}</Typography>
+              <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center' width='100%'>
+                <Typography color="primary" width='10%' fontWeight='700'>
+                  {t('matches.teamBlue')}
+                </Typography>
+                <Typography color="primary" width='40%'>
+                  {`${t('matches.defender')} ${match.blue.defender}`}
+                </Typography>
+                <Typography color="primary" width='40%'>
+                  {`${t('matches.striker')} ${match.blue.striker}`}
+                </Typography>
+                <Typography fontWeight='700' sx={{ marginLeft: '5vw' }} >{match.blue.score}</Typography>
               </Box>
               <Box display='flex' flexDirection='row' justifyContent='space-between'>
-                <Tooltip title={`${t('matches.defender')} ${match.red.defender} ${t('matches.striker')} ${match.red.striker}`}>
-                  <Typography variant="subtitle1" color="secondary" sx={{ cursor: 'help' }}>
-                    {t('matches.teamRed')}
-                  </Typography>
-                </Tooltip>
-                <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.red.score}</Typography>
+                <Typography color="secondary" width='10%' fontWeight='700'>
+                  {t('matches.teamRed')}
+                </Typography>
+                <Typography color="secondary" width='40%'>
+                  {`${t('matches.defender')} ${match.red.defender}`}
+                </Typography>
+                <Typography color="secondary" width='40%'>
+                  {`${t('matches.striker')} ${match.red.striker}`}
+                </Typography>
+                <Typography fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.red.score}</Typography>
               </Box>
             </Stack>
           </Paper>
