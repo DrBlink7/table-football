@@ -17,17 +17,30 @@ import { useTranslation } from 'react-i18next'
 interface CustomTableProps {
   columns: Column[]
   rows: any[]
-  selectedRow: number | null
-  handleRowSelect: (event: React.ChangeEvent<HTMLInputElement>) => void
+  selectedRow?: number | null
+  selectable?: boolean
+  defaultOrderBy?: string
+  defaultOrder?: 'asc' | 'desc'
+  tableHeight?: string
+  handleRowSelect?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleRowSelect }) => {
+const CustomTable: FC<CustomTableProps> = ({
+  selectable = true,
+  tableHeight = '83%',
+  columns,
+  rows,
+  selectedRow,
+  defaultOrder,
+  defaultOrderBy,
+  handleRowSelect
+}) => {
   const { t } = useTranslation()
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [orderBy, setOrderBy] = useState('id')
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
+  const [orderBy, setOrderBy] = useState(defaultOrderBy ?? 'id')
+  const [order, setOrder] = useState<'asc' | 'desc'>(defaultOrder ?? 'asc')
 
   const handleChangePage = useCallback((_: unknown, newPage: number) => {
     setPage(newPage)
@@ -52,16 +65,18 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
       ? a[orderBy] > b[orderBy] ? 1 : -1
       : a[orderBy] < b[orderBy] ? 1 : -1)
 
-  return <Box display='flex' width='100%' flexDirection='column' height='83%'>
+  return <Box display='flex' width='100%' flexDirection='column' height={tableHeight}>
     <Paper sx={{ width: '100%', overflow: 'hidden', height: '92%' }}>
       <TableContainer sx={{ maxHeight: '100%' }} data-testid="table-container">
         <Table stickyHeader aria-label="sticky table" size='small'>
           <TableHead>
             <TableRow>
-              <TableCell>
-                {t('table.select')}
-              </TableCell>
-              {columns.map((column, index) => (
+              {selectable &&
+                <TableCell>
+                  {t('table.select')}
+                </TableCell>
+              }
+              {columns.map((column, index) =>
                 <TableCell key={index}>
                   {column.sortable
                     ? (
@@ -77,7 +92,7 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
                       column.label
                     )}
                 </TableCell>
-              ))}
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -85,13 +100,15 @@ const CustomTable: FC<CustomTableProps> = ({ columns, rows, selectedRow, handleR
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
                 <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  <TableCell>
-                    <Radio
-                      name={`col_${index}`}
-                      checked={selectedRow === row.id}
-                      onChange={handleRowSelect}
-                      value={row.id} />
-                  </TableCell>
+                  {selectable &&
+                    <TableCell>
+                      <Radio
+                        name={`col_${index}`}
+                        checked={selectedRow === row.id}
+                        onChange={handleRowSelect}
+                        value={row.id} />
+                    </TableCell>
+                  }
                   {columns.map((column, index) => (
                     <TableCell key={index}>
                       {row[column.id]}

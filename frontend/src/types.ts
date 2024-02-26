@@ -109,6 +109,30 @@ interface EditMatchDTO {
 interface DeleteMatchDTO {
   id: number
 }
+interface GetRankingsDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  id: number
+  points: number
+  goalsScored: number
+  goalsConceded: number
+  gamesPlayed: number
+}
+
+interface GetDefenderStatsDTO {
+  id: number
+  name: string
+  goalsConceded: number
+  goalsConcededPerMatch: number
+  gamesPlayed: number
+}
+interface GetStrikerStatsDTO {
+  id: number
+  name: string
+  goalsScored: number
+  goalsScoredPerMatch: number
+  gamesPlayed: number
+}
 /**
  * Redux
  */
@@ -120,6 +144,7 @@ interface State {
   utilInfo: UtilStore
   teamInfo: TeamStore
   matchInfo: MatchStore
+  statsInfo: StatsStore
 }
 interface UserStore {
   user: User
@@ -139,6 +164,13 @@ interface UtilStore {
 interface TeamStore {
   teamList: Teams
   teamListStatus: Status
+  errorMessage: string
+}
+interface StatsStore {
+  rankings: Ranking[]
+  defenders: Player[]
+  strikers: Player[]
+  statsStatus: Status
   errorMessage: string
 }
 interface User {
@@ -169,6 +201,30 @@ interface Match {
   status: MatchStatus
 }
 type MatchStatus = 'preparing' | 'ongoing' | 'ended'
+interface Ranking {
+  striker: Player
+  defender: Player
+  id: number
+  points: number
+  goalsScored: number
+  goalsConceded: number
+  gamesPlayed: number
+}
+
+interface Defender {
+  id: number
+  name: string
+  goalsConceded: number
+  goalsConcededPerMatch: number
+  gamesPlayed: number
+}
+interface Striker {
+  id: number
+  name: string
+  goalsScored: number
+  goalsScoredPerMatch: number
+  gamesPlayed: number
+}
 /**
  * Utils
  */
@@ -198,3 +254,4 @@ interface Option {
   name: string
   id: number
 }
+type Stats = 'Rankings' | 'Defenders' | 'Strikers'

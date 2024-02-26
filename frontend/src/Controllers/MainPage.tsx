@@ -6,6 +6,7 @@ import { selectComponent } from '../Store/util'
 import Players from './Players'
 import Teams from './Teams'
 import Matches from './Matches'
+import Stats from './Stats'
 import DefaultHomeLogo from '../Components/DefaultHomeLogo'
 
 const MainPage: FC = () => {
@@ -32,16 +33,7 @@ const MainPage: FC = () => {
     case 'players':
       return <Players />
     case 'stats':
-      return <Stack
-        display='flex'
-        width='80%'
-        height='100%'
-        alignItems='center'
-        alignSelf='center'
-        justifyContent='center'
-        color={theme.palette.primary.contrastText}
-        bgcolor={theme.palette.primary.main}
-      >{t('home.stats')}</Stack>
+      return <Stats />
     default:
       return <DefaultHomeLogo />
   }
