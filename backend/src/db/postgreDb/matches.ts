@@ -1,7 +1,7 @@
 import { tablePlayers, tableTeams, tableMatches } from "../../config"
 import { dbConfig } from "."
 import { CheckOnGoingCols, DBMatchesTable, DBMatchesTeamsPlayerTable } from "./types"
-import { CreateMatchDTO, DeleteMatchDTO, EditMatchDTO } from "../../api/routers/types";
+import { CreateMatchDTO, DeleteMatchDTO, EditMatchDTO, GetMatchDTO } from "../../api/routers/types";
 import { formatMatchList, isAnInvalidMatch } from "./utils";
 import { getTeamInfo } from "./team";
 import { formatDeletedMatch } from "./utils";
@@ -203,4 +203,61 @@ export const addGoal = async (matchid: number, teamid: number) => {
   if (!results.rowCount || results.rowCount === 0) throw new Error(`Edit failed`)
 
   return
+}
+
+export const getMatch = async (matchid: string) => {
+  const numeric_id = Number(matchid)
+  if (isNaN(numeric_id)) throw new Error('Fetch failed, id not valid.')
+
+  const client = await dbConfig.connect()
+  const query = `
+    SELECT 
+      m.id AS match_id,
+      m.blue AS blue_team_id,
+      m.red AS red_team_id,
+      m.blue_score,
+      m.red_score,
+      m.status,
+      bt.striker AS blue_striker_id,
+      bt.defender AS blue_defender_id,
+      rt.striker AS red_striker_id,
+      rt.defender AS red_defender_id,
+      ptb.name AS blue_striker_name,
+      ptd.name AS blue_defender_name,
+      ptr.name AS red_striker_name,
+      prd.name AS red_defender_name
+    FROM ${tableMatches} AS m
+    LEFT JOIN ${tableTeams} AS bt ON m.blue = bt.id
+    LEFT JOIN ${tableTeams} AS rt ON m.red = rt.id
+    LEFT JOIN ${tablePlayers} AS ptb ON bt.striker = ptb.id
+    LEFT JOIN ${tablePlayers} AS ptd ON bt.defender = ptd.id
+    LEFT JOIN ${tablePlayers} AS ptr ON rt.striker = ptr.id
+    LEFT JOIN ${tablePlayers} AS prd ON rt.defender = prd.id
+    WHERE m.id = $1
+  `
+  const values = [numeric_id]
+
+  const results = await client.query<DBMatchesTeamsPlayerTable>(query, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error('Fetch failed, id not valid')
+
+  const row = results.rows[0]
+
+  return ({
+    blue: {
+      id: row.blue_team_id,
+      striker: row.blue_striker_name,
+      defender: row.blue_defender_name,
+      score: row.blue_score
+    },
+    red: {
+      id: row.red_team_id,
+      striker: row.red_striker_name,
+      defender: row.red_defender_name,
+      score: row.red_score
+    },
+    id: row.match_id,
+    status: row.status
+  }) satisfies GetMatchDTO
 }
