@@ -250,3 +250,56 @@ matchesRouter.delete(
     }
   })
 )
+
+/**
+ * @swagger
+ * /api/match/{id}:
+ *   get:
+ *     summary: Recupera il Match.
+ *     responses:
+ *       200:
+ *         description: Restituisce il Match.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/GetMatchDTO'
+ *       500:
+ *         description: Errore del server.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetMatchError'
+ *     tags:
+ *       - Matches
+ *     security:
+ *       - Authorization: []
+ */
+matchesRouter.get(
+  "/:id",
+  asyncErrWrapper(async (req, res) => {
+    try {
+      const token = req.headers["authorization"]
+      const { id } = req.params
+
+      if (!token) throw new Error("token is missing in headers")
+
+      decodeToken(token)
+
+      const getMatchTimestamp = performance.now()
+      const db = dbFactory(RepositoryType)
+      const data = await db.getMatch(id)
+      const fetchTime = Math.round(performance.now() - getMatchTimestamp)
+      Logger.writeEvent(`Matches: fetched match in ${fetchTime} ms`)
+
+      return res.status(200).json(data)
+    } catch (e) {
+      const { status, error } = formatError(
+        e as Error,
+        "018-RESPONSE",
+        "matchesRouter match get id"
+      )
+
+      return res.status(status).json(error)
+    }
+  })
+)
