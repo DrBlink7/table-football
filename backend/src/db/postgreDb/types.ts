@@ -63,7 +63,6 @@ export interface DBDStrikersCols {
   striker_red_name: string
   striker_blue_name: string
 }
-
 export interface CheckOnGoingCols {
   ongoing_matches_count: number
 }
