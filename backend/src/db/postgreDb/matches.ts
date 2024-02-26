@@ -1,6 +1,6 @@
 import { tablePlayers, tableTeams, tableMatches } from "../../config"
 import { dbConfig } from "."
-import { DBMatchesTable, DBMatchesTeamsPlayerTable } from "./types"
+import { CheckOnGoingCols, DBMatchesTable, DBMatchesTeamsPlayerTable } from "./types"
 import { CreateMatchDTO, DeleteMatchDTO, EditMatchDTO } from "../../api/routers/types";
 import { formatMatchList, isAnInvalidMatch } from "./utils";
 import { getTeamInfo } from "./team";
@@ -141,4 +141,34 @@ export const deleteMatch = async (id: string): Promise<DeleteMatchDTO> => {
   if (!results.rowCount || results.rowCount === 0) throw new Error('Delete failed, no rows deleted.')
 
   return formatDeletedMatch(results.rows[0])
+}
+
+export const startMatch = async (id: number): Promise<void> => {
+  const client = await dbConfig.connect()
+
+  const checkOngoingMatchQuery = `
+  SELECT COUNT(*) AS ongoing_matches_count
+  FROM ${tableMatches}
+  WHERE status = 'ongoing'
+  `;
+
+  const ongoingMatchesResult = await client.query<CheckOnGoingCols>(checkOngoingMatchQuery);
+
+  if (ongoingMatchesResult.rowCount && ongoingMatchesResult.rowCount > 0) {
+    throw new Error('Edit failed, ex. it can be only one ongoing match.')
+  }
+
+  const query = `
+  UPDATE ${tableMatches}
+  SET status = 'ongoing'
+  WHERE id=$1 AND status = 'preparing'
+  `
+  const values = [id]
+
+  const results = await client.query<DBMatchesTable>(query, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error('Edit failed, ex. only preparing match can start.')
+
+  return
 }
