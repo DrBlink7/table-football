@@ -6,30 +6,36 @@ export const sse = createSlice({
   initialState: sseInitialState,
   reducers: {
     clearSseState: () => sseInitialState,
-    addMatchNotification: (state, action: PayloadAction<{ matchid: number, teamid: number, goal: number, text: string }>) => {
-      const { goal, teamid, matchid, text } = action.payload
+    addMatchNotification: (state, action: PayloadAction<{ matchid: number, message: string }>) => {
+      const { matchid, message } = action.payload
       const notifications = { ...state.notifications }
       state.notifications = {
         ...notifications,
         [matchid]: {
-          ...notifications[matchid],
-          [teamid]: {
-            goals: Boolean(notifications[matchid]?.[teamid]?.goals) ? notifications[matchid][teamid].goals += goal : goal,
-            message: Boolean(notifications[matchid]?.[teamid]?.message) ? [...notifications[matchid][teamid].message, text] : [text]
-          }
+          message
+        }
+      }
+    },
+    dismissMatchNotification: (state, action: PayloadAction<{ matchid: number }>) => {
+      const { matchid } = action.payload
+      const notifications = { ...state.notifications }
+      state.notifications = {
+        ...notifications,
+        [matchid]: {
+          message: ''
         }
       }
     }
   }
 })
 
-export const { clearSseState, addMatchNotification } = sse.actions
+export const { clearSseState, addMatchNotification, dismissMatchNotification } = sse.actions
 
 export const selectSseNotifications = (state: State): State['sseInfo']['notifications'] => ({ ...state.sseInfo.notifications })
 export const selectSseNotificationMatch = (matchid: number) => (state: State) => {
   const notifications = { ...state.sseInfo.notifications }
   if (Boolean(notifications[matchid])) {
-    return notifications[matchid] ?? []
+    return notifications[matchid] ?? { message: '' }
   }
-  return []
+  return { message: '' }
 }

@@ -14,7 +14,7 @@ const useMatchConnection = (userid: string): void => {
       const data: NotifyMessage = JSON.parse(event.data)
       switch (data.type) {
         case 'goalScored':
-          dispatch(addMatchNotification({ matchid: data.matchid, teamid: data.teamid, goal: 1, text: data.text }))
+          dispatch(addMatchNotification({ matchid: data.matchid, message: data.text }))
           dispatch(addGoal({ matchid: data.matchid, teamid: data.teamid }))
           break
       }
