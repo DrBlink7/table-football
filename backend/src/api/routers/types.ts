@@ -387,7 +387,7 @@ type Broadcast = {
   userid: string
   type: keyof typeof MessageType;
 }
-type NotifyBroadcast = Broadcast & NotifyMessage
+export type NotifyBroadcast = Broadcast & NotifyMessage
 type NotifyMessage = {
   type: "goalScored"
   text: string

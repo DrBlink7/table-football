@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express"
 import { RepositoryType, clients } from "../../config"
 import { asyncErrWrapper, formatError } from "../errorHandling"
 import { formatSSEMessage, isEmpty } from "./utils"
-import { BroadcastType, startMatchBODY } from "./types"
+import { BroadcastType, NotifyBroadcast, startMatchBODY } from "./types"
 import { dbFactory } from "../../db"
 
 export const notificationRouter = express.Router()
@@ -45,8 +45,13 @@ const sseBroadcast = (req: Request, _res: Response, next: NextFunction) => {
 notificationRouter.post(
   "/addgoal",
   sseBroadcast,
-  asyncErrWrapper(async (_req, res) => {
+  asyncErrWrapper(async (req, res) => {
     try {
+      const body: NotifyBroadcast = req.body
+      const { teamid, matchid } = body
+      const db = dbFactory(RepositoryType)
+      await db.addGoal(matchid, teamid)
+
       return res.status(204).json()
     } catch (err) {
       const { status, error } = formatError(err)

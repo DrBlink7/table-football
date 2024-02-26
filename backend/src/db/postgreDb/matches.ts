@@ -172,3 +172,35 @@ export const startMatch = async (id: number): Promise<void> => {
 
   return
 }
+
+export const addGoal = async (matchid: number, teamid: number) => {
+  const client = await dbConfig.connect()
+  const select = `
+  SELECT red, blue
+  FROM ${tableMatches}
+  WHERE id = $1 AND status = 'ongoing'
+  `
+  const values = [matchid];
+  const queryResult = await client.query<DBMatchesTable>(select, values)
+
+  if (!queryResult.rowCount || queryResult.rowCount === 0) throw new Error(`Edit failed, matchid not valid`)
+
+  const blue = queryResult.rows[0].blue;
+  const red = queryResult.rows[0].red;
+  if (teamid !== blue && teamid !== red) throw new Error(`Edit failed: no team ${teamid} in match ${matchid}.`)
+
+  const scoreToUpdate = (teamid === blue) ? 'blue_score' : 'red_score'
+
+  const updateQuery = `
+  UPDATE ${tableMatches}
+  SET ${scoreToUpdate} = ${scoreToUpdate} + 1
+  WHERE id = $1 AND status = 'ongoing'
+  `
+
+  const results = await client.query<DBMatchesTable>(updateQuery, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error(`Edit failed`)
+
+  return
+}
