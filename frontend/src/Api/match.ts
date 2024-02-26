@@ -13,3 +13,6 @@ export const editMatch = async (token: string, id: string, blue: number, red: nu
 
 export const deleteMatch = async (token: string, id: string): Promise<AxiosResponse<DeleteMatchDTO>> =>
   await axiosClient.delete(`/match/${id}`, createApiHeaders(token))
+
+export const retrieveMatch = async (token: string, id: string): Promise<AxiosResponse<GetMatchDTO>> =>
+  await axiosClient.get(`/match/${id}`, createApiHeaders(token))

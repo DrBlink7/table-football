@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { formatThunkError, matchInitialState } from '../Utils/store'
-import { createMatch, deleteMatch, editMatch, retrieveMatches } from '../Api/match'
+import { createMatch, deleteMatch, editMatch, retrieveMatch, retrieveMatches } from '../Api/match'
 
 type RetrieveMatchListProps = Token
 
@@ -83,6 +83,25 @@ export const deleteAMatch = createAsyncThunk(
   }
 )
 
+type RetrieveMatchProps = Token & {
+  id: string
+}
+
+export const retrieveAMatch = createAsyncThunk(
+  'retrieveAMatch',
+  async ({ token, id }: RetrieveMatchProps, thunkApi) => {
+    try {
+      const response = await retrieveMatch(token, id)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'retrieveAMatch error'
+      )
+    }
+  }
+)
 export const match = createSlice({
   name: 'match',
   initialState: matchInitialState,
@@ -93,6 +112,31 @@ export const match = createSlice({
     },
     setErrorMessage: (state, action: { payload: MatchStore['errorMessage'] }) => {
       state.errorMessage = action.payload
+    },
+    addGoal: (state, action: { payload: AddGoal }) => {
+      const { matchid, teamid } = action.payload
+      const matches = [...state.matchList]
+      const match = matches.find(m => m.id === matchid)
+      if (match === undefined) return
+
+      const others = matches.filter(match => match.id !== matchid)
+      if (match.blue.id === teamid) {
+        state.matchList = [...others, {
+          ...match,
+          blue: {
+            ...match.blue,
+            score: match.blue.score + 1
+          }
+        }]
+      } else if (match.red.id === teamid) {
+        state.matchList = [...others, {
+          ...match,
+          red: {
+            ...match.red,
+            score: match.red.score + 1
+          }
+        }]
+      }
     }
   },
   extraReducers: (builder) => {
@@ -156,12 +200,27 @@ export const match = createSlice({
       state.matchListStatus = 'success'
       state.matchList = [...state.matchList].filter(match => match.id !== id)
     })
+    builder.addCase(retrieveAMatch.pending, (state) => {
+      state.matchListStatus = 'loading'
+    })
+    builder.addCase(retrieveAMatch.rejected, (state, action) => {
+      state.matchListStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.matchList = matchInitialState.matchList
+    })
+    builder.addCase(retrieveAMatch.fulfilled, (state, action) => {
+      const data = action.payload
+      state.matchListStatus = 'success'
+      const matches = state.matchList.filter(match => match.id !== data.id)
+      state.matchList = [...matches, data]
+    })
   }
 })
 
 export const {
   clearMatchState,
   setErrorMessage,
+  addGoal,
   clearErrorMessage
 } = match.actions
 
