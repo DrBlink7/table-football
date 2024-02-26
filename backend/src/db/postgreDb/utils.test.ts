@@ -1,5 +1,6 @@
-import { DBMatchesTable, DBMatchesTeamsPlayerTable } from "./types";
-import { formatTagList, formatCreatedPlayerRow, formatEditedPlayerRow, formatDeletedPlayerRow, formatTeamList, formatDeletedTeamRow, formatMatchList, isAnInvalidMatch, formatDeletedMatch } from "./utils";
+import { GetRankingsDTO } from "../../api/routers/types";
+import { DBMatchesTable, DBMatchesTeamsPlayerTable, DBRankingsCols } from "./types";
+import { formatTagList, formatCreatedPlayerRow, formatEditedPlayerRow, formatDeletedPlayerRow, formatTeamList, formatDeletedTeamRow, formatMatchList, isAnInvalidMatch, formatDeletedMatch, formatRankings, sortRankingResult, sortDefenderResult, sortStrikerResult } from "./utils";
 
 describe('formatTagList', () => {
   it('should format tag list correctly', () => {
@@ -138,3 +139,61 @@ describe('formatDeletedMatch', () => {
     expect(result).toEqual({ id: 1 });
   });
 });
+
+describe('formatRankings function', () => {
+  it('should format rankings correctly', () => {
+    const rows: DBRankingsCols[] = [
+      { match_id: 1, status: 'ended', blue_team_id: 1, blue_striker_id: 101, blue_striker_name: 'John', blue_defender_id: 102, blue_defender_name: 'Doe', blue_score: 2, red_team_id: 2, red_striker_id: 201, red_striker_name: 'Alice', red_defender_id: 202, red_defender_name: 'Bob', red_score: 1 },
+    ]
+    const result = formatRankings(rows)
+    expect(result).toHaveLength(rows.length * 2)
+    result.forEach(item => {
+      expect(item).toHaveProperty('id');
+      expect(item).toHaveProperty('points');
+      expect(item).toHaveProperty('goalsScored');
+      expect(item).toHaveProperty('goalsConceded');
+      expect(item).toHaveProperty('gamesPlayed');
+      expect(item.striker).toHaveProperty('id');
+      expect(item.striker).toHaveProperty('name');
+      expect(item.defender).toHaveProperty('id');
+      expect(item.defender).toHaveProperty('name');
+    })
+  })
+})
+
+describe('sortRankingResult function', () => {
+  it('should sort ranking results correctly', () => {
+    const result: GetRankingsDTO[] = [
+      { defender: { id: 1, name: 'john' }, striker: { id: 2, name: 'jane' }, id: 1, points: 10, goalsScored: 5, goalsConceded: 3, gamesPlayed: 4 },
+      { defender: { id: 3, name: 'pat' }, striker: { id: 4, name: 'daria' }, id: 2, points: 12, goalsScored: 6, goalsConceded: 4, gamesPlayed: 3 }
+    ]
+    const sortedResult = sortRankingResult(result);
+    expect(sortedResult).toHaveLength(result.length);
+    expect(sortedResult[0].points).toBeGreaterThanOrEqual(sortedResult[1].points);
+  })
+})
+
+describe('sortDefenderResult function', () => {
+  it('should sort defender stats correctly', () => {
+    const result = [
+      { id: 101, name: 'John', goalsConceded: 8, goalsConcededPerMatch: 1.6, gamesPlayed: 5 },
+      { id: 102, name: 'Doe', goalsConceded: 5, goalsConcededPerMatch: 1.25, gamesPlayed: 4 }
+    ]
+    const sortedResult = sortDefenderResult(result)
+    expect(sortedResult).toHaveLength(result.length)
+    expect(sortedResult[1].goalsConcededPerMatch).toBeGreaterThanOrEqual(sortedResult[0].goalsConcededPerMatch);
+  })
+})
+
+describe('sortStrikerResult function', () => {
+  it('should sort striker stats correctly', () => {
+    const result = [
+      { id: 201, name: 'Alice', goalsScored: 12, goalsScoredPerMatch: 2.4, gamesPlayed: 5 },
+      { id: 202, name: 'Bob', goalsScored: 8, goalsScoredPerMatch: 1.6, gamesPlayed: 5 }
+    ]
+    const sortedResult = sortStrikerResult(result)
+    expect(sortedResult).toHaveLength(result.length)
+    expect(sortedResult[0].goalsScoredPerMatch).toBeGreaterThanOrEqual(sortedResult[1].goalsScoredPerMatch)
+  })
+})
+
