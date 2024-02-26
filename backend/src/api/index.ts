@@ -1,12 +1,14 @@
-import express, { Request, Response } from "express";
-import { ServerPort } from "../config";
-import { loginRouter } from "./routers/login";
-import { playerRouter } from "./routers/player";
-import { teamRouter } from "./routers/team";
-import { matchesRouter } from "./routers/matches";
-import { statsRouter } from "./routers/stats";
+import express, { Request, Response } from "express"
+import { ServerPort } from "../config"
+import { loginRouter } from "./routers/login"
+import { playerRouter } from "./routers/player"
+import { teamRouter } from "./routers/team"
+import { matchesRouter } from "./routers/matches"
+import { statsRouter } from "./routers/stats"
+import { sseHandler } from "./sse"
+import { notificationRouter } from "./routers/notify"
 
-export const apiRouter = express.Router();
+export const apiRouter = express.Router()
 
 /**
  * @swagger
@@ -34,3 +36,7 @@ apiRouter.use("/player", playerRouter)
 apiRouter.use("/team", teamRouter)
 apiRouter.use("/match", matchesRouter)
 apiRouter.use("/stats", statsRouter)
+apiRouter.use("/notification", notificationRouter)
+
+apiRouter.get("/sse", sseHandler)
+apiRouter.options("/sse", sseHandler)
