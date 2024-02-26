@@ -49,7 +49,7 @@ const MatchList: FC<MatchListProps> = ({
     </Box>
     {isOpen && matches.map(match => (
       <Paper key={match.id} elevation={2} sx={{ my: 1, p: 2 }}>
-        <Stack spacing={2} display='flex' flexDirection='column' key={match.id}>
+        <Stack spacing={2} display='flex' flexDirection='column' key={match.id} width='100%'>
           {match.status === 'ongoing'
             ? <Box
               display='flex'
@@ -84,33 +84,50 @@ const MatchList: FC<MatchListProps> = ({
                 <Typography>{t('matches.delete')}</Typography>
                 <DeleteForeverOutlinedIcon onClick={() => { matchToDelete(match.id) }} sx={{ cursor: 'pointer' }} />
               </>}
-            </Box>}
-          <Box display='flex' flexDirection='row' justifyContent='space-between'>
-            <Tooltip title={`${t('matches.defender')} ${match.blue.defender} ${t('matches.striker')} ${match.blue.striker}`}>
-              <Typography variant="subtitle1" color="primary" sx={{ cursor: 'help' }}>
+            </Box>
+          }
+          <Box display='flex' flexDirection='row' justifyContent='space-between' width='100%'>
+            <Tooltip
+              title={`${t('matches.defender')} ${match.blue.defender} ${t('matches.striker')} ${match.blue.striker}`}
+              sx={{ width: '15%', display: 'flex' }}
+            >
+              <Typography variant="subtitle1" color="primary" sx={{ cursor: 'help', width: '15%' }}>
                 {t('matches.teamBlue')}
               </Typography>
             </Tooltip>
-            <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.blue.score}</Typography>
+            <Typography variant="body1" fontWeight='700' width='30%' display='flex' justifyContent='flex-end'>
+              {match.blue.score}
+            </Typography>
             <Typography
               variant='body1'
               sx={{ textDecoration: 'underline', cursor: 'pointer' }}
               onClick={() => { goToTeamPage(match.blue.id) }}
+              width='55%'
+              display='flex'
+              justifyContent='flex-end'
             >
               {t('matches.teamPage')}
             </Typography>
           </Box>
-          <Box display='flex' flexDirection='row' justifyContent='space-between'>
-            <Tooltip title={`${t('matches.defender')} ${match.red.defender} ${t('matches.striker')} ${match.red.striker}`}>
-              <Typography variant="subtitle1" color="secondary" sx={{ cursor: 'help' }}>
+          <Box display='flex' flexDirection='row' justifyContent='space-between' width='100%'>
+            <Tooltip
+              title={`${t('matches.defender')} ${match.red.defender} ${t('matches.striker')} ${match.red.striker}`}
+              sx={{ width: '15%', display: 'flex' }}
+            >
+              <Typography variant="subtitle1" color="secondary" sx={{ cursor: 'help', width: '15%' }}>
                 {t('matches.teamRed')}
               </Typography>
             </Tooltip>
-            <Typography variant="body1" fontWeight='700' sx={{ marginLeft: '5vw' }}>{match.red.score}</Typography>
+            <Typography variant="body1" fontWeight='700' width='30%' display='flex' justifyContent='flex-end'>
+              {match.red.score}
+            </Typography>
             <Typography
               variant='body1'
               sx={{ textDecoration: 'underline', cursor: 'pointer' }}
               onClick={() => { goToTeamPage(match.red.id) }}
+              width='55%'
+              display='flex'
+              justifyContent='flex-end'
             >
               {t('matches.teamPage')}
             </Typography>
