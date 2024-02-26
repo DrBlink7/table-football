@@ -13,7 +13,8 @@ const home = {
   logout: 'Log Out',
   players: 'Players',
   team: 'Teams',
-  matches: 'Matches'
+  matches: 'Matches',
+  stats: 'Stats'
 }
 const login = {
   signin: 'Sign In',
@@ -40,7 +41,12 @@ const Player = {
   editButton: 'Edit',
   delete: 'Delete A Player',
   browse: 'Browse A Player',
-  validationError: 'Do not insert any unsafe value'
+  validationError: 'Do not insert any unsafe value',
+  goalsConceded: 'Conceded Goals',
+  goalsConcededPerMatch: 'Conceded Goals (Match)',
+  goalsScored: 'Scored Goals',
+  goalsScoredPerMatch: 'Scored Goals (Match)',
+  gamesPlayed: 'Games Played'
 }
 const confirmationDialog = {
   title: 'Confirm Action',
@@ -67,6 +73,10 @@ const player = {
 const Team = {
   title: 'Teams',
   id: 'Team ID',
+  defender_name: 'Defender',
+  defender_id: 'Defender ID',
+  striker_name: 'Striker',
+  striker_id: 'Striker ID',
   name: 'Team Name',
   defenderRequired: 'Defender is required to form a Team',
   strikerRequired: 'Striker is required to form a Team',
@@ -78,7 +88,11 @@ const Team = {
   editButton: 'Edit',
   delete: 'Delete A Team',
   browse: 'Browse A Team',
-  validationError: 'Do not insert any unsafe value'
+  validationError: 'Do not insert any unsafe value',
+  points: 'Points',
+  goalsScored: 'Scored',
+  goalsConceded: 'Conceded',
+  gamesPlayed: 'Played'
 }
 const deleteTeam = {
   title: 'Team Delete',
@@ -112,6 +126,12 @@ const matches = {
 const Match = {
   id: 'Match Id: '
 }
+const stats = {
+  label: 'Choose the Leaderboard',
+  rankings: 'Teams Leaderboard',
+  strikers: 'Strikers Leaderboard',
+  defenders: 'Defenders Leaderboard'
+}
 
 const en = {
   loader,
@@ -128,7 +148,8 @@ const en = {
   deleteTeam,
   team,
   matches,
-  Match
+  Match,
+  stats
 }
 
 export default en

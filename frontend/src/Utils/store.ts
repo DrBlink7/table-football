@@ -14,6 +14,7 @@ export const loadState = (): State => {
         playerInfo: playerInitialState,
         teamInfo: teamInitialState,
         matchInfo: matchInitialState,
+        statsInfo: statsInitialState,
         utilInfo: utilsInitialState
       }
     }
@@ -27,6 +28,7 @@ export const loadState = (): State => {
       playerInfo: playerInitialState,
       teamInfo: teamInitialState,
       matchInfo: matchInitialState,
+      statsInfo: statsInitialState,
       utilInfo: utilsInitialState
     }
   }
@@ -68,6 +70,14 @@ export const teamInitialState: TeamStore = {
 export const matchInitialState: MatchStore = {
   matchList: [],
   matchListStatus: 'idle',
+  errorMessage: ''
+}
+
+export const statsInitialState: StatsStore = {
+  defenders: [],
+  strikers: [],
+  rankings: [],
+  statsStatus: 'idle',
   errorMessage: ''
 }
 
