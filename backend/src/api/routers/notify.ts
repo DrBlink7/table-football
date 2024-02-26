@@ -1,8 +1,9 @@
 import express, { NextFunction, Request, Response } from "express"
-import { clients } from "../../config"
+import { RepositoryType, clients } from "../../config"
 import { asyncErrWrapper, formatError } from "../errorHandling"
 import { formatSSEMessage, isEmpty } from "./utils"
-import { BroadcastType } from "./types"
+import { BroadcastType, startMatchBODY } from "./types"
+import { dbFactory } from "../../db"
 
 export const notificationRouter = express.Router()
 
@@ -61,3 +62,42 @@ const sendEventStreamData = (data: any, res: Response) => {
   res.write(sseFormattedResponse)
   res.flush()
 }
+
+/**
+ * @swagger
+ * /api/notification/startmatch:
+ *   post:
+ *     summary: Fa partire un Match
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/startMatchBODY'
+ *     responses:
+ *       204:
+ *         description: Notification inviata con successo
+ *       500:
+ *         description: Errore del server.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GenericError'
+ *     tags:
+ *       - Notification
+ */
+notificationRouter.post(
+  "/startmatch",
+  asyncErrWrapper(async (req, res) => {
+    try {
+      const body: startMatchBODY = req.body
+      const { matchId } = body
+      const db = dbFactory(RepositoryType)
+      await db.startMatch(matchId)
+
+      return res.status(204).json()
+    } catch (err) {
+      const { status, error } = formatError(err)
+      return res.status(status).json(error)
+    }
+  })
+)

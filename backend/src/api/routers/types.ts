@@ -371,6 +371,10 @@ export interface GetStrikerStatsDTO {
  *         - matchId
  *         - type
  *         - text
+ *     startMatchBODY:
+ *       properties:
+ *         matchId:
+ *           type: number
  */
 enum MessageType {
   "goalScored" = "goalScored"
@@ -380,7 +384,7 @@ type MessageTypeMap = {
 }
 export type BroadcastType = MessageTypeMap[keyof MessageTypeMap]
 type Broadcast = {
-  matchId: string;
+  matchId: string
   type: keyof typeof MessageType;
 }
 type NotifyBroadcast = Broadcast & NotifyMessage
@@ -390,3 +394,6 @@ type NotifyMessage = {
   teamId: string
 }
 export type SSEMessage = NotifyMessage
+export interface startMatchBODY {
+  matchId: number
+}
