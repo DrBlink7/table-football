@@ -79,7 +79,7 @@ export const getDefenderStats = async (): Promise<GetDefenderStatsDTO[]> => {
       }
       acc[defenderId].goalsConceded += score
       acc[defenderId].gamesPlayed++
-      acc[defenderId].goalsConcededPerMatch = acc[defenderId].goalsConceded / acc[defenderId].gamesPlayed
+      acc[defenderId].goalsConcededPerMatch = Number((acc[defenderId].goalsConceded / acc[defenderId].gamesPlayed).toFixed(2))
     }
 
     addDefenderStats(row.defender_red_id, row.score_blue)
@@ -130,7 +130,7 @@ export const getStrikerStats = async (): Promise<GetStrikerStatsDTO[]> => {
       }
       acc[strikerId].goalsScored += score
       acc[strikerId].gamesPlayed++
-      acc[strikerId].goalsScoredPerMatch = acc[strikerId].goalsScored / acc[strikerId].gamesPlayed
+      acc[strikerId].goalsScoredPerMatch = Number((acc[strikerId].goalsScored / acc[strikerId].gamesPlayed).toFixed(2))
     }
 
     addStrikerStats(row.striker_red_id, row.score_red)
