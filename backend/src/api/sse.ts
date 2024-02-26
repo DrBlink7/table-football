@@ -19,7 +19,9 @@ export const sseHandler = (req: Request, res: Response, next: NextFunction) => {
 
   res.flushHeaders()
 
-  const userId = req.query.userId as string
+  const userId = req.query.userid
+  if (typeof userId !== 'string') throw new Error('userid must be a string')
+
   clients.set(userId, res)
 
   res.on("close", () => {

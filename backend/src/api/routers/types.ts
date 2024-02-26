@@ -353,11 +353,11 @@ export interface GetStrikerStatsDTO {
  *   schemas:
  *     NotifyBroadcast:
  *       properties:
- *         teamId:
- *           type: string
+ *         teamid:
+ *           type: number
  *           example: 1
- *         matchId:
- *           type: string
+ *         matchid:
+ *           type: number
  *           example: 2
  *         type:
  *           type: string
@@ -367,13 +367,13 @@ export interface GetStrikerStatsDTO {
  *           type: string
  *           example: What a Great Goal
  *       required:
- *         - teamId
- *         - matchId
+ *         - teamid
+ *         - matchid
  *         - type
  *         - text
  *     startMatchBODY:
  *       properties:
- *         matchId:
+ *         matchid:
  *           type: number
  */
 enum MessageType {
@@ -384,16 +384,17 @@ type MessageTypeMap = {
 }
 export type BroadcastType = MessageTypeMap[keyof MessageTypeMap]
 type Broadcast = {
-  matchId: string
+  userid: string
   type: keyof typeof MessageType;
 }
 type NotifyBroadcast = Broadcast & NotifyMessage
 type NotifyMessage = {
   type: "goalScored"
   text: string
-  teamId: string
+  teamid: number
+  matchid: number
 }
 export type SSEMessage = NotifyMessage
 export interface startMatchBODY {
-  matchId: number
+  matchid: number
 }

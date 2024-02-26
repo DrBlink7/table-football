@@ -9,13 +9,11 @@ export const notificationRouter = express.Router()
 
 const sseBroadcast = (req: Request, _res: Response, next: NextFunction) => {
   const body: BroadcastType = req.body
-  const matchId = body.matchId
   const data = formatSSEMessage(body)
   if (!isEmpty(data)) {
-    const userConnection = clients.get(matchId)
-    if (userConnection) {
+    clients.forEach(userConnection =>
       sendEventStreamData(data, userConnection)
-    }
+    )
   }
 
   next()
@@ -90,9 +88,9 @@ notificationRouter.post(
   asyncErrWrapper(async (req, res) => {
     try {
       const body: startMatchBODY = req.body
-      const { matchId } = body
+      const { matchid } = body
       const db = dbFactory(RepositoryType)
-      await db.startMatch(matchId)
+      await db.startMatch(matchid)
 
       return res.status(204).json()
     } catch (err) {
