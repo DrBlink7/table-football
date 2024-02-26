@@ -20,7 +20,8 @@ export const formatSSEMessage = (body: BroadcastType): SSEMessage | null => {
         return {
           type: body.type,
           text: body.text,
-          teamId: body.teamId
+          teamid: body.teamid,
+          matchid: body.matchid
         }
       return null
   }
