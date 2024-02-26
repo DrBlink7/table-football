@@ -124,7 +124,9 @@ const matches = {
   dialogText: 'Are you sure you want to delete this Match? Match id: '
 }
 const Match = {
-  id: 'Match Id: '
+  id: 'Match Id: ',
+  title: 'Match Title: ',
+  back: 'Go Back to Match Page'
 }
 const stats = {
   label: 'Choose the Leaderboard',
