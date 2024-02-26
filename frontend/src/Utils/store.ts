@@ -15,7 +15,8 @@ export const loadState = (): State => {
         teamInfo: teamInitialState,
         matchInfo: matchInitialState,
         statsInfo: statsInitialState,
-        utilInfo: utilsInitialState
+        utilInfo: utilsInitialState,
+        sseInfo: sseInitialState
       }
     }
 
@@ -29,7 +30,8 @@ export const loadState = (): State => {
       teamInfo: teamInitialState,
       matchInfo: matchInitialState,
       statsInfo: statsInitialState,
-      utilInfo: utilsInitialState
+      utilInfo: utilsInitialState,
+      sseInfo: sseInitialState
     }
   }
 }
@@ -83,6 +85,10 @@ export const statsInitialState: StatsStore = {
 
 export const utilsInitialState: UtilStore = {
   component: 'home'
+}
+
+export const sseInitialState: SSEStore = {
+  notifications: {}
 }
 
 export const useAppSelector: TypedUseSelectorHook<State> = useSelector

@@ -7,3 +7,4 @@ export const randomBg = 'url(https://source.unsplash.com/random?wallpapers)'
 export const mainColor = '#003049'
 export const secondaryColor = '#d62828'
 export const Version = packageJson.version
+export const beHost = process.env.REACT_APP_BE_HOST ?? 'http://localhost:3001'

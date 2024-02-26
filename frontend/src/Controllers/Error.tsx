@@ -3,19 +3,38 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Box, Typography, Button } from '@mui/material'
 import { useLogger } from '../Hooks/Logger'
+import { clearMatchState } from '../Store/match'
+import { clearPlayerState } from '../Store/player'
+import { clearSseState } from '../Store/sse'
+import { clearStatsState } from '../Store/stats'
+import { clearTeamState } from '../Store/team'
+import { clearUserState, logout } from '../Store/users'
+import { clearUtilsState } from '../Store/util'
+import { useAppDispatch } from '../Utils/store'
 import ErrorLayout from '../Components/ErrorLayout'
+import * as ls from '../Utils/ls'
 
 const ErrorBoundary: FC<WithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const Logger = useLogger()
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const resetErrorBoundary = useCallback(() => {
+    dispatch(clearUserState())
+    dispatch(clearPlayerState())
+    dispatch(clearUtilsState())
+    dispatch(clearTeamState())
+    dispatch(clearMatchState())
+    dispatch(clearStatsState())
+    dispatch(clearSseState())
+    dispatch(logout())
     setErrorMessage(null)
+    ls.del('tableFootball')
     navigate('/login')
-  }, [navigate])
+  }, [dispatch, navigate])
 
   const clearError = useCallback(() => {
     setErrorMessage(null)

@@ -125,7 +125,8 @@ const matches = {
 }
 const Match = {
   id: 'Match Id: ',
-  title: 'Match Title: ',
+  title: 'Match',
+  live: 'Live Match',
   back: 'Go Back to Match Page'
 }
 const stats = {

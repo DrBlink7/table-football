@@ -141,10 +141,11 @@ type Status = 'success' | 'idle' | 'error' | 'loading'
 interface State {
   userInfo: UserStore
   playerInfo: PlayerStore
-  utilInfo: UtilStore
   teamInfo: TeamStore
   matchInfo: MatchStore
   statsInfo: StatsStore
+  utilInfo: UtilStore
+  sseInfo: SSEStore
 }
 interface UserStore {
   user: User
@@ -172,6 +173,15 @@ interface StatsStore {
   strikers: Player[]
   statsStatus: Status
   errorMessage: string
+}
+interface SSEStore {
+  notifications: Record<number, SSENotifications>
+}
+
+type SSENotifications = Record<number, SSENotification>
+interface SSENotification {
+  goals: number
+  message: string[]
 }
 interface User {
   email: string
@@ -210,7 +220,6 @@ interface Ranking {
   goalsConceded: number
   gamesPlayed: number
 }
-
 interface Defender {
   id: number
   name: string
@@ -224,6 +233,10 @@ interface Striker {
   goalsScored: number
   goalsScoredPerMatch: number
   gamesPlayed: number
+}
+interface AddGoal {
+  matchid: number
+  teamid: number
 }
 /**
  * Utils
@@ -255,3 +268,9 @@ interface Option {
   id: number
 }
 type Stats = 'Rankings' | 'Defenders' | 'Strikers'
+interface NotifyMessage {
+  type: 'goalScored'
+  text: string
+  teamid: number
+  matchid: number
+}

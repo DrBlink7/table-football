@@ -21,6 +21,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { selectTeamList } from '../Store/team'
 import Scrollbar from 'react-perfect-scrollbar'
+import useMatchConnection from '../Hooks/useMatchConnection'
 import CustomOptionsModal from './CustomOptionsModal'
 import MatchList from './MatchList'
 import Loader from '../Components/Loader'
@@ -191,6 +192,8 @@ const Matches: FC = () => {
     })()
       .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
   }, [token, dispatch])
+
+  useMatchConnection(token)
 
   if (matchListStatus === 'loading') {
     return <Loader />
