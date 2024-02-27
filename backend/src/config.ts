@@ -26,3 +26,4 @@ export const tablePlayers = "players"
 export const tableTeams = "teams"
 export const tableMatches = "matches"
 export const clients = new Map<string, any>()
+export const secretKey = process.env.SECRET_KEY ?? 'unaChiaveSegreta'

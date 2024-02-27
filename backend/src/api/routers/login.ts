@@ -1,5 +1,6 @@
 import { Logger } from "../../logger";
 import { asyncErrWrapper, formatError } from "../errorHandling";
+import { encryptData } from "./utils";
 import express from "express";
 
 export const loginRouter = express.Router();
@@ -63,7 +64,8 @@ loginRouter.post("/authenticate", asyncErrWrapper(async (req, res) => {
 
       return res.status(400).json({ code: errorCode, message: errorMessage });
     }
-    const token = 'token' // TODO: here we need to call UMA or another login provider.
+    const token = encryptData(email)
+
     return res.status(200).json({ token, email });
   } catch (err) {
     const { status, error } = formatError(err, '001-Auth', 'loginRouter/authenticate');
