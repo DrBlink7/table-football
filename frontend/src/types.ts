@@ -13,6 +13,7 @@ interface PlayerInputs {
 interface TeamInputs {
   striker: string
   defender: string
+  name: string
 }
 interface MatchInputs {
   blue: string
@@ -56,32 +57,37 @@ interface GetTeamDTO {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
   id: number
+  name: string
 }
 type GetTeamsDTO = GetTeamDTO[]
 interface CreateTeamBODY {
   striker: number
   defender: number
+  name: string
 }
 interface CreateTeamDTO {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
+  name: string
   id: number
 }
 interface EditTeamBODY {
   striker: number
   defender: number
+  name: string
 }
 interface EditTeamDTO {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
+  name: string
   id: number
 }
 interface DeleteTeamDTO {
   id: number
 }
 interface GetMatchDTO {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
@@ -91,8 +97,8 @@ interface CreateMatchBODY {
   red: number
 }
 interface CreateMatchDTO {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
@@ -101,8 +107,8 @@ interface EditMatchBODY {
   red: number
 }
 interface EditMatchDTO {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
@@ -113,6 +119,7 @@ interface GetRankingsDTO {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
   id: number
+  name: string
   points: number
   goalsScored: number
   goalsConceded: number
@@ -192,6 +199,7 @@ interface Team {
   striker: Player
   defender: Player
   id: number
+  name: string
 }
 type Teams = Team[]
 interface MatchStore {

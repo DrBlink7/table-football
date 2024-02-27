@@ -80,6 +80,7 @@ const Team = {
   name: 'Nome Squadra',
   defenderRequired: 'il Difensore è obbligatorio nella formazione di una Squadra',
   strikerRequired: "l'Attaccante è obbligatorio nella formazione di una Squadra",
+  nameRequired: 'Il nome è obbligatorio nella creazione di una Squadra',
   sameOption: "l'attaccante ed il difensore devono essere diversi tra loro",
   type: 'Icona',
   create: 'Crea Nuova Squadra',

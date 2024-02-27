@@ -52,7 +52,8 @@ const Teams: FC = () => {
       .notOneOf([Yup.ref('defender')], t('Team.sameOption')),
     defender: Yup.string()
       .required(t('Team.defenderRequired'))
-      .notOneOf([Yup.ref('striker')], t('Team.sameOption'))
+      .notOneOf([Yup.ref('striker')], t('Team.sameOption')),
+    name: Yup.string().required(t('Team.nameRequired'))
   })
 
   const {
@@ -64,7 +65,8 @@ const Teams: FC = () => {
     resolver: yupResolver(teamSchema),
     defaultValues: {
       striker: '',
-      defender: ''
+      defender: '',
+      name: ''
     }
   })
 
@@ -91,6 +93,7 @@ const Teams: FC = () => {
 
     setValue('defender', String(team.defender.id) ?? '')
     setValue('striker', String(team.striker.id) ?? '')
+    setValue('name', String(team.name) ?? '')
   }, [setValue, teamList])
 
   const clearError = useCallback(() => {
@@ -150,7 +153,7 @@ const Teams: FC = () => {
       const defender = Number(data.defender)
       if (isNaN(striker) || isNaN(defender)) throw new Error('validation error')
 
-      await dispatch(createATeam({ defender, striker, token }))
+      await dispatch(createATeam({ defender, striker, token, name: data.name }))
       setCreateTeam(false)
       resetCreate()
       setSelectedRow(null)
@@ -165,7 +168,7 @@ const Teams: FC = () => {
       const striker = Number(data.striker)
       if (isNaN(striker) || isNaN(defender)) throw new Error('validation error')
 
-      await dispatch(editATeam({ token, defender, id: String(selectedRow), striker }))
+      await dispatch(editATeam({ token, defender, id: String(selectedRow), striker, name: data.name }))
       setEditTeam(false)
       resetEdit()
       setSelectedRow(null)
@@ -258,10 +261,12 @@ const Teams: FC = () => {
         control={controlCreate}
         firstError={errorsCreate?.defender}
         secondError={errorsCreate?.striker}
+        thirdError={errorsCreate?.name}
         options={playerList}
         name="team"
         firstLabel="defender"
         secondLabel="striker"
+        thirdLabel='name'
         title={t('Team.create')}
         editText={t('Team.createButton')}
       />
@@ -273,10 +278,12 @@ const Teams: FC = () => {
         control={controlEdit}
         firstError={errorsEdit?.defender}
         secondError={errorsEdit?.striker}
+        thirdError={errorsEdit?.name}
         options={playerList}
         name="team"
         firstLabel="defender"
         secondLabel="striker"
+        thirdLabel='name'
         title={t('Team.edit')}
         editText={t('Team.editButton')}
       />
