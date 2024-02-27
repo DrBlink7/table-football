@@ -3,7 +3,7 @@ import { Box, Paper, Stack, Typography, keyframes, useTheme } from '@mui/materia
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import { useAppDispatch, useAppSelector } from '../Utils/store'
-import { dismissMatchNotification, selectSseNotificationMatch } from '../Store/sse'
+import { dismissMatchNotification, selectSseNotification } from '../Store/sse'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,7 +17,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
 
-  const notification = useAppSelector(selectSseNotificationMatch(match.id))
+  const notifications = useAppSelector(selectSseNotification)
 
   const blinkAnimation = keyframes`
   0% { color: ${theme.palette.primary.main}; }
@@ -26,14 +26,14 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
   `
 
   useEffect(() => {
-    if (notification.message !== '') {
-      toast.success(notification.message, {
+    if (notifications[match.id].message !== '') {
+      toast.success(notifications[match.id].message, {
         position: 'top-center',
         autoClose: 5000
       })
       dispatch(dismissMatchNotification({ matchid: match.id }))
     }
-  }, [dispatch, match.id, notification.message, t])
+  }, [dispatch, match.id, notifications, t])
 
   return <Stack
     display='flex'

@@ -31,10 +31,4 @@ export const sse = createSlice({
 
 export const { clearSseState, addMatchNotification, dismissMatchNotification } = sse.actions
 
-export const selectSseNotificationMatch = (matchid: number) => (state: State) => {
-  const notifications = { ...state.sseInfo.notifications }
-  if (Boolean(notifications[matchid])) {
-    return notifications[matchid] ?? { message: '' }
-  }
-  return { message: '' }
-}
+export const selectSseNotification = (state: State): State['sseInfo']['notifications'] => state.sseInfo.notifications

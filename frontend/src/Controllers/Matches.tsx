@@ -21,7 +21,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { selectTeamList } from '../Store/team'
 import { ToastContainer, toast } from 'react-toastify'
-import { dismissMatchNotification, selectSseNotificationMatch } from '../Store/sse'
+import { dismissMatchNotification, selectSseNotification } from '../Store/sse'
 import Scrollbar from 'react-perfect-scrollbar'
 import useMatchConnection from '../Hooks/useMatchConnection'
 import CustomOptionsModal from './CustomOptionsModal'
@@ -44,7 +44,7 @@ const Matches: FC = () => {
   const matchList = useAppSelector(selectMatchList)
   const teamList = useAppSelector(selectTeamList)
   const onGoingMatchId = matchList.find(match => match.status === 'ongoing')?.id ?? 0
-  const notification = useAppSelector(selectSseNotificationMatch(onGoingMatchId))
+  const notification = useAppSelector(selectSseNotification)
 
   const [isOnGoingFoldableOpen, setOnGoingIsFoldableOpen] = useState<boolean>(true)
   const [isEndedFoldableOpen, setEndedIsFoldableOpen] = useState<boolean>(false)
@@ -198,14 +198,14 @@ const Matches: FC = () => {
   }, [token, dispatch])
 
   useEffect(() => {
-    if (notification.message !== '') {
-      toast.success(notification.message, {
+    if (notification[onGoingMatchId].message !== '') {
+      toast.success(notification[onGoingMatchId].message, {
         position: 'top-center',
         autoClose: 5000
       })
       dispatch(dismissMatchNotification({ matchid: onGoingMatchId }))
     }
-  }, [dispatch, onGoingMatchId, notification.message, t])
+  }, [dispatch, onGoingMatchId, t, notification])
 
   useMatchConnection(token)
 
