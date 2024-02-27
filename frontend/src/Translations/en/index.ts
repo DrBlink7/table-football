@@ -80,6 +80,7 @@ const Team = {
   name: 'Team Name',
   defenderRequired: 'Defender is required to form a Team',
   strikerRequired: 'Striker is required to form a Team',
+  nameRequired: 'Name is required to create a Team',
   sameOption: 'Striker and defender must be different and selected',
   type: 'Icon',
   create: 'Create New Team',

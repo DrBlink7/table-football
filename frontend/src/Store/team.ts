@@ -23,13 +23,14 @@ export const retrieveTeamList = createAsyncThunk(
 type CreateATeamProps = Token & {
   striker: number
   defender: number
+  name: string
 }
 
 export const createATeam = createAsyncThunk(
   'createATeam',
-  async ({ token, striker, defender }: CreateATeamProps, thunkApi) => {
+  async ({ token, striker, defender, name }: CreateATeamProps, thunkApi) => {
     try {
-      const response = await createTeam(token, defender, striker)
+      const response = await createTeam(token, defender, striker, name)
       return response.data
     } catch (e) {
       const error = formatThunkError(e)
@@ -45,13 +46,14 @@ type EditATeamProps = Token & {
   striker: number
   defender: number
   id: string
+  name: string
 }
 
 export const editATeam = createAsyncThunk(
   'editATeam',
-  async ({ token, id, defender, striker }: EditATeamProps, thunkApi) => {
+  async ({ token, id, defender, striker, name }: EditATeamProps, thunkApi) => {
     try {
-      const response = await editTeam(token, id, defender, striker)
+      const response = await editTeam(token, id, defender, striker, name)
       return response.data
     } catch (e) {
       const error = formatThunkError(e)
@@ -118,9 +120,9 @@ export const team = createSlice({
       state.teamList = teamInitialState.teamList
     })
     builder.addCase(createATeam.fulfilled, (state, action) => {
-      const { id, defender, striker } = action.payload
+      const { id, defender, striker, name } = action.payload
       state.teamListStatus = 'success'
-      state.teamList = [...state.teamList, { id, defender, striker }]
+      state.teamList = [...state.teamList, { id, defender, striker, name }]
     })
     builder.addCase(editATeam.pending, (state) => {
       state.teamListStatus = 'loading'
@@ -131,13 +133,13 @@ export const team = createSlice({
       state.teamList = teamInitialState.teamList
     })
     builder.addCase(editATeam.fulfilled, (state, action) => {
-      const { id, defender, striker } = action.payload
+      const { id, defender, striker, name } = action.payload
       state.teamListStatus = 'success'
       const playerList = [...state.teamList]
       const updatedPlayerList = playerList
         .map(player =>
           player.id === id
-            ? { ...player, defender, striker }
+            ? { ...player, defender, striker, name }
             : { ...player }
         )
       updatedPlayerList.sort((a, b) => a.id - b.id)
