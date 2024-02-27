@@ -18,6 +18,8 @@ export const getMatches = async () => {
       m.status,
       bt.striker AS blue_striker_id,
       bt.defender AS blue_defender_id,
+      bt.name AS blue_team_name,
+      rt.name AS red_team_name,
       rt.striker AS red_striker_id,
       rt.defender AS red_defender_id,
       ptb.name AS blue_striker_name,
@@ -65,12 +67,14 @@ export const createMatch = async (blue: number, red: number): Promise<CreateMatc
       id: blue,
       striker: blueInfo.striker,
       defender: blueInfo.defender,
+      name: blueInfo.name,
       score: 0
     },
     red: {
       id: red,
       striker: redInfo.striker,
       defender: redInfo.defender,
+      name: redInfo.name,
       score: 0
     },
     id: results.rows[0].id,
@@ -109,12 +113,14 @@ export const editMatch = async (id: string, blue: number, red: number): Promise<
       id: row.blue,
       striker: blueInfo.striker,
       defender: blueInfo.defender,
+      name: blueInfo.name,
       score: 0
     },
     red: {
       id: row.red,
       striker: redInfo.striker,
       defender: redInfo.defender,
+      name: redInfo.name,
       score: 0
     },
     id: row.id,
@@ -220,6 +226,8 @@ export const getMatch = async (matchid: string) => {
       m.status,
       bt.striker AS blue_striker_id,
       bt.defender AS blue_defender_id,
+      bt.name AS blue_team_name,
+      rt.name AS red_team_name,
       rt.striker AS red_striker_id,
       rt.defender AS red_defender_id,
       ptb.name AS blue_striker_name,
@@ -249,13 +257,15 @@ export const getMatch = async (matchid: string) => {
       id: row.blue_team_id,
       striker: row.blue_striker_name,
       defender: row.blue_defender_name,
-      score: row.blue_score
+      score: row.blue_score,
+      name: row.blue_team_name
     },
     red: {
       id: row.red_team_id,
       striker: row.red_striker_name,
       defender: row.red_defender_name,
-      score: row.red_score
+      score: row.red_score,
+      name: row.red_team_name
     },
     id: row.match_id,
     status: row.status

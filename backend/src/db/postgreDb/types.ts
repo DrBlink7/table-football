@@ -6,10 +6,12 @@ export interface DBTeamsTable {
   id: number
   striker: number
   defender: number
+  name: string
 }
 export type DBTeamsPlayerTable = DBTeamsTable & {
   defender_name: string
   striker_name: string
+  team_name: string
 }
 export type MatchStatus = 'preparing' | 'ongoing' | 'ended'
 export interface DBMatchesTable {
@@ -25,6 +27,8 @@ export type DBMatchesTeamsPlayerTable = DBTeamsTable & DBMatchesTable & {
   blue_score: number
   blue_striker_name: string
   blue_defender_name: string
+  blue_team_name: string
+  red_team_name: string
   red_team_id: number
   red_score: number
   red_striker_name: string
@@ -42,6 +46,8 @@ export type DBRankingsCols = {
   blue_striker_name: string,
   blue_defender_id: number,
   blue_defender_name: string,
+  blue_team_name: string,
+  red_team_name: string,
   red_striker_id: number,
   red_striker_name: string,
   red_defender_id: number,

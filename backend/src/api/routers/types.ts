@@ -49,6 +49,8 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *          properties:
  *            id:
  *              type: number
+ *            name:
+ *              type: string
  *            striker:
  *              type: object
  *              properties:
@@ -70,6 +72,8 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *            type: string
  *          defender:
  *            type: string
+ *          name:
+ *            type: string
  *      CreateTeamDTO:
  *        type: object
  *        properties:
@@ -79,12 +83,16 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *            type: string
  *          id:
  *            type: number
+ *          name:
+ *            type: string
  *      EditTeamBODY:
  *        type: object
  *        properties:
  *          striker:
  *            type: string
  *          defender:
+ *            type: string
+ *          name:
  *            type: string
  *        required:
  *          - id
@@ -94,6 +102,8 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *          striker:
  *            type: string
  *          defender:
+ *            type: string
+ *          name:
  *            type: string
  *          id:
  *            type: number
@@ -129,6 +139,8 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *          striker:
  *            type: string
  *          defender:
+ *            type: string
+ *          name:
  *            type: string
  *      CreateMatchBODY:
  *        type: object
@@ -279,25 +291,30 @@ export type PlayerInfo = {
 export type GetTeamsDTO = {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
+  name: string
   id: number
 }[]
 export type CreateTeamBODY = {
   striker: number
   defender: number
+  name: string
 }
 export type CreateTeamDTO = {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
+  name: string
   id: number
 }
 export type EditTeamBODY = {
   striker: number
   defender: number
+  name: string
 }
 export interface EditTeamDTO {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
   id: number
+  name: string
 }
 export interface DeleteTeamDTO {
   id: number
@@ -305,11 +322,12 @@ export interface DeleteTeamDTO {
 export type TeamInfo = {
   playerIds: number[]
   striker: string
+  name: string
   defender: string
 }
 export type GetMatchesDTO = {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }[]
@@ -318,8 +336,8 @@ export type CreateMatchBODY = {
   red: number
 }
 export type CreateMatchDTO = {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
@@ -328,8 +346,8 @@ export type EditMatchBODY = {
   red: number
 }
 export type EditMatchDTO = {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
@@ -339,6 +357,7 @@ export interface DeleteMatchDTO {
 export interface GetRankingsDTO {
   striker: { id: number, name: string }
   defender: { id: number, name: string }
+  name: string
   id: number
   points: number
   goalsScored: number
@@ -360,8 +379,8 @@ export interface GetStrikerStatsDTO {
   gamesPlayed: number
 }
 export type GetMatchDTO = {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
