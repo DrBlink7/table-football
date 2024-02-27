@@ -14,7 +14,8 @@ const home = {
   players: 'Giocatori',
   team: 'Squadre',
   matches: 'Partite',
-  stats: 'Statistiche'
+  stats: 'Statistiche',
+  info: 'Utente'
 }
 const login = {
   signin: 'Sign In',
@@ -66,9 +67,7 @@ const player = {
   title: 'Giocatore',
   back: 'Torna alla Pagina dei Giocatori',
   id: 'Id Giocatore',
-  name: 'Nome Giocatore',
-  cheerblue: 'Hey, ma io gioco con i BLU!',
-  cheerred: 'Hey, ma io gioco con i ROSSI!'
+  name: 'Nome Giocatore'
 }
 const Team = {
   title: 'Squadre',
@@ -136,6 +135,12 @@ const stats = {
   strikers: 'Classifica dei Capocannonieri',
   defenders: 'Classifica dei Difensori'
 }
+const user = {
+  cheerblue: 'Hey, ma io gioco con i BLU!',
+  cheerred: 'Hey, ma io gioco con i ROSSI!',
+  title: 'Pagina Utente',
+  email: 'User email: '
+}
 
 const it = {
   loader,
@@ -153,7 +158,8 @@ const it = {
   team,
   matches,
   Match,
-  stats
+  stats,
+  user
 }
 
 export default it
