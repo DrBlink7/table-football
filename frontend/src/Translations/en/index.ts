@@ -14,7 +14,8 @@ const home = {
   players: 'Players',
   team: 'Teams',
   matches: 'Matches',
-  stats: 'Stats'
+  stats: 'Stats',
+  info: 'User Info'
 }
 const login = {
   signin: 'Sign In',
@@ -66,9 +67,7 @@ const player = {
   title: 'Player Page',
   back: 'Go Back to Player Page',
   id: 'Player Id',
-  name: 'Player Name',
-  cheerblue: 'Hey, but I usually play BLUE!',
-  cheerred: 'Hey, but I usually play RED!'
+  name: 'Player Name'
 }
 const Team = {
   title: 'Teams',
@@ -136,6 +135,12 @@ const stats = {
   strikers: 'Strikers Leaderboard',
   defenders: 'Defenders Leaderboard'
 }
+const user = {
+  cheerblue: 'Hey, but I usually play BLUE!',
+  cheerred: 'Hey, but I usually play RED!',
+  title: 'User Page',
+  email: 'User email: '
+}
 
 const en = {
   loader,
@@ -153,7 +158,8 @@ const en = {
   team,
   matches,
   Match,
-  stats
+  stats,
+  user
 }
 
 export default en
