@@ -18,6 +18,8 @@ export const getRankings = async (): Promise<GetRankingsDTO[]> => {
           m.status,
           bt.striker AS blue_striker_id,
           bt.defender AS blue_defender_id,
+          bt.name AS blue_team_name,
+          rt.name AS red_team_name,
           rt.striker AS red_striker_id,
           rt.defender AS red_defender_id,
           ptb.name AS blue_striker_name,

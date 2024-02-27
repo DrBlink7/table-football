@@ -19,6 +19,7 @@ export const formatDeletedPlayerRow = (rows: DBPlayersTable[]): DeletePlayerDTO 
 export const formatTeamList = (rows: DBTeamsPlayerTable[]): GetTeamsDTO =>
   rows.map(row => ({
     id: row.id,
+    name: row.team_name,
     defender: { id: row.defender, name: row.defender_name },
     striker: { id: row.striker, name: row.striker_name }
   }))
@@ -32,13 +33,15 @@ export const formatMatchList = (rows: DBMatchesTeamsPlayerTable[]): GetMatchesDT
       id: row.blue_team_id,
       striker: row.blue_striker_name,
       defender: row.blue_defender_name,
-      score: row.blue_score
+      score: row.blue_score,
+      name: row.blue_team_name
     },
     red: {
       id: row.red_team_id,
       striker: row.red_striker_name,
       defender: row.red_defender_name,
-      score: row.red_score
+      score: row.red_score,
+      name: row.red_team_name
     },
     id: row.match_id,
     status: row.status
@@ -55,6 +58,7 @@ export const formatRankings = (rows: DBRankingsCols[]) => {
       striker: { id: row.blue_striker_id, name: row.blue_striker_name },
       defender: { id: row.blue_defender_id, name: row.blue_defender_name },
       id: row.blue_team_id,
+      name: row.blue_team_name,
       points: 0,
       goalsScored: 0,
       goalsConceded: 0,
@@ -73,6 +77,7 @@ export const formatRankings = (rows: DBRankingsCols[]) => {
       striker: { id: row.red_striker_id, name: row.red_striker_name },
       defender: { id: row.red_defender_id, name: row.red_defender_name },
       id: row.red_team_id,
+      name: row.red_team_name,
       points: 0,
       goalsScored: 0,
       goalsConceded: 0,

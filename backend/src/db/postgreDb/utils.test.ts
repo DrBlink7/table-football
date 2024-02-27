@@ -1,5 +1,5 @@
-import { GetRankingsDTO } from "../../api/routers/types";
-import { DBMatchesTable, DBMatchesTeamsPlayerTable, DBRankingsCols } from "./types";
+import { DeleteTeamDTO, GetRankingsDTO, GetTeamsDTO, TeamInfo } from "../../api/routers/types";
+import { DBMatchesTable, DBMatchesTeamsPlayerTable, DBRankingsCols, DBTeamsPlayerTable, DBTeamsTable } from "./types";
 import { formatTagList, formatCreatedPlayerRow, formatEditedPlayerRow, formatDeletedPlayerRow, formatTeamList, formatDeletedTeamRow, formatMatchList, isAnInvalidMatch, formatDeletedMatch, formatRankings, sortRankingResult, sortDefenderResult, sortStrikerResult } from "./utils";
 
 describe('formatTagList', () => {
@@ -38,16 +38,16 @@ describe('formatDeletedPlayerRow', () => {
 
 describe('formatTeamList', () => {
   it('should format team list correctly', () => {
-    const input = [{ id: 1, defender: 101, striker: 201, defender_name: 'Jane', striker_name: 'John' }];
-    const output = [{ id: 1, defender: { id: 101, name: 'Jane' }, striker: { id: 201, name: 'John' } }];
+    const input: DBTeamsPlayerTable[] = [{ id: 1, defender: 101, striker: 201, defender_name: 'Jane', striker_name: 'John', name: 'Team1', team_name: 'Team1' }];
+    const output: GetTeamsDTO = [{ id: 1, defender: { id: 101, name: 'Jane' }, striker: { id: 201, name: 'John' }, name: 'Team1' }];
     expect(formatTeamList(input)).toEqual(output);
   });
 });
 
 describe('formatDeletedTeamRow', () => {
   it('should format deleted team row correctly', () => {
-    const input = [{ id: 1, striker: 101, defender: 201 }];
-    const output = { id: 1 };
+    const input: DBTeamsTable[] = [{ id: 1, striker: 101, defender: 201, name: 'Team 1' }];
+    const output: DeleteTeamDTO = { id: 1 };
     expect(formatDeletedTeamRow(input)).toEqual(output);
   });
 });
@@ -70,7 +70,10 @@ describe('formatMatchList', () => {
         red: 2,
         defender: 2,
         striker: 1,
-        id: 1
+        id: 1,
+        blue_team_name: 'Team 1',
+        red_team_name: 'Team 2',
+        name: ''
       },
       {
         blue_team_id: 3,
@@ -87,7 +90,10 @@ describe('formatMatchList', () => {
         red: 4,
         defender: 3,
         striker: 4,
-        id: 2
+        id: 2,
+        blue_team_name: 'Team 3',
+        red_team_name: 'Team 4',
+        name: ''
       }
     ] satisfies DBMatchesTeamsPlayerTable[]
 
@@ -95,14 +101,14 @@ describe('formatMatchList', () => {
 
     expect(result).toEqual([
       {
-        blue: { id: 1, striker: 'Blue Striker 1', defender: 'Blue Defender 1', score: 1 },
-        red: { id: 2, striker: 'Red Striker 1', defender: 'Red Defender 1', score: 2 },
+        blue: { id: 1, striker: 'Blue Striker 1', defender: 'Blue Defender 1', score: 1, name: 'Team 1' },
+        red: { id: 2, striker: 'Red Striker 1', defender: 'Red Defender 1', score: 2, name: 'Team 2' },
         id: 1,
         status: 'ongoing'
       },
       {
-        blue: { id: 3, striker: 'Blue Striker 2', defender: 'Blue Defender 2', score: 2 },
-        red: { id: 4, striker: 'Red Striker 2', defender: 'Red Defender 2', score: 1 },
+        blue: { id: 3, striker: 'Blue Striker 2', defender: 'Blue Defender 2', score: 2, name: 'Team 3' },
+        red: { id: 4, striker: 'Red Striker 2', defender: 'Red Defender 2', score: 1, name: 'Team 4' },
         id: 2,
         status: 'ended'
       }
@@ -112,8 +118,8 @@ describe('formatMatchList', () => {
 
 describe('isAnInvalidMatch', () => {
   it('should return true if there are overlapping playerIds', () => {
-    const blueInfo = { playerIds: [1, 2], striker: 'Blue Striker', defender: 'Blue Defender' };
-    const redInfo = { playerIds: [2, 3], striker: 'Red Striker', defender: 'Red Defender' };
+    const blueInfo: TeamInfo = { playerIds: [1, 2], striker: 'Blue Striker', defender: 'Blue Defender', name: 'Team 1' };
+    const redInfo: TeamInfo = { playerIds: [2, 3], striker: 'Red Striker', defender: 'Red Defender', name: 'Team 2' };
 
     const result = isAnInvalidMatch(blueInfo, redInfo);
 
@@ -121,8 +127,8 @@ describe('isAnInvalidMatch', () => {
   });
 
   it('should return false if there are no overlapping playerIds', () => {
-    const blueInfo = { playerIds: [1, 2], striker: 'Blue Striker', defender: 'Blue Defender' };
-    const redInfo = { playerIds: [3, 4], striker: 'Red Striker', defender: 'Red Defender' };
+    const blueInfo: TeamInfo = { playerIds: [1, 2], striker: 'Blue Striker', defender: 'Blue Defender', name: 'Team 1' };
+    const redInfo: TeamInfo = { playerIds: [3, 4], striker: 'Red Striker', defender: 'Red Defender', name: 'Team 2' };
 
     const result = isAnInvalidMatch(blueInfo, redInfo);
 
@@ -143,7 +149,7 @@ describe('formatDeletedMatch', () => {
 describe('formatRankings function', () => {
   it('should format rankings correctly', () => {
     const rows: DBRankingsCols[] = [
-      { match_id: 1, status: 'ended', blue_team_id: 1, blue_striker_id: 101, blue_striker_name: 'John', blue_defender_id: 102, blue_defender_name: 'Doe', blue_score: 2, red_team_id: 2, red_striker_id: 201, red_striker_name: 'Alice', red_defender_id: 202, red_defender_name: 'Bob', red_score: 1 },
+      { match_id: 1, status: 'ended', blue_team_id: 1, blue_striker_id: 101, blue_striker_name: 'John', blue_defender_id: 102, blue_defender_name: 'Doe', blue_score: 2, red_team_id: 2, red_striker_id: 201, red_striker_name: 'Alice', red_defender_id: 202, red_defender_name: 'Bob', red_score: 1, blue_team_name: 'Team 1', red_team_name: 'Team 2' },
     ]
     const result = formatRankings(rows)
     expect(result).toHaveLength(rows.length * 2)
@@ -164,8 +170,8 @@ describe('formatRankings function', () => {
 describe('sortRankingResult function', () => {
   it('should sort ranking results correctly', () => {
     const result: GetRankingsDTO[] = [
-      { defender: { id: 1, name: 'john' }, striker: { id: 2, name: 'jane' }, id: 1, points: 10, goalsScored: 5, goalsConceded: 3, gamesPlayed: 4 },
-      { defender: { id: 3, name: 'pat' }, striker: { id: 4, name: 'daria' }, id: 2, points: 12, goalsScored: 6, goalsConceded: 4, gamesPlayed: 3 }
+      { defender: { id: 1, name: 'john' }, striker: { id: 2, name: 'jane' }, id: 1, points: 10, goalsScored: 5, goalsConceded: 3, gamesPlayed: 4, name: 'Team 1' },
+      { defender: { id: 3, name: 'pat' }, striker: { id: 4, name: 'daria' }, id: 2, points: 12, goalsScored: 6, goalsConceded: 4, gamesPlayed: 3, name: 'Team 2' }
     ]
     const sortedResult = sortRankingResult(result);
     expect(sortedResult).toHaveLength(result.length);

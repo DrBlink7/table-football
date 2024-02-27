@@ -97,14 +97,15 @@ teamRouter.post(
 
       decodeToken(token)
       const body: CreateTeamBODY = req.body
-      const { striker, defender } = body
+      const { striker, defender, name } = body
 
       if (missingInBody(striker)) throw new Error("striker is missing in body")
       if (missingInBody(defender)) throw new Error("defender is missing in body")
+      if (missingInBody(name)) throw new Error("name is missing in body")
 
       const createTeamTimestamp = performance.now()
       const db = dbFactory(RepositoryType)
-      const data = await db.createTeam(striker, defender)
+      const data = await db.createTeam(striker, defender, name)
       const createTime = Math.round(performance.now() - createTeamTimestamp)
       Logger.writeEvent(`Teams: created team in ${createTime} ms`)
 
@@ -167,14 +168,15 @@ teamRouter.put(
 
       decodeToken(token)
       const body: EditTeamBODY = req.body
-      const { striker, defender } = body
+      const { striker, defender, name } = body
 
       if (missingInBody(striker)) throw new Error("striker is missing in body")
       if (missingInBody(defender)) throw new Error("defender is missing in body")
+      if (missingInBody(name)) throw new Error("name is missing in body")
 
       const editTeamTimestamp = performance.now()
       const db = dbFactory(RepositoryType)
-      const data = await db.editTeam(id, striker!, defender!)
+      const data = await db.editTeam(id, striker, defender, name)
       const editTime = Math.round(performance.now() - editTeamTimestamp)
       Logger.writeEvent(`Teams: edited team in ${editTime} ms`)
 
