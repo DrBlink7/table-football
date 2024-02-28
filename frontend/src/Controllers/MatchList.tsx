@@ -98,16 +98,19 @@ const MatchList: FC<MatchListProps> = ({
             <Typography variant="body1" fontWeight='700' width='30%' display='flex' justifyContent='flex-end'>
               {match.blue.score}
             </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-              onClick={() => { goToTeamPage(match.blue.id) }}
+            <Box
               width='55%'
               display='flex'
               justifyContent='flex-end'
             >
-              {t('matches.teamPage')}
-            </Typography>
+              <Typography
+                variant='body1'
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => { goToTeamPage(match.blue.id) }}
+              >
+                {t('matches.teamPage')}
+              </Typography>
+            </Box>
           </Box>
           <Box display='flex' flexDirection='row' justifyContent='space-between' width='100%'>
             <Tooltip
@@ -121,16 +124,19 @@ const MatchList: FC<MatchListProps> = ({
             <Typography variant="body1" fontWeight='700' width='30%' display='flex' justifyContent='flex-end'>
               {match.red.score}
             </Typography>
-            <Typography
-              variant='body1'
-              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-              onClick={() => { goToTeamPage(match.red.id) }}
+            <Box
               width='55%'
               display='flex'
               justifyContent='flex-end'
             >
-              {t('matches.teamPage')}
-            </Typography>
+              <Typography
+                variant='body1'
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => { goToTeamPage(match.red.id) }}
+              >
+                {t('matches.teamPage')}
+              </Typography>
+            </Box>
           </Box>
         </Stack>
       </Paper>
