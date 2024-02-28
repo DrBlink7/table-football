@@ -23,9 +23,10 @@ import { retrieveTeamList, selectTeamList } from '../Store/team'
 import { ToastContainer, toast } from 'react-toastify'
 import { dismissMatchNotification, selectSseNotifications } from '../Store/sse'
 import Scrollbar from 'react-perfect-scrollbar'
-import useMatchConnection from '../Hooks/useMatchConnection'
-import CustomOptionsModal from './CustomOptionsModal'
-import MatchList from './MatchList'
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer'
+import useMatchNotifications from '../Hooks/useMatchNotifications'
+import CustomOptionsModal from '../Components/CustomOptionsModal'
+import MatchList from '../Components/MatchList'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
 import ConfirmationDialog from '../Components/ConfirmationDialog'
@@ -217,7 +218,7 @@ const Matches: FC = () => {
     }
   }, [dispatch, onGoingMatchId, t, notification])
 
-  useMatchConnection(token)
+  useMatchNotifications(token)
 
   if (matchListStatus === 'loading') {
     return <Loader />
@@ -252,7 +253,12 @@ const Matches: FC = () => {
       <ToastContainer position="top-center" autoClose={5000} />
       <Box display='flex' width='90%' flexDirection='row' height='12%' justifyContent='space-between' alignItems='center'>
         <Typography variant='h6'>{t('matches.title')}</Typography>
-        <Button variant="contained" sx={{ ...buttonStyle, width: '30%' }} fullWidth onClick={openCreateMatch}>
+        <Button
+          variant="contained"
+          sx={{ ...buttonStyle, width: '20%' }}
+          fullWidth onClick={openCreateMatch}
+          endIcon={<SportsSoccerIcon />}
+        >
           {t('matches.create')}
         </Button>
       </Box>
@@ -266,6 +272,7 @@ const Matches: FC = () => {
           firstError={errorsCreate?.blue}
           secondError={errorsCreate?.red}
           options={options}
+          icon={<SportsSoccerIcon />}
           name="match"
           firstLabel="blue"
           secondLabel="red"
@@ -281,6 +288,7 @@ const Matches: FC = () => {
           firstError={errorsEdit?.blue}
           secondError={errorsEdit?.red}
           options={options}
+          icon={<SportsSoccerIcon />}
           name="match"
           firstLabel="blue"
           secondLabel="red"

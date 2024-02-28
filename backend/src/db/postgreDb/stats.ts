@@ -182,7 +182,7 @@ export const getPlayerStat = async (id: string): Promise<GetPlayerStatDTO> => {
 
   return {
     id: numericId,
-    name: striker?.name ?? defender?.name ?? 'Name not registered',
+    name: striker?.name ?? defender?.name ?? "Player didn't played in any match",
     playedForBlue: Number(playedRed.rows[0].red_team_matches),
     playedForRed: Number(playedBlue.rows[0].blue_team_matches),
     strikerPlayed: striker?.gamesPlayed ?? 0,
@@ -206,10 +206,10 @@ export const getTeamStat = async (id: string): Promise<GetTeamStatDTO> => {
   return {
     striker: { id: stats?.striker.id ?? 0, name: stats?.striker.name ?? 'Striker name not found' },
     defender: { id: stats?.defender.id ?? 0, name: stats?.defender.name ?? 'Defender name not found' },
-    name: stats?.name ?? 'Team name not found',
+    name: stats?.name ?? "Team didn't played in any match",
     id: numericId,
     points: stats?.points ?? 0,
-    goalsScored: stats?.points ?? 0,
+    goalsScored: stats?.goalsScored ?? 0,
     goalsConceded: stats?.goalsConceded ?? 0,
     gamesPlayed: stats?.gamesPlayed ?? 0,
     endedMatches: playedMatches.filter(match => match.status === 'ended'),

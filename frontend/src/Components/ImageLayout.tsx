@@ -1,6 +1,5 @@
 import { type FC } from 'react'
-import { type Theme } from '@emotion/react'
-import { Stack, type SxProps } from '@mui/material'
+import { Stack, type Theme, type SxProps } from '@mui/material'
 import { randomBg } from '../Utils/config'
 
 type ImageLayoutProps = WithChildren & {

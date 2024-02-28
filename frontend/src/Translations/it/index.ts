@@ -36,12 +36,12 @@ const Player = {
   id: 'ID Giocatore',
   name: 'Nome Giocatore',
   type: 'Icona',
-  create: 'Crea un Giocatore',
+  create: 'Crea',
   createButton: 'Crea',
-  edit: 'Modifica Giocatore Esistente',
+  edit: 'Modifica',
   editButton: 'Modifica',
-  delete: 'Cancella un Giocatore',
-  browse: 'Esamina un Giocatore',
+  delete: 'Cancella',
+  browse: 'Statistiche',
   validationError: 'Non inserire caratteri non sicuri!',
   goalsConceded: 'Gol Subiti',
   goalsConcededPerMatch: 'Gol Subiti (per Partita)',
@@ -60,7 +60,7 @@ const editModal = {
   edit: 'Modifica'
 }
 const deletePlayer = {
-  title: 'Cancella Personaggio',
+  title: 'Cancella',
   dialogText: 'Sei sicuro di voler cancellare questo Giocatore? ID Giocatore: '
 }
 const player = {
@@ -88,12 +88,12 @@ const Team = {
   nameRequired: 'Il nome è obbligatorio nella creazione di una Squadra',
   sameOption: "l'attaccante ed il difensore devono essere diversi tra loro",
   type: 'Icona',
-  create: 'Crea Nuova Squadra',
+  create: 'Crea',
   createButton: 'Crea',
-  edit: 'Modifica Squadra Esistente',
+  edit: 'Modifica',
   editButton: 'Modifica',
-  delete: 'Cancella Una Squadra',
-  browse: 'Esamina una Squadra',
+  delete: 'Cancella',
+  browse: 'Statistiche',
   validationError: 'Non inserire caratteri non sicuri!',
   points: 'Punti',
   goalsScored: 'Segnati',
@@ -101,7 +101,7 @@ const Team = {
   gamesPlayed: 'Giocate'
 }
 const deleteTeam = {
-  title: 'Cancella Squadra',
+  title: 'Cancella',
   dialogText: 'Sei sicuro di voler cancellare la Squadra? ID Squadra: '
 }
 const team = {
@@ -123,11 +123,11 @@ const matches = {
   stats: 'Guarda le Statistiche',
   teamPage: 'Vai alla pagina della Squadra',
   live: 'Guarda Partita in corso',
-  create: 'Crea Nuova Partita',
+  create: 'Crea',
   defender: 'Difensore: ',
   striker: 'Attaccante: ',
-  edit: 'Modifica questa partita',
-  delete: 'Cancella questa partita',
+  edit: 'Modifica',
+  delete: 'Cancella',
   editTitle: 'Puoi modificare solo partite in preparazione.',
   deletedTitle: 'Puoi modificare solo partite in preparazione o terminate.',
   dialogText: 'Sei sicuro di voler cancellare questa Partita? ID Partita: '

@@ -1,6 +1,7 @@
 import { type FC } from 'react'
 import { Stack, useTheme } from '@mui/material'
-import BgImage from './BgImage'
+import bg from '../Images/logo.png'
+import ImageLayout from './ImageLayout'
 
 const DefaultHomeLogo: FC = () => {
   const theme = useTheme()
@@ -15,7 +16,7 @@ const DefaultHomeLogo: FC = () => {
     color={theme.palette.primary.contrastText}
     bgcolor={theme.palette.primary.main}
   >
-    <BgImage style={{ width: '100%', backgroundColor: theme.palette.primary.main }} />
+    <ImageLayout url={bg} style={{ width: '100%', backgroundColor: theme.palette.primary.main }} />
   </Stack>
 }
 

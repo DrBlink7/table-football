@@ -1,6 +1,6 @@
 import { type FC } from 'react'
 import { Stack, Box, CssBaseline } from '@mui/material'
-import MainPage from '../Controllers/MainPage'
+import MainPage from './MainPage'
 import LeftMenu from '../Controllers/LeftMenu'
 
 const Home: FC = () => <Stack

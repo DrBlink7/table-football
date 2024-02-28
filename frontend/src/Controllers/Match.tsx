@@ -4,11 +4,11 @@ import { useAppDispatch, useAppSelector } from '../Utils/store'
 import { setComponent } from '../Store/util'
 import { selectToken } from '../Store/users'
 import { retrieveAMatch, selectErrorMessage, selectMatchList, selectMatchListStatus, setErrorMessage } from '../Store/match'
-import useMatchConnection from '../Hooks/useMatchConnection'
+import useMatchNotifications from '../Hooks/useMatchNotifications'
+import LiveMatch from './LiveMatch'
 import ErrorComponent from '../Components/Error'
 import MatchPage from '../Components/MatchPage'
 import Loader from '../Components/Loader'
-import LiveMatch from '../Components/LiveMatch'
 
 const Match: FC = () => {
   const dispatch = useAppDispatch()
@@ -46,7 +46,7 @@ const Match: FC = () => {
       .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
   }, [token, dispatch, id])
 
-  useMatchConnection(token)
+  useMatchNotifications(token)
 
   if (matchListStatus === 'loading') {
     return <Loader />

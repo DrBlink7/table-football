@@ -5,7 +5,7 @@ import { useAppSelector } from '../Utils/store'
 import { selectTeamStats } from '../Store/team'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import Scrollbar from 'react-perfect-scrollbar'
-import MatchList from '../Controllers/MatchList'
+import MatchList from './MatchList'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 interface TeamPageProps {
@@ -57,8 +57,8 @@ const TeamPage: FC<TeamPageProps> = ({
       marginBottom='2vh'
     >
       <Scrollbar style={{ maxHeight: '90vh', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Stack display='flex' width='75%' height='40%' padding='2%' borderRadius='5%' component={Paper}>
-          <Typography variant="h3" alignSelf='center' marginBottom='5vh'>{t('team.title')} {teamStats.name}</Typography>
+        <Stack display='flex' width='75%' height='35%' padding='2%' borderRadius='5%' component={Paper}>
+          <Typography variant="h3" alignSelf='center' marginBottom='3vh'>{t('team.title')} {teamStats.name}</Typography>
           <Box display='flex' width='100%' height='100%' justifyContent='center'>
             <Box display='flex' width='45%' flexDirection='column'>
               <Typography m='2vh 0'>{t('team.defenderName')} {teamStats.defender.name}</Typography>

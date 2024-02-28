@@ -19,8 +19,9 @@ import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { setComponent } from '../Store/util'
+import PersonIcon from '@mui/icons-material/Person'
 import CustomTable from './CustomTable'
-import CustomTextModal from './CustomTextModal'
+import CustomTextModal from '../Components/CustomTextModal'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
 import ConfirmationDialog from '../Components/ConfirmationDialog'
@@ -183,16 +184,16 @@ const Players: FC = () => {
       </Box>
       <CustomTable rows={rows} columns={columns} selectedRow={selectedRow} handleRowSelect={handleRowSelect} />
       <Box display='flex' width='100%' flexDirection='row' height='12%' justifyContent='space-between' alignItems='center'>
-        <Button variant="contained" sx={buttonStyle} onClick={openCreatePlayer}>
+        <Button variant="contained" sx={buttonStyle} onClick={openCreatePlayer} endIcon={<PersonIcon />}>
           {t('Player.create')}
         </Button>
-        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openEditPlayer}>
+        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openEditPlayer} endIcon={<PersonIcon />}>
           {t('Player.edit')}
         </Button>
-        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openDeletePlayer}>
+        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openDeletePlayer} endIcon={<PersonIcon />}>
           {t('Player.delete')}
         </Button>
-        <Button variant="contained" disabled={!Boolean(selectedRow)} onClick={goToPlayerPage} sx={buttonStyle}>
+        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={goToPlayerPage} endIcon={<PersonIcon />}>
           {t('Player.browse')}
         </Button>
       </Box>
@@ -210,6 +211,7 @@ const Players: FC = () => {
         onSubmit={onSubmitCreate}
         open={createPlayer}
         control={controlCreate}
+        icon={<PersonIcon />}
         errors={errorsCreate?.player}
         title={t('Player.create')}
         editText={t('Player.createButton')}
@@ -221,6 +223,7 @@ const Players: FC = () => {
         onSubmit={onSubmitEdit}
         open={editPlayer}
         control={controlEdit}
+        icon={<PersonIcon />}
         errors={errorsEdit?.player}
         title={t('Player.edit')}
         editText={t('Player.editButton')}
