@@ -2,8 +2,9 @@ import { tableMatches, tablePlayers, tableTeams } from "../../config"
 import { dbConfig } from "."
 import { DBStrikersCols, DBDefendersCols, DBRankingsCols } from "./types"
 import { formatRankings, sortStrikerResult } from "./utils";
-import { GetDefenderStatsDTO, GetPlayerStatDTO, GetRankingsDTO, GetStrikerStatsDTO } from "../../api/routers/types";
+import { GetDefenderStatsDTO, GetPlayerStatDTO, GetRankingsDTO, GetStrikerStatsDTO, GetTeamStatDTO } from "../../api/routers/types";
 import { sortDefenderResult } from "./utils";
+import { getMatches } from "./matches";
 
 export const getRankings = async (): Promise<GetRankingsDTO[]> => {
   const client = await dbConfig.connect();
@@ -191,4 +192,28 @@ export const getPlayerStat = async (id: string): Promise<GetPlayerStatDTO> => {
     goalsConceded: defender?.goalsConceded ?? 0,
     goalsConcededPerMatch: defender?.goalsConcededPerMatch ?? 0,
   };
-};
+}
+
+export const getTeamStat = async (id: string): Promise<GetTeamStatDTO> => {
+  const numericId = Number(id);
+  if (isNaN(numericId)) throw new Error('Fetch failed, invalid id.')
+
+  const rankings = await getRankings()
+  const matches = await getMatches()
+  const stats = rankings.find(rank => rank.id === numericId)
+  const playedMatches = matches.filter(match => match.blue.id === numericId || match.red.id === numericId)
+
+  return {
+    striker: { id: stats?.striker.id ?? 0, name: stats?.striker.name ?? 'Striker name not found' },
+    defender: { id: stats?.defender.id ?? 0, name: stats?.defender.name ?? 'Defender name not found' },
+    name: stats?.name ?? 'Team name not found',
+    id: numericId,
+    points: stats?.points ?? 0,
+    goalsScored: stats?.points ?? 0,
+    goalsConceded: stats?.goalsConceded ?? 0,
+    gamesPlayed: stats?.gamesPlayed ?? 0,
+    endedMatches: playedMatches.filter(match => match.status === 'ended'),
+    onGoingMatches: playedMatches.filter(match => match.status === 'ongoing'),
+    preparingMatches: playedMatches.filter(match => match.status === 'preparing')
+  }
+}

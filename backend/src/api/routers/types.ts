@@ -284,6 +284,39 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *            type: number
  *          goalsConcededPerMatch:
  *            type: number
+ *      GetTeamStatDTO:
+ *        type: object
+ *        properties:
+ *          onGoingMatches:
+ *            $ref: '#/components/schemas/GetMatchesDTO'
+ *          preparingMatches:
+ *            $ref: '#/components/schemas/GetMatchesDTO'
+ *          endedMatches:
+ *            $ref: '#/components/schemas/GetMatchesDTO'
+ *          id:
+ *            type: number
+ *          goalsScored:
+ *            type: number
+ *          gamesPlayed:
+ *            type: number
+ *          goalsConceded:
+ *            type: number
+ *          points:
+ *            type: number
+ *          striker:
+ *            type: object
+ *            properties:
+ *              id:
+ *                type: number
+ *              name:
+ *                type: string
+ *          defender:
+ *            type: object
+ *            properties:
+ *              id:
+ *                type: number
+ *              name:
+ *                type: string
  */
 export type GetPlayersDTO = {
   name: string
@@ -405,6 +438,31 @@ export type GetMatchDTO = {
   id: number
   status: MatchStatus
 }
+export interface GetPlayerStatDTO {
+  id: number
+  name: string
+  playedForBlue: number
+  playedForRed: number
+  strikerPlayed: number
+  goalsScoredPerMatch: number
+  goalsScored: number
+  defenderPlayed: number
+  goalsConceded: number
+  goalsConcededPerMatch: number
+}
+export interface GetTeamStatDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  name: string
+  id: number
+  points: number
+  goalsScored: number
+  goalsConceded: number
+  gamesPlayed: number
+  onGoingMatches: GetMatchesDTO
+  endedMatches: GetMatchesDTO
+  preparingMatches: GetMatchesDTO
+}
 /**
  * @swagger
  * components:
@@ -455,16 +513,4 @@ type NotifyMessage = {
 export type SSEMessage = NotifyMessage
 export interface startMatchBODY {
   matchid: number
-}
-export interface GetPlayerStatDTO {
-  id: number
-  name: string
-  playedForBlue: number
-  playedForRed: number
-  strikerPlayed: number
-  goalsScoredPerMatch: number
-  goalsScored: number
-  defenderPlayed: number
-  goalsConceded: number
-  goalsConcededPerMatch: number
 }

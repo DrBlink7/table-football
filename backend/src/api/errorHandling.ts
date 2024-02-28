@@ -133,6 +133,13 @@ import { load } from 'cheerio'
  *           type: string
  *         code:
  *           type: string
+ *     GetTeamError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         code:
+ *           type: string
  */
 
 export const formatError = (
