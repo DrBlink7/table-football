@@ -120,8 +120,6 @@ const matches = {
   preparing: 'Preparing Matches',
   ended: 'Ended Matches',
   stats: 'See Stats',
-  teamBlue: 'Blue',
-  teamRed: 'Red',
   teamPage: 'Go to team page',
   live: 'See Live Match',
   create: 'Create New Match',

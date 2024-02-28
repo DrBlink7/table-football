@@ -120,8 +120,6 @@ const matches = {
   preparing: 'Partite in preparazione',
   ended: 'Partite terminate',
   stats: 'Guarda le Statistiche',
-  teamBlue: 'Blu',
-  teamRed: 'Rosso',
   teamPage: 'Vai alla pagina della Squadra',
   live: 'Guarda Partita in corso',
   create: 'Crea Nuova Partita',

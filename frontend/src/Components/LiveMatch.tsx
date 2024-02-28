@@ -73,7 +73,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
             <Stack spacing={2} display='flex' flexDirection='column' key={match.id} width='100%'>
               <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center' width='100%'>
                 <Typography color="primary" width='10%' fontWeight='700'>
-                  {t('matches.teamBlue')}
+                  {match.blue.name}
                 </Typography>
                 <Typography color="primary" width='40%'>
                   {`${t('matches.defender')} ${match.blue.defender}`}
@@ -85,7 +85,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
               </Box>
               <Box display='flex' flexDirection='row' justifyContent='space-between'>
                 <Typography color="secondary" width='10%' fontWeight='700'>
-                  {t('matches.teamRed')}
+                  {match.red.name}
                 </Typography>
                 <Typography color="secondary" width='40%'>
                   {`${t('matches.defender')} ${match.red.defender}`}
