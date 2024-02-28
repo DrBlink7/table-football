@@ -152,6 +152,19 @@ interface GetPlayerStatDTO {
   goalsConceded: number
   goalsConcededPerMatch: number
 }
+interface GetTeamStatDTO {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  name: string
+  id: number
+  points: number
+  goalsScored: number
+  goalsConceded: number
+  gamesPlayed: number
+  onGoingMatches: GetMatchesDTO
+  endedMatches: GetMatchesDTO
+  preparingMatches: GetMatchesDTO
+}
 /**
  * Redux
  */
@@ -186,6 +199,8 @@ interface UtilStore {
 interface TeamStore {
   teamList: Teams
   teamListStatus: Status
+  teamStats: TeamStats
+  teamStatsStatus: Status
   errorMessage: string
 }
 interface StatsStore {
@@ -223,8 +238,8 @@ interface MatchStore {
 }
 type Matches = Match[]
 interface Match {
-  blue: { id: number, striker: string, defender: string, score: number }
-  red: { id: number, striker: string, defender: string, score: number }
+  blue: { id: number, striker: string, defender: string, score: number, name: string }
+  red: { id: number, striker: string, defender: string, score: number, name: string }
   id: number
   status: MatchStatus
 }
@@ -267,6 +282,19 @@ interface PlayerStats {
   defenderPlayed: number
   goalsConceded: number
   goalsConcededPerMatch: number
+}
+interface TeamStats {
+  striker: { id: number, name: string }
+  defender: { id: number, name: string }
+  name: string
+  id: number
+  points: number
+  goalsScored: number
+  goalsConceded: number
+  gamesPlayed: number
+  onGoingMatches: Matches
+  endedMatches: Matches
+  preparingMatches: Matches
 }
 /**
  * Utils

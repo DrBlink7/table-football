@@ -65,7 +65,7 @@ const deletePlayer = {
 }
 const player = {
   title: 'Player Stats: ',
-  back: 'Go Back to Player Page',
+  back: 'Go Back to Players Page',
   defenderPlayed: 'Match played as defender: ',
   goalsConceded: 'Goals Conceded: ',
   goalsConcededPerMatch: 'Goals Conceded (Match): ',
@@ -105,10 +105,14 @@ const deleteTeam = {
   dialogText: 'Are you sure you want to delete this Team? Team id: '
 }
 const team = {
-  title: 'Team Page',
-  back: 'Go Back to Team Page',
-  id: 'Team Id',
-  name: 'Team Name'
+  title: 'Team Stats: ',
+  back: 'Go Back to Teams Page',
+  defenderName: 'Defender: ',
+  goalsConceded: 'Goals Conceded: ',
+  gamesPlayed: 'Games Played: ',
+  strikerName: 'Striker: ',
+  goalsScored: 'Goals Scored: ',
+  points: 'Points: '
 }
 const matches = {
   title: 'Match List',
@@ -133,7 +137,7 @@ const Match = {
   id: 'Match Id: ',
   title: 'Match',
   live: 'Live Match',
-  back: 'Go Back to Match Page'
+  back: 'Go Back to Matches Page'
 }
 const stats = {
   label: 'Choose the Leaderboard',
