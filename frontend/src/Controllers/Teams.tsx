@@ -287,7 +287,7 @@ const Teams: FC = () => {
         firstLabel="defender"
         secondLabel="striker"
         thirdLabel='name'
-        title={t('Team.edit')}
+        title={t('Team.editTitle')}
         editText={t('Team.editButton')}
       />
     </Box>

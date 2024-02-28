@@ -1,4 +1,4 @@
-import { tablePlayers, tableTeams } from "../../config"
+import { tableMatches, tablePlayers, tableTeams } from "../../config"
 import { dbConfig } from "."
 import { formatDeletedTeamRow, formatTeamList } from "./utils"
 import { getPlayerInfo } from "./player"
@@ -57,14 +57,31 @@ export const editTeam = async (id: string, striker: number, defender: number, na
   if (isNaN(numeric_id)) throw new Error('Edit failed, id not valid.')
 
   const client = await dbConfig.connect()
-  const query = `
+
+  const search = `
+  SELECT EXISTS (
+    SELECT 1
+    FROM ${tableMatches}
+    WHERE (red = $1 OR blue = $1)
+  )
+  `
+  const result = await client.query<{ exists: boolean }>(search, [numeric_id])
+  const exists = result.rows[0].exists
+  const query = exists
+    ? `
+    UPDATE ${tableTeams}
+    SET name = $2
+    WHERE id = $1
+    RETURNING id, striker, defender, name
+    `
+    : `
     UPDATE ${tableTeams}
     SET striker = $2, defender = $3, name = $4
     WHERE id = $1
     RETURNING id, striker, defender, name
-  `
+    `
 
-  const values = [numeric_id, striker, defender, name]
+  const values = exists ? [numeric_id, name] : [numeric_id, striker, defender, name]
 
   const results = await client.query<DBTeamsPlayerTable>(query, values)
   client.release()

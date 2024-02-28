@@ -91,6 +91,7 @@ const Team = {
   create: 'Create',
   createButton: 'Create',
   edit: 'Edit',
+  editTitle: "You can only edit players in a teams that aren't in any match (you can always change name)",
   editButton: 'Edit',
   delete: 'Delete',
   browse: 'Browse',

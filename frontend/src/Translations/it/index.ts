@@ -86,6 +86,7 @@ const Team = {
   defenderRequired: 'il Difensore è obbligatorio nella formazione di una Squadra',
   strikerRequired: "l'Attaccante è obbligatorio nella formazione di una Squadra",
   nameRequired: 'Il nome è obbligatorio nella creazione di una Squadra',
+  editTitle: 'Puoi modificare solo i giocatori delle squadre che non sono in una partita (puoi sempre cambiare il nome)',
   sameOption: "l'attaccante ed il difensore devono essere diversi tra loro",
   type: 'Icona',
   create: 'Crea',
