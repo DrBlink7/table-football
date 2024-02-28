@@ -20,6 +20,7 @@ interface CustomTextModalProps {
   handleSubmit: UseFormHandleSubmit<any>
   onSubmit: SubmitHandler<any>
   open: boolean
+  icon: JSX.Element
   control: Control<any>
   firstError: FieldError | undefined
   secondError: FieldError | undefined
@@ -38,6 +39,7 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
   handleSubmit,
   onSubmit,
   open,
+  icon,
   control,
   firstError,
   secondError,
@@ -142,6 +144,7 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            endIcon={icon}
           >
             {editText ?? t('editModal.edit')}
           </Button>

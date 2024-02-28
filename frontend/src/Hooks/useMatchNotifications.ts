@@ -4,7 +4,7 @@ import { addMatchNotification } from '../Store/sse'
 import { beHost } from '../Utils/config'
 import { addGoal } from '../Store/match'
 
-const useMatchConnection = (userid: string): void => {
+const useMatchNotifications = (userid: string): void => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -26,4 +26,4 @@ const useMatchConnection = (userid: string): void => {
   }, [dispatch, userid])
 }
 
-export default useMatchConnection
+export default useMatchNotifications

@@ -1,12 +1,12 @@
 import { type FC } from 'react'
 import { useAppSelector } from '../Utils/store'
 import { selectComponent } from '../Store/util'
-import Players from './Players'
-import Teams from './Teams'
-import Matches from './Matches'
-import Stats from './Stats'
-import User from './User'
-import DefaultHomeLogo from '../Components/DefaultHomeLogo'
+import Players from '../Controllers/Players'
+import Teams from '../Controllers/Teams'
+import Matches from '../Controllers/Matches'
+import Stats from '../Controllers/Stats'
+import User from '../Controllers/User'
+import DefaultHomeLogo from './DefaultHomeLogo'
 
 const MainPage: FC = () => {
   const component = useAppSelector(selectComponent)

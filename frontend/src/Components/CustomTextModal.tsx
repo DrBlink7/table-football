@@ -11,6 +11,7 @@ interface CustomTextModalProps {
   control: Control<any>
   errors: FieldError | undefined
   name: string
+  icon: JSX.Element
   editText?: string
   title?: string
 }
@@ -20,6 +21,7 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
   onClose,
   handleSubmit,
   onSubmit,
+  icon,
   control,
   errors,
   name,
@@ -69,6 +71,7 @@ const CustomTextModal: FC<CustomTextModalProps> = ({
                   type="submit"
                   fullWidth
                   variant="contained"
+                  endIcon={icon}
                   sx={{ mt: 3, mb: 2 }}
                 >
                   {editText ?? t('editModal.edit')}

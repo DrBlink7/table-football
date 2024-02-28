@@ -20,10 +20,11 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { setComponent } from '../Store/util'
 import { clearErrorMessage, retrievePlayerList, selectPlayerList, selectPlayerListStatus } from '../Store/player'
+import GroupIcon from '@mui/icons-material/Group'
 import CustomTable from './CustomTable'
 import Loader from '../Components/Loader'
 import ErrorComponent from '../Components/Error'
-import CustomOptionsModal from './CustomOptionsModal'
+import CustomOptionsModal from '../Components/CustomOptionsModal'
 import ConfirmationDialog from '../Components/ConfirmationDialog'
 import * as Yup from 'yup'
 
@@ -232,16 +233,16 @@ const Teams: FC = () => {
       </Box>
       <CustomTable rows={rows} columns={columns} selectedRow={selectedRow} handleRowSelect={handleRowSelect} />
       <Box display='flex' width='100%' flexDirection='row' height='12%' justifyContent='space-between' alignItems='center'>
-        <Button variant="contained" sx={buttonStyle} onClick={openCreateTeam}>
+        <Button variant="contained" sx={buttonStyle} onClick={openCreateTeam} endIcon={<GroupIcon />}>
           {t('Team.create')}
         </Button>
-        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openEditTeam}>
+        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openEditTeam} endIcon={<GroupIcon />}>
           {t('Team.edit')}
         </Button>
-        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openDeleteTeam}>
+        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={openDeleteTeam} endIcon={<GroupIcon />}>
           {t('Team.delete')}
         </Button>
-        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={goToTeamPage}>
+        <Button variant="contained" disabled={!Boolean(selectedRow)} sx={buttonStyle} onClick={goToTeamPage} endIcon={<GroupIcon />}>
           {t('Team.browse')}
         </Button>
       </Box>
@@ -258,6 +259,7 @@ const Teams: FC = () => {
         handleSubmit={handleSubmitCreate}
         onSubmit={onSubmitCreate}
         open={createTeam}
+        icon={<GroupIcon />}
         control={controlCreate}
         firstError={errorsCreate?.defender}
         secondError={errorsCreate?.striker}
@@ -275,6 +277,7 @@ const Teams: FC = () => {
         handleSubmit={handleSubmitEdit}
         onSubmit={onSubmitEdit}
         open={editTeam}
+        icon={<GroupIcon />}
         control={controlEdit}
         firstError={errorsEdit?.defender}
         secondError={errorsEdit?.striker}
