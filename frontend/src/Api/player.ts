@@ -13,3 +13,6 @@ export const editPlayer = async (token: string, id: string, name: string): Promi
 
 export const deletePlayer = async (token: string, id: string): Promise<AxiosResponse<DeletePlayerDTO>> =>
   await axiosClient.delete(`/player/${id}`, createApiHeaders(token))
+
+export const retrievePlayerStats = async (token: string, id: number): Promise<AxiosResponse<GetPlayerStatDTO>> =>
+  await axiosClient.get(`/player/stats/${id}`, createApiHeaders(token))

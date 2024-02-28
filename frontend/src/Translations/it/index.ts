@@ -64,10 +64,16 @@ const deletePlayer = {
   dialogText: 'Sei sicuro di voler cancellare questo Giocatore? ID Giocatore: '
 }
 const player = {
-  title: 'Giocatore',
+  title: 'Statistiche Giocatore',
   back: 'Torna alla Pagina dei Giocatori',
-  id: 'Id Giocatore',
-  name: 'Nome Giocatore'
+  defenderPlayed: 'Partite giocate come difensore: ',
+  goalsConceded: 'Goals Subiti: ',
+  goalsConcededPerMatch: 'Goals Subiti (per Partita): ',
+  playedForBlue: 'Partite giocate per la Squadra blu: ',
+  strikerPlayed: 'Partite giocate come attaccante: ',
+  goalsScored: 'Goals Segnati: ',
+  goalsScoredPerMatch: 'Goals Segnati (per Partita): ',
+  playedForRed: 'Partite giocate per la Squadra rossa: '
 }
 const Team = {
   title: 'Squadre',

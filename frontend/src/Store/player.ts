@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { createPlayer, deletePlayer, editPlayer, retrievePlayers } from '../Api/player'
+import { createPlayer, deletePlayer, editPlayer, retrievePlayerStats, retrievePlayers } from '../Api/player'
 import { formatThunkError, playerInitialState } from '../Utils/store'
 
 type RetrievePlayerListProps = Token
@@ -81,6 +81,24 @@ export const deleteAPlayer = createAsyncThunk(
   }
 )
 
+type RetrievePlayerStats = Token & { id: number }
+
+export const retrieveThePlayerStats = createAsyncThunk(
+  'retrieveThePlayerStats',
+  async ({ token, id }: RetrievePlayerStats, thunkApi) => {
+    try {
+      const response = await retrievePlayerStats(token, id)
+      return response.data
+    } catch (e) {
+      const error = formatThunkError(e)
+
+      return thunkApi.rejectWithValue(
+        Boolean(error.message) ? error.message : 'retrieveThePlayerStats error'
+      )
+    }
+  }
+)
+
 export const player = createSlice({
   name: 'player',
   initialState: playerInitialState,
@@ -154,6 +172,19 @@ export const player = createSlice({
       state.playerListStatus = 'success'
       state.playerList = [...state.playerList].filter(player => player.id !== id)
     })
+    builder.addCase(retrieveThePlayerStats.pending, (state) => {
+      state.playerStatsStatus = 'loading'
+    })
+    builder.addCase(retrieveThePlayerStats.rejected, (state, action) => {
+      state.playerStatsStatus = 'error'
+      state.errorMessage = Boolean(action.error) && typeof action.error === 'string' ? action.error : action.payload as string
+      state.playerStats = playerInitialState.playerStats
+    })
+    builder.addCase(retrieveThePlayerStats.fulfilled, (state, action) => {
+      const data = action.payload
+      state.playerStatsStatus = 'success'
+      state.playerStats = data
+    })
   }
 })
 
@@ -166,3 +197,5 @@ export const {
 export const selectPlayerListStatus = (state: State): State['playerInfo']['playerListStatus'] => state.playerInfo.playerListStatus
 export const selectPlayerList = (state: State): State['playerInfo']['playerList'] => state.playerInfo.playerList
 export const selectErrorMessage = (state: State): State['playerInfo']['errorMessage'] => state.playerInfo.errorMessage
+export const selectPlayerStats = (state: State): State['playerInfo']['playerStats'] => state.playerInfo.playerStats
+export const selectPlayerStatsStatus = (state: State): State['playerInfo']['playerStatsStatus'] => state.playerInfo.playerStatsStatus
