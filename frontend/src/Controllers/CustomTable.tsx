@@ -13,6 +13,9 @@ import {
   TableSortLabel
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import PersonIcon from '@mui/icons-material/Person'
+import GroupIcon from '@mui/icons-material/Group'
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer'
 
 interface CustomTableProps {
   columns: Column[]
@@ -111,7 +114,7 @@ const CustomTable: FC<CustomTableProps> = ({
                   }
                   {columns.map((column, index) => (
                     <TableCell key={index}>
-                      {row[column.id]}
+                      {column.id === 'type' ? chooseTableIcon(row[column.id] as TableType) : row[column.id]}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -135,3 +138,16 @@ const CustomTable: FC<CustomTableProps> = ({
 }
 
 export default CustomTable
+
+const chooseTableIcon = (id: TableType): JSX.Element => {
+  switch (id) {
+    case 'Match':
+      return <SportsSoccerIcon />
+    case 'Player':
+      return <PersonIcon />
+    case 'Team':
+      return <GroupIcon />
+    default:
+      return <PersonIcon />
+  }
+}
