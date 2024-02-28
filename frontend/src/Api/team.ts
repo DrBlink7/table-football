@@ -19,3 +19,6 @@ export const editTeam = async (
 
 export const deleteTeam = async (token: string, id: string): Promise<AxiosResponse<DeleteTeamDTO>> =>
   await axiosClient.delete(`/team/${id}`, createApiHeaders(token))
+
+export const retrieveTeamStats = async (token: string, id: number): Promise<AxiosResponse<GetTeamStatDTO>> =>
+  await axiosClient.get(`/team/stats/${id}`, createApiHeaders(token))

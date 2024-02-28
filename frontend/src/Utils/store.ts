@@ -78,7 +78,21 @@ export const playerInitialState: PlayerStore = {
 
 export const teamInitialState: TeamStore = {
   teamList: [],
+  teamStats: {
+    defender: { id: 0, name: '' },
+    striker: { id: 0, name: '' },
+    endedMatches: [],
+    onGoingMatches: [],
+    preparingMatches: [],
+    gamesPlayed: 0,
+    goalsConceded: 0,
+    goalsScored: 0,
+    id: 0,
+    points: 0,
+    name: ''
+  },
   teamListStatus: 'idle',
+  teamStatsStatus: 'idle',
   errorMessage: ''
 }
 

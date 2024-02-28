@@ -1,16 +1,42 @@
 import { type FC } from 'react'
 import { Box, Paper, Stack, Typography, useTheme } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { useAppSelector } from '../Utils/store'
+import { selectTeamStats } from '../Store/team'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import Scrollbar from 'react-perfect-scrollbar'
+import MatchList from '../Controllers/MatchList'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 interface TeamPageProps {
-  id: string
   goBackToTeamPage: () => void
+  goToTeamPage: (id: number) => void
+  goToLiveMatch: (id: number) => void
+  goToStats: () => void
+  toggleOnGoingFoldable: () => void
+  toggleEndedFoldable: () => void
+  togglePreparingFoldable: () => void
+  isOnGoingFoldableOpen: boolean
+  isEndedFoldableOpen: boolean
+  isPreparingFoldableOpen: boolean
 }
 
-const TeamPage: FC<TeamPageProps> = ({ id, goBackToTeamPage }) => {
+const TeamPage: FC<TeamPageProps> = ({
+  goBackToTeamPage,
+  goToLiveMatch,
+  goToStats,
+  goToTeamPage,
+  toggleEndedFoldable,
+  toggleOnGoingFoldable,
+  togglePreparingFoldable,
+  isEndedFoldableOpen,
+  isOnGoingFoldableOpen,
+  isPreparingFoldableOpen
+}) => {
   const { t } = useTranslation()
   const theme = useTheme()
+
+  const teamStats = useAppSelector(selectTeamStats)
 
   return <Stack
     display='flex'
@@ -26,29 +52,60 @@ const TeamPage: FC<TeamPageProps> = ({ id, goBackToTeamPage }) => {
     <Stack
       display='flex'
       width='100%'
-      height='80%'
+      height='90%'
       alignItems='center'
-      justifyContent='center'
+      marginBottom='2vh'
     >
-      <Stack
-        display='flex'
-        width='75%'
-        height='85%'
-        padding='2%'
-        borderRadius='5%'
-        component={Paper}
-      >
-        <Typography variant="h3" alignSelf='center' marginBottom='2vh'>{t('team.title')}</Typography>
-        <Box display='flex' width='100%' height='100%' justifyContent='center'>
-          <Box display='flex' width='35%' flexDirection='column' justifyContent='space-between'>
+      <Scrollbar style={{ maxHeight: '90vh', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Stack display='flex' width='75%' height='40%' padding='2%' borderRadius='5%' component={Paper}>
+          <Typography variant="h3" alignSelf='center' marginBottom='5vh'>{t('team.title')} {teamStats.name}</Typography>
+          <Box display='flex' width='100%' height='100%' justifyContent='center'>
+            <Box display='flex' width='45%' flexDirection='column'>
+              <Typography m='2vh 0'>{t('team.defenderName')} {teamStats.defender.name}</Typography>
+              <Typography m='2vh 0'>{t('team.goalsConceded')} {teamStats.goalsConceded}</Typography>
+              <Typography m='2vh 0'>{t('team.gamesPlayed')} {teamStats.gamesPlayed}</Typography>
+            </Box>
+            <Box display='flex' width='45%' flexDirection='column'>
+              <Typography m='2vh 0'>{t('team.strikerName')} {teamStats.striker.name}</Typography>
+              <Typography m='2vh 0'>{t('team.goalsScored')} {teamStats.goalsScored}</Typography>
+              <Typography m='2vh 0'>{t('team.points')} {teamStats.points}</Typography>
+            </Box>
           </Box>
-          <Box display='flex' width='55%' flexDirection='column'>
-            <Typography>{t('team.id')} {id}</Typography>
-          </Box>
-        </Box>
-      </Stack>
+        </Stack>
+        <Stack display='flex' width='78%' height='40%' padding='2%'>
+          <MatchList
+            matches={teamStats.onGoingMatches}
+            isOpen={isOnGoingFoldableOpen}
+            title={t('matches.onGoing')}
+            goToStats={goToStats}
+            toggle={toggleOnGoingFoldable}
+            goToLiveMatch={goToLiveMatch}
+            goToTeamPage={goToTeamPage}
+            testIdLabel="matches-ongoing"
+          />
+          <MatchList
+            matches={teamStats.preparingMatches}
+            isOpen={isPreparingFoldableOpen}
+            title={t('matches.preparing')}
+            goToStats={goToStats}
+            toggle={togglePreparingFoldable}
+            goToLiveMatch={goToLiveMatch}
+            goToTeamPage={goToTeamPage}
+            testIdLabel="matches-preparing"
+          />
+          <MatchList
+            matches={teamStats.endedMatches}
+            isOpen={isEndedFoldableOpen}
+            title={t('matches.ended')}
+            goToStats={goToStats}
+            toggle={toggleEndedFoldable}
+            goToLiveMatch={goToLiveMatch}
+            goToTeamPage={goToTeamPage}
+            testIdLabel="matches-ended"
+          />
+        </Stack>
+      </Scrollbar>
     </Stack>
-    <Box height='10%' />
   </Stack>
 }
 

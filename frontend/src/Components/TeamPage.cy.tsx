@@ -27,9 +27,14 @@ describe('<TeamPage />', () => {
           <Router>
             <TestContainer>
               <TeamPage
-                id={'1'}
                 goBackToTeamPage={() => { }}
-              />
+                goToTeamPage={function (id: number): void { }}
+                goToLiveMatch={function (id: number): void { }}
+                goToStats={function (): void { }}
+                toggleOnGoingFoldable={function (): void { }}
+                toggleEndedFoldable={function (): void { }}
+                togglePreparingFoldable={function (): void { }}
+                isOnGoingFoldableOpen={false} isEndedFoldableOpen={false} isPreparingFoldableOpen={false} />
             </TestContainer>
           </Router>
         </ThemeProvider>

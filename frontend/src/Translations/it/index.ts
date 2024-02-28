@@ -107,8 +107,12 @@ const deleteTeam = {
 const team = {
   title: 'Squadra',
   back: 'Torna indietro alla Pagina delle Squadre',
-  id: 'ID Squadra',
-  name: 'Nome Squadra'
+  defenderName: 'Difensore: ',
+  goalsConceded: 'Goals Subiti: ',
+  gamesPlayed: 'Partite Giocate: ',
+  strikerName: 'Attaccante: ',
+  goalsScored: 'Goals Segnati: ',
+  points: 'Punti: '
 }
 const matches = {
   title: 'Lista Partite',
