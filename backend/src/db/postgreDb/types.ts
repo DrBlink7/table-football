@@ -61,7 +61,7 @@ export interface DBDefendersCols {
   defender_red_name: string
   defender_blue_name: string
 }
-export interface DBDStrikersCols {
+export interface DBStrikersCols {
   striker_red_id: number
   score_red: number
   striker_blue_id: number

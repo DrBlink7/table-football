@@ -263,6 +263,27 @@ import { MatchStatus } from "../../db/postgreDb/types"
  *              - preparing
  *              - ongoing
  *              - ended
+ *      GetPlayerStatDTO:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: number
+ *          playedForBlue:
+ *            type: number
+ *          playedForRed:
+ *            type: number
+ *          strikerPlayed:
+ *            type: number
+ *          goalsScoredPerMatch:
+ *            type: number
+ *          goalsScored:
+ *            type: number
+ *          defenderPlayed:
+ *            type: number
+ *          goalsConceded:
+ *            type: number
+ *          goalsConcededPerMatch:
+ *            type: number
  */
 export type GetPlayersDTO = {
   name: string
@@ -434,4 +455,16 @@ type NotifyMessage = {
 export type SSEMessage = NotifyMessage
 export interface startMatchBODY {
   matchid: number
+}
+export interface GetPlayerStatDTO {
+  id: number
+  name: string
+  playedForBlue: number
+  playedForRed: number
+  strikerPlayed: number
+  goalsScoredPerMatch: number
+  goalsScored: number
+  defenderPlayed: number
+  goalsConceded: number
+  goalsConcededPerMatch: number
 }

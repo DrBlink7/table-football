@@ -1,8 +1,8 @@
 import { tableMatches, tablePlayers, tableTeams } from "../../config"
 import { dbConfig } from "."
-import { DBDStrikersCols, DBDefendersCols, DBRankingsCols } from "./types"
+import { DBStrikersCols, DBDefendersCols, DBRankingsCols } from "./types"
 import { formatRankings, sortStrikerResult } from "./utils";
-import { GetDefenderStatsDTO, GetRankingsDTO, GetStrikerStatsDTO } from "../../api/routers/types";
+import { GetDefenderStatsDTO, GetPlayerStatDTO, GetRankingsDTO, GetStrikerStatsDTO } from "../../api/routers/types";
 import { sortDefenderResult } from "./utils";
 
 export const getRankings = async (): Promise<GetRankingsDTO[]> => {
@@ -111,10 +111,10 @@ export const getStrikerStats = async (): Promise<GetStrikerStatsDTO[]> => {
     LEFT JOIN teams AS t2 ON m.blue = t2.id
     LEFT JOIN players AS p ON t.striker = p.id
     LEFT JOIN players AS p2 ON t2.striker = p2.id
-    WHERE m.status = 'ended';
+    WHERE m.status = 'ended'
   `;
 
-  const results = await client.query<DBDStrikersCols>(query);
+  const results = await client.query<DBStrikersCols>(query);
   client.release();
 
   if (!results.rowCount || results.rowCount === 0) return [];
@@ -145,3 +145,50 @@ export const getStrikerStats = async (): Promise<GetStrikerStatsDTO[]> => {
 
   return sortStrikerResult(result)
 }
+
+export const getPlayerStat = async (id: string): Promise<GetPlayerStatDTO> => {
+  const numericId = Number(id);
+  if (isNaN(numericId)) throw new Error('Fetch failed, invalid id.')
+
+  const strikerStats = await getStrikerStats()
+  const defenderStats = await getDefenderStats()
+
+  const striker = strikerStats.find(striker => striker.id === numericId)
+  const defender = defenderStats.find(defender => defender.id === numericId)
+
+  const client = await dbConfig.connect();
+
+  const teamQuery = `
+    SELECT t.id
+    FROM teams AS t
+    WHERE t.defender = $1 OR t.striker = $1
+  `
+  const teamResult = await client.query<{ id: number }>(teamQuery, [numericId])
+  const teamIds = teamResult.rows.map(row => row.id)
+
+  const red = `
+    SELECT COUNT(*) AS red_team_matches
+    FROM matches AS m
+    WHERE m.red = ANY($1::int[]) AND m.status = 'ended'
+  `
+  const playedRed = await client.query<{ red_team_matches: number }>(red, [teamIds])
+  const blue = `
+    SELECT COUNT(*) AS blue_team_matches
+    FROM matches AS m
+    WHERE m.blue = ANY($1::int[]) AND m.status = 'ended'
+  `
+  const playedBlue = await client.query<{ blue_team_matches: number }>(blue, [teamIds])
+
+  return {
+    id: numericId,
+    name: striker?.name ?? defender?.name ?? 'Name not registered',
+    playedForBlue: Number(playedRed.rows[0].red_team_matches),
+    playedForRed: Number(playedBlue.rows[0].blue_team_matches),
+    strikerPlayed: striker?.gamesPlayed ?? 0,
+    goalsScoredPerMatch: striker?.goalsScoredPerMatch ?? 0,
+    goalsScored: striker?.goalsScored ?? 0,
+    defenderPlayed: defender?.gamesPlayed ?? 0,
+    goalsConceded: defender?.goalsConceded ?? 0,
+    goalsConcededPerMatch: defender?.goalsConcededPerMatch ?? 0,
+  };
+};
