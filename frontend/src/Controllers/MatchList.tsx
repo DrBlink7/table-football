@@ -92,7 +92,7 @@ const MatchList: FC<MatchListProps> = ({
               sx={{ width: '15%', display: 'flex' }}
             >
               <Typography variant="subtitle1" color="primary" sx={{ cursor: 'help', width: '15%' }}>
-                {t('matches.teamBlue')}
+                {match.blue.name}
               </Typography>
             </Tooltip>
             <Typography variant="body1" fontWeight='700' width='30%' display='flex' justifyContent='flex-end'>
@@ -118,7 +118,7 @@ const MatchList: FC<MatchListProps> = ({
               sx={{ width: '15%', display: 'flex' }}
             >
               <Typography variant="subtitle1" color="secondary" sx={{ cursor: 'help', width: '15%' }}>
-                {t('matches.teamRed')}
+                {match.red.name}
               </Typography>
             </Tooltip>
             <Typography variant="body1" fontWeight='700' width='30%' display='flex' justifyContent='flex-end'>
