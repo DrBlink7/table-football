@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { mainColor, secondaryColor } from '../Utils/config'
 import { TestContainer } from '../Cypress/TestContainer'
+import { match } from '../Cypress/utils'
 import store from '../Store'
 import MatchPage from './MatchPage'
 import '../Translations'
@@ -27,8 +28,9 @@ describe('<MatchPage />', () => {
           <Router>
             <TestContainer>
               <MatchPage
-                id={'1'}
+                match={match as Match}
                 goBackToMatchPage={() => { }}
+                goToTeamPage={() => (id: number) => { }}
               />
             </TestContainer>
           </Router>

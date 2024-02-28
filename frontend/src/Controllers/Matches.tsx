@@ -19,9 +19,9 @@ import { getHomeButtonStyle, filterMatches } from '../Utils/f'
 import { useNavigate } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { selectTeamList } from '../Store/team'
+import { retrieveTeamList, selectTeamList } from '../Store/team'
 import { ToastContainer, toast } from 'react-toastify'
-import { dismissMatchNotification, selectSseNotification } from '../Store/sse'
+import { dismissMatchNotification, selectSseNotifications } from '../Store/sse'
 import Scrollbar from 'react-perfect-scrollbar'
 import useMatchConnection from '../Hooks/useMatchConnection'
 import CustomOptionsModal from './CustomOptionsModal'
@@ -44,7 +44,7 @@ const Matches: FC = () => {
   const matchList = useAppSelector(selectMatchList)
   const teamList = useAppSelector(selectTeamList)
   const onGoingMatchId = matchList.find(match => match.status === 'ongoing')?.id ?? 0
-  const notification = useAppSelector(selectSseNotification)
+  const notification = useAppSelector(selectSseNotifications)
 
   const [isOnGoingFoldableOpen, setOnGoingIsFoldableOpen] = useState<boolean>(true)
   const [isEndedFoldableOpen, setEndedIsFoldableOpen] = useState<boolean>(false)
@@ -92,7 +92,6 @@ const Matches: FC = () => {
   const matchToEdit = useCallback((id: number) => {
     const match = matchList.find(m => m.id === id)
     if (match === undefined) return
-
     setValue('blue', String(match.blue.id) ?? '')
     setValue('red', String(match.red.id) ?? '')
     setEditMatch(id)
@@ -189,6 +188,17 @@ const Matches: FC = () => {
   useEffect(() => {
     (async () => {
       try {
+        await dispatch(retrieveTeamList({ token }))
+      } catch (e) {
+        dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
+      }
+    })()
+      .catch(e => { dispatch(setErrorMessage(typeof e === 'string' ? e : String(e))) })
+  }, [token, dispatch])
+
+  useEffect(() => {
+    (async () => {
+      try {
         await dispatch(retrieveMatchList({ token }))
       } catch (e) {
         dispatch(setErrorMessage(typeof e === 'string' ? e : String(e)))
@@ -198,8 +208,8 @@ const Matches: FC = () => {
   }, [token, dispatch])
 
   useEffect(() => {
-    if (notification[onGoingMatchId].message !== '') {
-      toast.success(notification[onGoingMatchId].message, {
+    if (notification[onGoingMatchId]?.message !== '') {
+      toast.success(notification[onGoingMatchId]?.message, {
         position: 'top-center',
         autoClose: 5000
       })

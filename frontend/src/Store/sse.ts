@@ -31,4 +31,4 @@ export const sse = createSlice({
 
 export const { clearSseState, addMatchNotification, dismissMatchNotification } = sse.actions
 
-export const selectSseNotification = (state: State): State['sseInfo']['notifications'] => state.sseInfo.notifications
+export const selectSseNotifications = (state: State): State['sseInfo']['notifications'] => state.sseInfo.notifications

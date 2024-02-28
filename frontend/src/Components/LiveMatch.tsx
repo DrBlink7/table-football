@@ -3,7 +3,7 @@ import { Box, Paper, Stack, Typography, keyframes, useTheme } from '@mui/materia
 import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import { useAppDispatch, useAppSelector } from '../Utils/store'
-import { dismissMatchNotification, selectSseNotification } from '../Store/sse'
+import { dismissMatchNotification, selectSseNotifications } from '../Store/sse'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,7 +17,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
 
-  const notifications = useAppSelector(selectSseNotification)
+  const notifications = useAppSelector(selectSseNotifications)
 
   const blinkAnimation = keyframes`
   0% { color: ${theme.palette.primary.main}; }
@@ -26,8 +26,8 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
   `
 
   useEffect(() => {
-    if (notifications[match.id].message !== '') {
-      toast.success(notifications[match.id].message, {
+    if (notifications?.[match.id]?.message !== '') {
+      toast.success(notifications?.[match.id]?.message, {
         position: 'top-center',
         autoClose: 5000
       })
@@ -72,7 +72,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
           <Paper key={match.id} elevation={2} sx={{ my: 1, p: 2, display: 'flex', width: '90%', alignSelf: 'center' }}>
             <Stack spacing={2} display='flex' flexDirection='column' key={match.id} width='100%'>
               <Box display='flex' flexDirection='row' justifyContent='space-between' alignContent='center' width='100%'>
-                <Typography color="primary" width='10%' fontWeight='700'>
+                <Typography color="primary" width='20%' fontWeight='700'>
                   {match.blue.name}
                 </Typography>
                 <Typography color="primary" width='40%'>
@@ -84,7 +84,7 @@ const LiveMatch: FC<LiveMatchProps> = ({ goBackToMatchPage, match }) => {
                 <Typography fontWeight='700' sx={{ marginLeft: '5vw' }} >{match.blue.score}</Typography>
               </Box>
               <Box display='flex' flexDirection='row' justifyContent='space-between'>
-                <Typography color="secondary" width='10%' fontWeight='700'>
+                <Typography color="secondary" width='20%' fontWeight='700'>
                   {match.red.name}
                 </Typography>
                 <Typography color="secondary" width='40%'>

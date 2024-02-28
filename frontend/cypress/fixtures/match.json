@@ -1,0 +1,18 @@
+{
+  "blue": {
+    "id": 1,
+    "striker": "Valerio Lundini",
+    "defender": "Daniele Fabbri",
+    "score": 0,
+    "name": "Team 1"
+  },
+  "red": {
+    "id": 4,
+    "striker": "Giorgia Fumo",
+    "defender": "Michela Giraud",
+    "score": 0,
+    "name": "Team 4"
+  },
+  "id": 2,
+  "status": "ongoing"
+}
