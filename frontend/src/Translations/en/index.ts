@@ -105,6 +105,7 @@ const deleteTeam = {
   dialogText: 'Are you sure you want to delete this Team? Team id: '
 }
 const team = {
+  samePage: 'You are already on the Team Page with id ',
   title: 'Team Stats: ',
   back: 'Go Back to Teams Page',
   defenderName: 'Defender: ',

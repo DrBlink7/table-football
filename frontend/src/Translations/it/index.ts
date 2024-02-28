@@ -105,6 +105,7 @@ const deleteTeam = {
   dialogText: 'Sei sicuro di voler cancellare la Squadra? ID Squadra: '
 }
 const team = {
+  samePage: 'Sei già sulla Pagina del Team con id ',
   title: 'Squadra',
   back: 'Torna indietro alla Pagina delle Squadre',
   defenderName: 'Difensore: ',
