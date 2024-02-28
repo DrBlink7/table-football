@@ -4,14 +4,18 @@ import { useAppDispatch, useAppSelector } from '../Utils/store'
 import { setComponent } from '../Store/util'
 import { selectToken } from '../Store/users'
 import { clearTeamState, retrieveTheTeamStats, selectErrorMessage, selectTeamStatsStatus, setErrorMessage } from '../Store/team'
+import { ToastContainer, toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 import ErrorComponent from '../Components/Error'
 import TeamPage from '../Components/TeamPage'
 import Loader from '../Components/Loader'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Team: FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const token = useAppSelector(selectToken)
   const errorMessage = useAppSelector(selectErrorMessage)
@@ -45,9 +49,12 @@ const Team: FC = () => {
   }, [dispatch, navigate])
 
   const goToTeamPage = useCallback((teamId: number) => {
-    if (Number(id) === teamId) return
+    if (Number(id) === teamId) {
+      toast.info(`${t('team.samePage')}${id}!`)
+      return
+    }
     navigate(`/team/${teamId}`)
-  }, [id, navigate])
+  }, [id, navigate, t])
 
   const goToLiveMatch = useCallback((id: number) => {
     navigate(`/match/${id}`)
@@ -81,18 +88,21 @@ const Team: FC = () => {
     return <ErrorComponent msg={msg} clearError={clearError} />
   }
 
-  return <TeamPage
-    goBackToTeamPage={goBackToTeamPage}
-    goToStats={goToStats}
-    goToLiveMatch={goToLiveMatch}
-    goToTeamPage={goToTeamPage}
-    togglePreparingFoldable={togglePreparingFoldable}
-    toggleEndedFoldable={toggleEndedFoldable}
-    toggleOnGoingFoldable={toggleOnGoingFoldable}
-    isOnGoingFoldableOpen={isOnGoingFoldableOpen}
-    isEndedFoldableOpen={isEndedFoldableOpen}
-    isPreparingFoldableOpen={isPreparingFoldableOpen}
-  />
+  return <>
+    <ToastContainer position="top-center" autoClose={5000} />
+    <TeamPage
+      goBackToTeamPage={goBackToTeamPage}
+      goToStats={goToStats}
+      goToLiveMatch={goToLiveMatch}
+      goToTeamPage={goToTeamPage}
+      togglePreparingFoldable={togglePreparingFoldable}
+      toggleEndedFoldable={toggleEndedFoldable}
+      toggleOnGoingFoldable={toggleOnGoingFoldable}
+      isOnGoingFoldableOpen={isOnGoingFoldableOpen}
+      isEndedFoldableOpen={isEndedFoldableOpen}
+      isPreparingFoldableOpen={isPreparingFoldableOpen}
+    />
+  </>
 }
 
 export default Team
