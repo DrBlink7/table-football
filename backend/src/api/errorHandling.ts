@@ -84,14 +84,14 @@ import { load } from 'cheerio'
  *           type: string
  *         code:
  *           type: string
- *     CreateMatchesError:
+ *     CreateMatchError:
  *       type: object
  *       properties:
  *         message:
  *           type: string
  *         code:
  *           type: string
- *     EditMatchesError:
+ *     EditMatchError:
  *       type: object
  *       properties:
  *         message:
