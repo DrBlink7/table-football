@@ -140,6 +140,18 @@ interface GetStrikerStatsDTO {
   goalsScoredPerMatch: number
   gamesPlayed: number
 }
+interface GetPlayerStatDTO {
+  id: number
+  name: string
+  playedForBlue: number
+  playedForRed: number
+  strikerPlayed: number
+  goalsScoredPerMatch: number
+  goalsScored: number
+  defenderPlayed: number
+  goalsConceded: number
+  goalsConcededPerMatch: number
+}
 /**
  * Redux
  */
@@ -163,6 +175,8 @@ interface UserStore {
 }
 interface PlayerStore {
   playerList: Players
+  playerStats: PlayerStats
+  playerStatsStatus: Status
   playerListStatus: Status
   errorMessage: string
 }
@@ -241,6 +255,18 @@ interface Striker {
 interface AddGoal {
   matchid: number
   teamid: number
+}
+interface PlayerStats {
+  id: number
+  name: string
+  playedForBlue: number
+  playedForRed: number
+  strikerPlayed: number
+  goalsScoredPerMatch: number
+  goalsScored: number
+  defenderPlayed: number
+  goalsConceded: number
+  goalsConcededPerMatch: number
 }
 /**
  * Utils

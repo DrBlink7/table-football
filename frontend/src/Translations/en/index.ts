@@ -64,10 +64,16 @@ const deletePlayer = {
   dialogText: 'Are you sure you want to delete this Player? Player id: '
 }
 const player = {
-  title: 'Player Page',
+  title: 'Player Stats: ',
   back: 'Go Back to Player Page',
-  id: 'Player Id',
-  name: 'Player Name'
+  defenderPlayed: 'Match played as defender: ',
+  goalsConceded: 'Goals Conceded: ',
+  goalsConcededPerMatch: 'Goals Conceded (Match): ',
+  playedForBlue: 'Match played for blue team: ',
+  strikerPlayed: 'Match played as striker: ',
+  goalsScored: 'Goals Scored: ',
+  goalsScoredPerMatch: 'Goals Scored (Match): ',
+  playedForRed: 'Match played for red team: '
 }
 const Team = {
   title: 'Teams',

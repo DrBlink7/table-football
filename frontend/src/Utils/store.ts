@@ -59,6 +59,19 @@ export const userInitialState: UserStore = {
 
 export const playerInitialState: PlayerStore = {
   playerList: [],
+  playerStats: {
+    id: 0,
+    name: '',
+    playedForBlue: 0,
+    playedForRed: 0,
+    strikerPlayed: 0,
+    goalsScoredPerMatch: 0,
+    goalsScored: 0,
+    defenderPlayed: 0,
+    goalsConceded: 0,
+    goalsConcededPerMatch: 0
+  },
+  playerStatsStatus: 'idle',
   playerListStatus: 'idle',
   errorMessage: ''
 }
