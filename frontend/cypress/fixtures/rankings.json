@@ -12,7 +12,8 @@
     "points": 6,
     "goalsScored": 6,
     "goalsConceded": 4,
-    "gamesPlayed": 2
+    "gamesPlayed": 2,
+    "name": "Team 3"
   },
   {
     "striker": {
@@ -27,7 +28,8 @@
     "points": 3,
     "goalsScored": 7,
     "goalsConceded": 4,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 11"
   },
   {
     "striker": {
@@ -42,7 +44,8 @@
     "points": 3,
     "goalsScored": 6,
     "goalsConceded": 5,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 9"
   },
   {
     "striker": {
@@ -57,7 +60,8 @@
     "points": 3,
     "goalsScored": 4,
     "goalsConceded": 3,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 6"
   },
   {
     "striker": {
@@ -72,7 +76,8 @@
     "points": 3,
     "goalsScored": 3,
     "goalsConceded": 2,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 5"
   },
   {
     "striker": {
@@ -87,7 +92,8 @@
     "points": 1,
     "goalsScored": 4,
     "goalsConceded": 4,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 1"
   },
   {
     "striker": {
@@ -102,7 +108,8 @@
     "points": 1,
     "goalsScored": 6,
     "goalsConceded": 7,
-    "gamesPlayed": 2
+    "gamesPlayed": 2,
+    "name": "Team 4"
   },
   {
     "striker": {
@@ -117,7 +124,8 @@
     "points": 0,
     "goalsScored": 5,
     "goalsConceded": 6,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 8"
   },
   {
     "striker": {
@@ -132,7 +140,8 @@
     "points": 0,
     "goalsScored": 1,
     "goalsConceded": 2,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 2"
   },
   {
     "striker": {
@@ -147,7 +156,8 @@
     "points": 0,
     "goalsScored": 6,
     "goalsConceded": 8,
-    "gamesPlayed": 2
+    "gamesPlayed": 2,
+    "name": "Team 7"
   },
   {
     "striker": {
@@ -162,6 +172,7 @@
     "points": 0,
     "goalsScored": 4,
     "goalsConceded": 7,
-    "gamesPlayed": 1
+    "gamesPlayed": 1,
+    "name": "Team 10"
   }
 ]

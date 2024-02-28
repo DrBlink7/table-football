@@ -25,6 +25,10 @@ const Match: FC = () => {
     navigate('/')
   }, [dispatch, navigate])
 
+  const goToTeamPage = useCallback((id: number) => {
+    navigate(`/team/${id}`)
+  }, [navigate])
+
   const goBackToMatchPage = useCallback(() => {
     dispatch(setComponent('matches'))
     navigate('/')
@@ -57,9 +61,11 @@ const Match: FC = () => {
   if (id === undefined) return <ErrorComponent msg='id cannot be undefined' clearError={clearError} />
   const match = matchList.find(match => match.id === Number(id))
 
-  return match === undefined || match.status !== 'ongoing'
-    ? <MatchPage id={id} goBackToMatchPage={goBackToMatchPage} />
-    : <LiveMatch goBackToMatchPage={goBackToMatchPage} match={match} />
+  if (match === undefined) return <ErrorComponent msg='match id not found' clearError={clearError} />
+
+  return match.status === 'ongoing'
+    ? <LiveMatch goBackToMatchPage={goBackToMatchPage} match={match} />
+    : <MatchPage goBackToMatchPage={goBackToMatchPage} goToTeamPage={goToTeamPage} match={match} />
 }
 
 export default Match
