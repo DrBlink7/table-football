@@ -235,7 +235,7 @@ const Matches: FC = () => {
 
   const options = teamList.map(team => ({
     id: team.id,
-    name: String(team.id)
+    name: team.name
   }))
 
   return (
