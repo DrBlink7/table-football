@@ -252,3 +252,62 @@ teamRouter.delete(
     }
   })
 )
+
+/**
+ * @swagger
+ * /api/team/stats/{id}:
+ *   get:
+ *     summary: Recupera le statistiche del Team.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: L'id del Team.
+ *     responses:
+ *       200:
+ *         description: Restituisce le statistiche del Team.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/GetTeamStatDTO'
+ *       500:
+ *         description: Errore del server.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetTeamError'
+ *     tags:
+ *       - Teams
+ *     security:
+ *       - Authorization: []
+ */
+teamRouter.get(
+  "/stats/:id",
+  asyncErrWrapper(async (req, res) => {
+    try {
+      const { id } = req.params
+      const token = req.headers["authorization"]
+      if (!token) throw new Error("token is missing in headers")
+
+      decodeToken(token)
+
+      const getTeamTimestamp = performance.now()
+      const db = dbFactory(RepositoryType)
+      const data = await db.getTeamStat(id)
+      const fetchTime = Math.round(performance.now() - getTeamTimestamp)
+      Logger.writeEvent(`Teams: fetched team stats in ${fetchTime} ms`)
+
+      return res.status(200).json(data)
+    } catch (e) {
+      const { status, error } = formatError(
+        e as Error,
+        "020-RESPONSE",
+        "teamRouter team stats get"
+      )
+
+      return res.status(status).json(error)
+    }
+  })
+)
