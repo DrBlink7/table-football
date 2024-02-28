@@ -256,6 +256,13 @@ matchesRouter.delete(
  * /api/match/{id}:
  *   get:
  *     summary: Recupera il Match.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: L'id del Match da recuperare.
  *     responses:
  *       200:
  *         description: Restituisce il Match.
