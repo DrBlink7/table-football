@@ -248,3 +248,62 @@ playerRouter.delete(
     }
   })
 )
+
+/**
+ * @swagger
+ * /api/player/stats/{id}:
+ *   get:
+ *     summary: Recupera le statistiche del Player.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: L'id del Player.
+ *     responses:
+ *       200:
+ *         description: Restituisce le statistiche del Player.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/GetPlayerStatDTO'
+ *       500:
+ *         description: Errore del server.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetPlayerError'
+ *     tags:
+ *       - Players
+ *     security:
+ *       - Authorization: []
+ */
+playerRouter.get(
+  "/stats/:id",
+  asyncErrWrapper(async (req, res) => {
+    try {
+      const { id } = req.params
+      const token = req.headers["authorization"]
+      if (!token) throw new Error("token is missing in headers")
+
+      decodeToken(token)
+
+      const getPlayerTimestamp = performance.now()
+      const db = dbFactory(RepositoryType)
+      const data = await db.getPlayerStat(id)
+      const fetchTime = Math.round(performance.now() - getPlayerTimestamp)
+      Logger.writeEvent(`Players: fetched player stats in ${fetchTime} ms`)
+
+      return res.status(200).json(data)
+    } catch (e) {
+      const { status, error } = formatError(
+        e as Error,
+        "019-RESPONSE",
+        "playerRouter player stats get"
+      )
+
+      return res.status(status).json(error)
+    }
+  })
+)
