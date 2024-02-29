@@ -159,8 +159,7 @@ export const startMatch = async (id: number): Promise<void> => {
   `;
 
   const ongoingMatchesResult = await client.query<CheckOnGoingCols>(checkOngoingMatchQuery);
-
-  if (ongoingMatchesResult.rowCount && ongoingMatchesResult.rowCount > 0) {
+  if (ongoingMatchesResult.rows[0].ongoing_matches_count > 0) {
     throw new Error('Edit failed, ex. it can be only one ongoing match.')
   }
 
