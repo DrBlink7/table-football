@@ -131,6 +131,7 @@ const matches = {
   delete: 'Delete this match',
   editTitle: 'You can edit only preparing matches.',
   deletedTitle: 'You can delete only preparing/ended matches.',
+  sameOption: 'Teams needs to be different from eachother',
   dialogText: 'Are you sure you want to delete this Match? Match id: '
 }
 const Match = {

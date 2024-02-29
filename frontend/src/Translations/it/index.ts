@@ -129,6 +129,7 @@ const matches = {
   striker: 'Attaccante: ',
   edit: 'Modifica',
   delete: 'Cancella',
+  sameOption: 'Non puoi giocare contro te stesso!',
   editTitle: 'Puoi modificare solo partite in preparazione.',
   deletedTitle: 'Puoi modificare solo partite in preparazione o terminate.',
   dialogText: 'Sei sicuro di voler cancellare questa Partita? ID Partita: '
