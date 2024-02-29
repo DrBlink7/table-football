@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 /**
  * Forms
  */
@@ -26,7 +25,6 @@ interface AuthenticateBody {
   email: string
   password: string
 }
-
 interface AuthenticateDTO {
   token: string
   email: string
@@ -125,7 +123,6 @@ interface GetRankingsDTO {
   goalsConceded: number
   gamesPlayed: number
 }
-
 interface GetDefenderStatsDTO {
   id: number
   name: string
@@ -169,7 +166,6 @@ interface GetTeamStatDTO {
  * Redux
  */
 type Status = 'success' | 'idle' | 'error' | 'loading'
-
 interface State {
   userInfo: UserStore
   playerInfo: PlayerStore
@@ -213,7 +209,6 @@ interface StatsStore {
 interface SSEStore {
   notifications: Record<number, SSENotifications>
 }
-
 interface SSENotifications { message: string }
 interface User {
   email: string
