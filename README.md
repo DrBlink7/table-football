@@ -1,5 +1,5 @@
 # Table-Football Code Challenge
-Hello molo table football players, with this web-app you can now create, delete, edit and browse the list of every molo players, you can even check their player page and analyze their personal stats.
+Hello table football players, with this web-app you can now create, delete, edit and browse the list of every player, you can even check their player page and analyze their personal stats.
 You can create teams, but don't be a solo player! Choose a team name and a colleague to create your own team, you can even edit or delete it later, but what about browsing team stats? You can do that too!
 Now the fun part, you can create a match and wait for the table to be free to start the match!  
 
@@ -29,7 +29,7 @@ Application rules:
   - A match can be created only if blue/red have 4 different players (4 different players id)
   - A match (its teams) can be edited only if its status is preparing
   - A match cannot be deleted if its status is ongoing
-  - Only 1 Match can be ongoing (there is no real limitation on FE nor on BE nor on the technology choosed, i just added a fake rule on BE to fit the imaginary scenario where molo has 1 table football available)
+  - Only 1 Match can be ongoing (there is no real limitation on FE nor on BE nor on the technology choosed, i just added a fake rule on BE to fit the imaginary scenario where Molo has 1 table football available)
   - Teams leaderboards
     - points DESC
     - goal difference DESC
