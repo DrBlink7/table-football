@@ -491,6 +491,10 @@ export interface GetTeamStatDTO {
  *       properties:
  *         matchid:
  *           type: number
+ *     endMatchBODY:
+ *       properties:
+ *         matchid:
+ *           type: number
  */
 enum MessageType {
   "goalScored" = "goalScored"
@@ -512,5 +516,8 @@ type NotifyMessage = {
 }
 export type SSEMessage = NotifyMessage
 export interface startMatchBODY {
+  matchid: number
+}
+export interface endMatchBODY {
   matchid: number
 }

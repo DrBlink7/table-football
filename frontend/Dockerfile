@@ -32,16 +32,9 @@ FROM nginx:stable-alpine-slim AS production
 
 EXPOSE 8000
 
-# Delete the default welcome to nginx page.
-RUN rm /usr/share/nginx/html/*
-
-# Copy over the custom default configs.
-COPY nginx/configs/default.conf /etc/nginx/conf.d/default.conf
-
-COPY nginx/configs/htpasswd /etc/nginx/conf.d/htpasswd
-
-# Copy frontend files
-COPY --from=production-builder /frontend/build /srv/www
+# Copy frontend files 
+COPY --from=production-builder /frontend/build /usr/share/nginx/html/
+# COPY --from=production-builder /frontend/build/* /usr/share/nginx/html/ in case it doesn't unpack the directory
 
 # Start nginx in the foreground to play nicely with Docker.
 CMD ["nginx", "-g", "daemon off;"]

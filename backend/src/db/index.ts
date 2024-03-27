@@ -26,6 +26,7 @@ export type Connector = {
   getDefenderStats: () => Promise<GetDefenderStatsDTO[]>
   getStrikerStats: () => Promise<GetStrikerStatsDTO[]>
   startMatch: (id: number) => Promise<void>
+  endMatch: (id: number) => Promise<void>
   addGoal: (matchid: number, teamid: number) => Promise<void>
   getPlayerStat: (id: string) => Promise<GetPlayerStatDTO>
   getTeamStat: (id: string) => Promise<GetTeamStatDTO>

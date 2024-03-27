@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express"
 import { RepositoryType, clients } from "../../config"
 import { asyncErrWrapper, formatError } from "../errorHandling"
 import { formatSSEMessage, isEmpty } from "./utils"
-import { BroadcastType, NotifyBroadcast, startMatchBODY } from "./types"
+import { BroadcastType, NotifyBroadcast, endMatchBODY, startMatchBODY } from "./types"
 import { dbFactory } from "../../db"
 
 export const notificationRouter = express.Router()
@@ -96,6 +96,45 @@ notificationRouter.post(
       const { matchid } = body
       const db = dbFactory(RepositoryType)
       await db.startMatch(matchid)
+
+      return res.status(204).json()
+    } catch (err) {
+      const { status, error } = formatError(err)
+      return res.status(status).json(error)
+    }
+  })
+)
+
+/**
+ * @swagger
+ * /api/notification/endmatch:
+ *   post:
+ *     summary: Fa terminare un Match
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/endMatchBODY'
+ *     responses:
+ *       204:
+ *         description: Notification inviata con successo
+ *       500:
+ *         description: Errore del server.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GenericError'
+ *     tags:
+ *       - Notification
+ */
+notificationRouter.post(
+  "/endmatch",
+  asyncErrWrapper(async (req, res) => {
+    try {
+      const body: endMatchBODY = req.body
+      const { matchid } = body
+      const db = dbFactory(RepositoryType)
+      await db.endMatch(matchid)
 
       return res.status(204).json()
     } catch (err) {

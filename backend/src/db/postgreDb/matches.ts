@@ -270,3 +270,21 @@ export const getMatch = async (matchid: string) => {
     status: row.status
   }) satisfies GetMatchDTO
 }
+
+export const endMatch = async (id: number): Promise<void> => {
+  const client = await dbConfig.connect()
+
+  const query = `
+  UPDATE ${tableMatches}
+  SET status = 'ended'
+  WHERE id=$1 AND status = 'ongoing'
+  `
+  const values = [id]
+
+  const results = await client.query<DBMatchesTable>(query, values)
+  client.release()
+
+  if (!results.rowCount || results.rowCount === 0) throw new Error('Edit failed, match Id is uncorrect')
+
+  return
+}
